@@ -8,6 +8,7 @@ public static class RepoLayout
 {
     private static readonly string[] SolutionFileNames =
     {
+        "Broiler.Unicode.slnx",
         "UnicodeEmoji.StringProperties.slnx",
         "UnicodeEmoji.StringProperties.sln",
     };

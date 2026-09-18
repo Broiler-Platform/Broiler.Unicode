@@ -1,32 +1,13 @@
-<Project>
-
+﻿<Project>
+  <Import Project="$(MSBuildThisFileDirectory)eng/Broiler.Packaging.props" />
   <PropertyGroup>
-    <BroilerBaseConfiguration Condition="'$(Configuration)' == 'Debug-Linux' Or '$(Configuration)' == 'Debug-Windows'">Debug</BroilerBaseConfiguration>
-    <BroilerBaseConfiguration Condition="'$(Configuration)' == 'Release-Linux' Or '$(Configuration)' == 'Release-Windows'">Release</BroilerBaseConfiguration>
-    <BroilerTargetOperatingSystem Condition="'$(Configuration)' == 'Debug-Linux' Or '$(Configuration)' == 'Release-Linux'">Linux</BroilerTargetOperatingSystem>
-    <BroilerTargetOperatingSystem Condition="'$(Configuration)' == 'Debug-Windows' Or '$(Configuration)' == 'Release-Windows'">Windows</BroilerTargetOperatingSystem>
-
-    <DebugSymbols Condition="'$(BroilerBaseConfiguration)' == 'Debug'">true</DebugSymbols>
-    <DebugType Condition="'$(BroilerBaseConfiguration)' == 'Debug'">portable</DebugType>
-    <Optimize Condition="'$(BroilerBaseConfiguration)' == 'Debug'">false</Optimize>
-    <DefineConstants Condition="'$(BroilerBaseConfiguration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
-    <DebugType Condition="'$(BroilerBaseConfiguration)' == 'Release'">portable</DebugType>
-    <Optimize Condition="'$(BroilerBaseConfiguration)' == 'Release'">true</Optimize>
-    <DefineConstants Condition="'$(BroilerBaseConfiguration)' == 'Release'">$(DefineConstants);RELEASE</DefineConstants>
-
-    <DefineConstants Condition="'$(BroilerTargetOperatingSystem)' == 'Linux'">$(DefineConstants);LINUX</DefineConstants>
-    <DefineConstants Condition="'$(BroilerTargetOperatingSystem)' == 'Windows'">$(DefineConstants);WINDOWS</DefineConstants>
-
-    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release</Configurations>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <!-- Repository-wide metadata reused by the packable library. -->
-    <Authors>UnicodeEmoji contributors</Authors>
-    <Company>UnicodeEmoji</Company>
-    <Product>UnicodeEmoji.StringProperties</Product>
-    <RepositoryType>git</RepositoryType>
     <UnicodeEmojiVersion>16.0</UnicodeEmojiVersion>
+    <PackageProjectUrl>https://github.com/Broiler-Platform/Broiler.Unicode</PackageProjectUrl>
+    <PackageTags>broiler;unicode;cldr;emoji</PackageTags>
   </PropertyGroup>
-
 </Project>

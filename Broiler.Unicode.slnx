@@ -1,4 +1,4 @@
-<Solution>
+﻿<Solution>
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/UnicodeEmoji.StringProperties.Benchmarks/UnicodeEmoji.StringProperties.Benchmarks.csproj" />
   </Folder>
@@ -9,6 +9,7 @@
     <Project Path="src/UnicodeCldr.LocaleData/UnicodeCldr.LocaleData.csproj" />
     <Project Path="src/UnicodeCldr.LocaleData.Generator/UnicodeCldr.LocaleData.Generator.csproj" />
     <Project Path="src/UnicodeCldr.LocaleData.DataTool/UnicodeCldr.LocaleData.DataTool.csproj" />
+    <Project Path="src/UnicodeProperties/UnicodeProperties.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/UnicodeEmoji.StringProperties.Tests/UnicodeEmoji.StringProperties.Tests.csproj" />
