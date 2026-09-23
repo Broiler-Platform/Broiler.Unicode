@@ -1,7 +1,7 @@
 # Broiler.Unicode
 
 Unicode property, emoji string-property, and CLDR locale-data components used by
-Broiler.JS. This README focuses on the `UnicodeEmoji.StringProperties` package.
+Broiler.JS. This README focuses on the `Broiler.Unicode.Emoji.StringProperties` package.
 
 Managed, allocation-light matching of **Unicode RGI emoji string properties** (UTS #51) for .NET,
 backed by a generated trie. No ICU, no native dependency, no runtime downloads, no giant regex.
@@ -63,16 +63,21 @@ The repository ships three packages, each targeting `net8.0` and `net10.0`:
 | Package | Purpose |
 |---|---|
 | `Broiler.Unicode.Properties` | Unicode character properties, scripts, categories, and case mappings |
-| `UnicodeEmoji.StringProperties` | Unicode RGI emoji sequence matching |
-| `UnicodeCldr.LocaleData` | CLDR locale data for Intl implementations |
+| `Broiler.Unicode.Emoji.StringProperties` | Unicode RGI emoji sequence matching |
+| `Broiler.Unicode.Cldr.LocaleData` | CLDR locale data for Intl implementations |
 
 Select prerelease packages while the libraries are in preview:
 
 ```sh
-dotnet add package UnicodeEmoji.StringProperties --prerelease
+dotnet add package Broiler.Unicode.Emoji.StringProperties --prerelease
 ```
 
 For maintainer instructions, see [publishing previews](eng/RELEASING.md).
+
+Earlier GitHub previews used the package IDs `UnicodeEmoji.StringProperties` and
+`UnicodeCldr.LocaleData`. Update those `PackageReference` entries (and central
+`PackageVersion` entries, if used) to the new IDs above. C# namespaces remain
+`UnicodeEmoji.StringProperties` and `UnicodeCldr.LocaleData`.
 
 ## API
 

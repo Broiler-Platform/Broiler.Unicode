@@ -4,7 +4,9 @@
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <RootNamespace>UnicodeCldr.LocaleData</RootNamespace>
     <AssemblyName>UnicodeCldr.LocaleData</AssemblyName>
-    <PackageId>UnicodeCldr.LocaleData</PackageId>
+    <PackageId>Broiler.Unicode.Cldr.LocaleData</PackageId>
+    <!-- Keep earlier GitHub previews in the cumulative release sequence. -->
+    <PreviewVersionHistoryPackageIds>UnicodeCldr.LocaleData</PreviewVersionHistoryPackageIds>
     <Description>Managed, allocation-light CLDR locale data (currency formatting, number symbols) for ECMA-402 Intl implementations. No ICU/native dependency.</Description>
     <PackageTags>unicode;cldr;icu;intl;ecma402;locale;currency</PackageTags>
   </PropertyGroup>

@@ -89,6 +89,43 @@ function bothFeeds(nuget, github, calls = []) {
 }
 
 for (const target of ['nuget', 'github']) {
+  test(`${target}: renamed packages retain cumulative history from their former IDs on both feeds`, async () => {
+    const renamedPackages = [
+      {
+        PackageId: 'Broiler.Unicode.Emoji.StringProperties', PackageVersion: '0.1.0-preview.1',
+        PreviewVersionHistoryPackageIds: 'UnicodeEmoji.StringProperties',
+      },
+      {
+        PackageId: 'Broiler.Unicode.Cldr.LocaleData', PackageVersion: '0.1.0-preview.1',
+        PreviewVersionHistoryPackageIds: ' UnicodeCldr.LocaleData; ;UnicodeCldr.LocaleData ',
+      },
+    ];
+    for (const [nugetNumber, githubNumber] of [[2, 3], [3, 2]]) {
+      const calls = [];
+      const currentIds = {
+        'broiler.unicode.emoji.stringproperties': { versions: ['0.1.0-preview.1'] },
+        'broiler.unicode.cldr.localedata': 404,
+      };
+      const fetchImpl = bothFeeds(
+        {
+          ...currentIds,
+          'unicodeemoji.stringproperties': { versions: [`0.1.0-preview.${nugetNumber}`] },
+          'unicodecldr.localedata': 404,
+        },
+        {
+          ...currentIds,
+          'unicodeemoji.stringproperties': 404,
+          'unicodecldr.localedata': { versions: [`0.1.0-preview.${githubNumber}`] },
+        }, calls,
+      );
+      const env = { ...githubEnv, TARGET: target };
+      assert.equal(await resolveVersion(renamedPackages, env, fetchImpl), '0.1.0-preview.4');
+      assert.equal(calls.length, 10, 'Each current and former ID must be read once per feed');
+      await assert.rejects(resolveVersion(renamedPackages, { ...env, VERSION_SUFFIX: 'preview.3' }, fetchImpl),
+        /at least '0.1.0-preview.4'/);
+    }
+  });
+
   test(`${target}: highest preview across both feeds and all packages determines the next version`, async () => {
     for (const [nugetNumber, githubNumber] of [[2, 3], [3, 2], [9, 10], [10, 9]]) {
       const calls = [];

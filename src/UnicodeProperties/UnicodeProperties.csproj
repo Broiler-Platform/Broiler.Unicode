@@ -4,6 +4,7 @@
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <RootNamespace>Broiler.Unicode.Properties</RootNamespace>
     <AssemblyName>Broiler.Unicode.Properties</AssemblyName>
+    <PackageId>Broiler.Unicode.Properties</PackageId>
     <Description>Unicode character properties, binary properties, general categories, scripts, and ECMAScript full case mappings.</Description>
     <PackageTags>broiler;unicode;properties;casing;ecmascript</PackageTags>
   </PropertyGroup>

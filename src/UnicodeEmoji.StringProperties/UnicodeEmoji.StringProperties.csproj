@@ -4,7 +4,9 @@
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <RootNamespace>UnicodeEmoji.StringProperties</RootNamespace>
     <AssemblyName>UnicodeEmoji.StringProperties</AssemblyName>
-    <PackageId>UnicodeEmoji.StringProperties</PackageId>
+    <PackageId>Broiler.Unicode.Emoji.StringProperties</PackageId>
+    <!-- Keep earlier GitHub previews in the cumulative release sequence. -->
+    <PreviewVersionHistoryPackageIds>UnicodeEmoji.StringProperties</PreviewVersionHistoryPackageIds>
     <Description>Managed, allocation-light matching of Unicode RGI emoji string properties (UTS #51) for .NET, backed by a generated trie. No ICU/native dependency.</Description>
     <PackageTags>unicode;emoji;rgi;uts51;trie;text</PackageTags>
   </PropertyGroup>

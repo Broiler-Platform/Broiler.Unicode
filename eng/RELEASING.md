@@ -13,6 +13,10 @@ more than the highest published `preview.N`, with the configured `VersionSuffix`
 as a minimum. For example, GitHub `0.1.0-preview.3` plus nuget.org
 `0.1.0-preview.2` produces **`0.1.0-preview.4`** on either destination.
 Unlisted versions and partial releases contribute to this calculation.
+Renamed packages also declare `PreviewVersionHistoryPackageIds` in their project
+files. Both feeds are queried for those former IDs as well, so renaming the emoji
+and CLDR packages does not reset or reuse earlier GitHub preview numbers. Only
+the current IDs are packed and pushed.
 
 An optional `version-suffix` must be `preview.N` and at least this calculated next
 version. A pushed tag must be `vX.Y.Z-preview.N` and meet the same rule. Existing
@@ -28,6 +32,11 @@ this workflow must be coordinated to avoid races and feed indexing delays.
    README through an accessible `NUGET_API_KEY` Actions secret or the shared
    organization `NUGET_TOKEN` secret. `NUGET_API_KEY` takes precedence if both are
    set. Actual nuget.org publication requires a key; dry runs do not need it.
+   Select **Push new packages and package versions**, the intended package owner,
+   and a package glob matching `Broiler.Unicode.*` (or the broader `Broiler.*`
+   for a shared key). A key restricted to existing package versions cannot create
+   the renamed IDs. Check that the key has not expired. See
+   [NuGet's scoped API key documentation](https://learn.microsoft.com/en-us/nuget/nuget-org/scoped-api-keys).
 2. Ensure this repository's `GITHUB_TOKEN` can read the corresponding GitHub
    packages, including for nuget.org runs. The workflow already requests
    `packages: read` for resolution and `packages: write` for publishing to GitHub.
@@ -69,3 +78,23 @@ Use an empty output directory and replace the sample version as appropriate. For
 a live version lookup, set `GITHUB_REPOSITORY_OWNER`, `GITHUB_ACTOR`, and
 `GITHUB_TOKEN` (with package read access), then run
 `node eng/resolve-preview-version.mjs`. This reads feeds without publishing.
+
+## Troubleshooting a NuGet.org 403
+
+An HTTP 403 during `dotnet nuget push` means NuGet rejected the credentials or
+their permission to publish that package. Check the selected secret's key expiry,
+owner access, push scope, and package glob on nuget.org. GitHub does not expose
+stored secret values or the NuGet permissions associated with them; a nonempty
+secret alone does not establish that the key is valid.
+
+Before the rename, `UnicodeEmoji.StringProperties` and `UnicodeCldr.LocaleData`
+did not match a `Broiler.*` key. All current IDs match `Broiler.Unicode.*`, but
+renaming cannot fix an expired key or a key lacking permission to create packages.
+Update consumers to the new package IDs listed in the root README.
+
+The `/api/v2/package` upload URL in the log is expected even with the V3 source:
+NuGet discovers that push endpoint from its service index. See the
+[NuGet publish protocol](https://learn.microsoft.com/en-us/nuget/api/package-publish-resource).
+A dry run validates packages and consumer restore; it does not validate the
+API key's permission to push. After correcting the key or package scope, rerun
+the publish workflow to resolve a fresh cumulative version.

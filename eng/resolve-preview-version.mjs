@@ -67,7 +67,7 @@ function readPackages() {
   for (const [, project] of solution.matchAll(/<Project\s+Path="([^"]+)"/g)) {
     const output = execFileSync('dotnet', [
       'msbuild', project, '-nologo', '-p:Configuration=Release',
-      '-getProperty:IsPackable,PackageId,PackageVersion',
+      '-getProperty:IsPackable,PackageId,PackageVersion,PreviewVersionHistoryPackageIds',
     ], { cwd: root, encoding: 'utf8' });
     const properties = JSON.parse(output).Properties;
     if (properties.IsPackable.toLowerCase() === 'true') packages.push(properties);
@@ -84,7 +84,10 @@ function readPackages() {
 export async function resolveVersion(packages, env = process.env, fetchImpl = fetch) {
   const configured = packages[0].PackageVersion;
   parsePreview(configured);
-  const packageIds = packages.map(p => p.PackageId);
+  const packageIds = [...new Set(packages.flatMap(p => [
+    p.PackageId,
+    ...(p.PreviewVersionHistoryPackageIds || '').split(';').map(id => id.trim()).filter(Boolean),
+  ]))];
   const target = env.TARGET || 'nuget';
   if (!['nuget', 'github'].includes(target)) throw new Error(`Unknown target '${target}'.`);
   const { GITHUB_REPOSITORY_OWNER: owner, GITHUB_ACTOR: actor, GITHUB_TOKEN: token } = env;
