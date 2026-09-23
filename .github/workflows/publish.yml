@@ -9,7 +9,7 @@ on:
         options: [github, nuget]
         default: github
       version-suffix:
-        description: 'Optional preview.N (unused and at least the next preview). Empty selects automatically.'
+        description: 'Optional preview.N (newer than both feeds). Empty selects the next cumulative preview.'
         type: string
         default: ''
       dry-run:
@@ -50,10 +50,10 @@ jobs:
       - name: Require a NuGet.org API key
         if: env.TARGET == 'nuget' && env.DRY_RUN != 'true'
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || secrets.NUGET_TOKEN }}
         run: |
           if [ -z "$NUGET_API_KEY" ]; then
-            echo "::error::Publishing to nuget.org needs the NUGET_API_KEY repository secret."
+            echo "::error::Publishing to nuget.org needs an accessible NUGET_API_KEY or NUGET_TOKEN Actions secret."
             exit 1
           fi
       - name: Resolve version
@@ -109,7 +109,7 @@ jobs:
       - name: Push to NuGet.org
         if: env.TARGET == 'nuget' && env.DRY_RUN != 'true'
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || secrets.NUGET_TOKEN }}
         run: >
           dotnet nuget push 'artifacts/*.nupkg'
           --source https://api.nuget.org/v3/index.json

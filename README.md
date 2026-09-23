@@ -58,9 +58,21 @@ one UTF-16 `char` equals one character.
 
 ## Installation
 
+The repository ships three packages, each targeting `net8.0` and `net10.0`:
+
+| Package | Purpose |
+|---|---|
+| `Broiler.Unicode.Properties` | Unicode character properties, scripts, categories, and case mappings |
+| `UnicodeEmoji.StringProperties` | Unicode RGI emoji sequence matching |
+| `UnicodeCldr.LocaleData` | CLDR locale data for Intl implementations |
+
+Select prerelease packages while the libraries are in preview:
+
 ```sh
-dotnet add package UnicodeEmoji.StringProperties
+dotnet add package UnicodeEmoji.StringProperties --prerelease
 ```
+
+For maintainer instructions, see [publishing previews](eng/RELEASING.md).
 
 ## API
 

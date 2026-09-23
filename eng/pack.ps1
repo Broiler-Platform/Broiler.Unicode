@@ -57,7 +57,7 @@ try {
             try { [xml] $nuspec = $reader.ReadToEnd() } finally { $reader.Dispose() }
             $manifest = $nuspec.package.metadata
             if ($manifest.id -ne $metadata.PackageId -or $manifest.version -ne $metadata.PackageVersion) { throw "Incorrect identity in $path." }
-            foreach ($asset in @('README.md', 'icon.png')) {
+            foreach ($asset in @('README.md', 'icon.png', 'THIRD_PARTY_NOTICES.md')) {
                 if (!$zip.GetEntry($asset)) { throw "Missing $asset in $path." }
             }
             foreach ($dependency in $nuspec.SelectNodes('//*[local-name()="dependency"]')) {
