@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "component": "Broiler.Unicode",
+  // The three shipping libraries. The emoji and CLDR Generator and DataTool
+  // projects are developer-run build tools that never ship (IsPackable=false in
+  // their project files and by eng/Broiler.Packaging.props' naming rule), so
+  // they are not configured here.
+  "projects": [
+    "src/UnicodeProperties/UnicodeProperties.csproj",
+    "src/UnicodeEmoji.StringProperties/UnicodeEmoji.StringProperties.csproj",
+    "src/UnicodeCldr.LocaleData/UnicodeCldr.LocaleData.csproj"
+  ],
+  "exemptionPredicate": "owning-component",
+  // Generated tables: each is rewritten whole by its generator, which would drop
+  // a header, or has no in-repo generator at all.
+  "exclude": [
+    {
+      "glob": "src/UnicodeProperties/Generated/BinaryPropertyData.g.cs",
+      "reason": "generated from the Unicode Character Database by src/UnicodeProperties/tools/generate-binary-properties.py, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeProperties/Generated/GeneralCategoryData.g.cs",
+      "reason": "generated from the Unicode Character Database by src/UnicodeProperties/tools/generate-general-category.py, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeProperties/Generated/ScriptData.g.cs",
+      "reason": "generated from the Unicode Character Database by src/UnicodeProperties/tools/generate-scripts.py, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeProperties/Generated/ScriptExtensionsData.g.cs",
+      "reason": "generated from the Unicode Character Database by src/UnicodeProperties/tools/generate-scripts.py, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeEmoji.StringProperties/Generated/EmojiTrieData.g.cs",
+      "reason": "generated from the Unicode emoji data by UnicodeEmoji.StringProperties.Generator (EmojiTrieSourceWriter), run through src/UnicodeEmoji.StringProperties.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrCurrencyData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrCurrencyCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrDateData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrDatesCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrListData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrListCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrPluralData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrPluralCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrRelativeTimeData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrRelativeTimeCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrUnitData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrUnitsCodeGenerator), run through src/UnicodeCldr.LocaleData.DataTool generate or update, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrTimeZoneData.g.cs",
+      "reason": "generated from cldr-json by UnicodeCldr.LocaleData.Generator (CldrTimeZoneNamesCodeGenerator), run through the Generator's own entry point, which rewrites the whole file"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/CldrLikelySubtagsData.g.cs",
+      "reason": "generated table; no in-repo generator (cldr-json likelySubtags packed into one raw string literal)"
+    },
+    {
+      "glob": "src/UnicodeCldr.LocaleData/Generated/IntlEnumerationData.g.cs",
+      "reason": "generated table; no in-repo generator (CLDR currency codes and the ECMA-402 sanctioned unit identifiers)"
+    }
+  ],
+  "spdx": {
+    "copyright": ["2026 Broiler Platform contributors"],
+    "license": "Apache-2.0"
+  },
+  "spdxOverrides": [
+    // Embeds Unicode Character Database tables (SpecialCasing.txt entries,
+    // UnicodeData.txt case mappings and combining-class ranges, PropList.txt
+    // Soft_Dotted). README and THIRD_PARTY_NOTICES.md keep Unicode-derived tables
+    // under the Unicode Terms of Use; the copyright line is the one UCD 17.0.0
+    // SpecialCasing.txt states.
+    {
+      "glob": "src/UnicodeProperties/JSStringSpecialCasing.cs",
+      "copyright": ["2026 Broiler Platform contributors", "2025 Unicode®, Inc."],
+      "license": "Apache-2.0 AND Unicode-3.0"
+    },
+    // A hand-curated subset of CLDR values (zh-Hant unit patterns, pt-PT currency
+    // layout and range separator, the zh NaN symbol, minimum grouping digits). The
+    // copyright line is the one the cldr-json 48.2.0 LICENSE states.
+    {
+      "glob": "src/UnicodeCldr.LocaleData/CldrLocaleData.cs",
+      "copyright": ["2026 Broiler Platform contributors", "2015-2024 Unicode, Inc."],
+      "license": "Apache-2.0 AND Unicode-3.0"
+    },
+    // Reproduces ICU4C's UMALQURA_MONTHLENGTH and umAlQuraYrStartEstimateFix tables
+    // and linear-estimate constants (its own doc comment says so). The copyright
+    // lines are those of icu4c/source/i18n/islamcal.cpp. THIRD_PARTY_NOTICES.md
+    // does not name ICU.
+    {
+      "glob": "src/UnicodeCldr.LocaleData/CldrUmmAlQura.cs",
+      "copyright": ["2026 Broiler Platform contributors", "2016 and later: Unicode, Inc. and others", "2003-2015, International Business Machines Corporation and others"],
+      "license": "Apache-2.0 AND Unicode-3.0"
+    }
+  ],
+  // HUMAN_REVIEW.md is a hand-written, human-signed, revision-scoped review
+  // record; the generated per-unit record goes beside it.
+  "artefacts": {
+    "report": "CODE-ASSURANCE.md",
+    "humanReview": "HUMAN_REVIEW.units.md",
+    "manifest": "assurance.manifest.json"
+  },
+  "forbidDirectives": false,
+  "forgeryVocabulary": "narrow",
+  "regenerateCommand": "dotnet run --project Broiler.Code/src/Broiler.Code.Review.Cli -c Release -- assurance generate --root Broiler.Unicode"
+}
