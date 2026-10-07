@@ -7,11 +7,11 @@ and assemblies for `net8.0` and `net10.0`; `.snupkg` symbol packages are also pr
 
 ## Version selection
 
-Every run reads all shipping package IDs from **both nuget.org and GitHub Packages**,
-regardless of the destination. For the configured `VersionPrefix`, it chooses one
+Every run reads all shipping package IDs from **both nuget.org and the retired GitHub
+Packages feed** (read-only; packages are published to nuget.org only). For the configured `VersionPrefix`, it chooses one
 more than the highest published `preview.N`, with the configured `VersionSuffix`
 as a minimum. For example, GitHub `0.1.0-preview.3` plus nuget.org
-`0.1.0-preview.2` produces **`0.1.0-preview.4`** on either destination.
+`0.1.0-preview.2` produces **`0.1.0-preview.4`**.
 Unlisted versions and partial releases contribute to this calculation.
 Renamed packages also declare `PreviewVersionHistoryPackageIds` in their project
 files. Both feeds are queried for those former IDs as well, so renaming the emoji
@@ -20,9 +20,8 @@ the current IDs are packed and pushed.
 
 An optional `version-suffix` must be `preview.N` and at least this calculated next
 version. A pushed tag must be `vX.Y.Z-preview.N` and meet the same rule. Existing
-previews cannot be reused to copy a release between feeds. Lookup failures stop
-the run, including dry runs, rather than risk choosing an already used number.
-Dry runs do not reserve a number; a subsequent publish resolves the feeds again.
+previews cannot be reused. Lookup failures stop the run rather than risk choosing
+an already used number.
 The workflow serializes publish runs in this repository. Publications outside
 this workflow must be coordinated to avoid races and feed indexing delays.
 
@@ -31,15 +30,15 @@ this workflow must be coordinated to avoid races and feed indexing delays.
 1. Provide a nuget.org API key permitted to push all three IDs listed in the root
    README through an accessible `NUGET_API_KEY` Actions secret or the shared
    organization `NUGET_TOKEN` secret. `NUGET_API_KEY` takes precedence if both are
-   set. Actual nuget.org publication requires a key; dry runs do not need it.
+   set. Every publish run requires a key.
    Select **Push new packages and package versions**, the intended package owner,
    and a package glob matching `Broiler.Unicode.*` (or the broader `Broiler.*`
    for a shared key). A key restricted to existing package versions cannot create
    the renamed IDs. Check that the key has not expired. See
    [NuGet's scoped API key documentation](https://learn.microsoft.com/en-us/nuget/nuget-org/scoped-api-keys).
 2. Ensure this repository's `GITHUB_TOKEN` can read the corresponding GitHub
-   packages, including for nuget.org runs. The workflow already requests
-   `packages: read` for resolution and `packages: write` for publishing to GitHub.
+   packages for version resolution. The version job already requests
+   `packages: read`; nothing is pushed to GitHub Packages.
    Existing packages associated with another repository may need this repository
    added to their Actions access settings. See
    [GitHub's NuGet authentication documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry).
@@ -49,15 +48,14 @@ this workflow must be coordinated to avoid races and feed indexing delays.
 
 ## Validate and publish
 
-1. Run **Actions → Publish → Run workflow**, choose the intended ref and `target`
-   (`nuget` or `github`), leave `version-suffix` empty, and keep `dry-run` enabled.
-2. Review the resolved version, CI results, and `nuget-packages` artifact. CI builds
-   and tests on Linux and Windows. The publish job restores a fresh consumer for
-   both supported frameworks from the packed artifacts and destination dependency
-   sources, using an isolated package cache.
-3. Run the same workflow with `dry-run` disabled when ready to publish. Nuget.org
-   receives packages and symbols; GitHub receives the `.nupkg` files. Alternatively,
-   pushing a valid preview tag starts an actual nuget.org publication immediately.
+1. Review the latest CI run and its `nuget-packages` artifact. CI builds and tests on
+   Linux and Windows, packs every package, and restores a fresh consumer for both
+   supported frameworks from the packed artifacts and nuget.org, using an isolated
+   package cache. This is the no-push rehearsal; Publish has no dry-run mode.
+2. Run **Actions → Publish → Run workflow** on the intended ref, leaving
+   `version-suffix` empty. It validates again and pushes packages and symbols to
+   nuget.org. Alternatively, pushing a valid preview tag starts a nuget.org
+   publication immediately.
 
 Preview communication must state that this is preview software, developer-operated
 data tools download and process Unicode/CLDR definitions, and the runtime libraries
@@ -95,6 +93,6 @@ Update consumers to the new package IDs listed in the root README.
 The `/api/v2/package` upload URL in the log is expected even with the V3 source:
 NuGet discovers that push endpoint from its service index. See the
 [NuGet publish protocol](https://learn.microsoft.com/en-us/nuget/api/package-publish-resource).
-A dry run validates packages and consumer restore; it does not validate the
-API key's permission to push. After correcting the key or package scope, rerun
+CI validates packages and consumer restore; it does not validate the API key's
+permission to push. After correcting the key or package scope, rerun
 the publish workflow to resolve a fresh cumulative version.
