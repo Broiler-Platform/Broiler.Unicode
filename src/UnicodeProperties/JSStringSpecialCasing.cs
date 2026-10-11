@@ -131,6 +131,34 @@ public static class JSStringSpecialCasing
         return false;
     }
 
+    private static int CodePointAt(string s, int i, out int len)
+    {
+        var c = s[i];
+        if (char.IsHighSurrogate(c) && i + 1 < s.Length && char.IsLowSurrogate(s[i + 1]))
+        {
+            len = 2;
+            return char.ConvertToUtf32(c, s[i + 1]);
+        }
+
+        len = 1;
+        return c;
+    }
+
+    private static void AppendCased(StringBuilder sb, string s, int i, int len, bool toUpper, CultureInfo? culture)
+    {
+        if (len == 1 && char.IsSurrogate(s[i]))
+        {
+            sb.Append(s[i]);
+            return;
+        }
+
+        var one = s.Substring(i, len);
+        if (culture != null)
+            sb.Append(toUpper ? culture.TextInfo.ToUpper(one) : culture.TextInfo.ToLower(one));
+        else
+            sb.Append(toUpper ? one.ToUpperInvariant() : one.ToLowerInvariant());
+    }
+
     // Final_Sigma "Before C": there is a Cased character before C, with only
     // Case_Ignorable characters between it and C. Scans code points backwards from
     // index i, skipping Case_Ignorable; the first non-ignorable code point decides.
@@ -143,7 +171,7 @@ public static class JSStringSpecialCasing
             if (prev > 0 && char.IsLowSurrogate(s[prev]) && char.IsHighSurrogate(s[prev - 1]))
                 prev--;
 
-            var cp = char.ConvertToUtf32(s, prev);
+            var cp = CodePointAt(s, prev, out _);
             if (IsCaseIgnorable(cp))
             {
                 idx = prev;
@@ -164,8 +192,7 @@ public static class JSStringSpecialCasing
         var idx = j;
         while (idx < s.Length)
         {
-            var cp = char.ConvertToUtf32(s, idx);
-            var len = cp > 0xFFFF ? 2 : 1;
+            var cp = CodePointAt(s, idx, out var len);
             if (IsCaseIgnorable(cp))
             {
                 idx += len;
@@ -190,16 +217,14 @@ public static class JSStringSpecialCasing
         var sb = new StringBuilder(s.Length + 2);
         for (var i = 0; i < s.Length;)
         {
-            var cp = char.ConvertToUtf32(s, i);
-            var len = cp > 0xFFFF ? 2 : 1;
+            var cp = CodePointAt(s, i, out var len);
             if (cp == GreekCapitalSigma)
                 sb.Append(BeforeIsCased(s, i) && !AfterIsCased(s, i + len) ? GreekSmallFinalSigma : GreekSmallSigma);
             else if (Lower.TryGetValue(cp, out var mapped))
                 sb.Append(mapped);
             else
             {
-                var one = char.ConvertFromUtf32(cp);
-                sb.Append(culture != null ? culture.TextInfo.ToLower(one) : one.ToLowerInvariant());
+                AppendCased(sb, s, i, len, toUpper: false, culture);
             }
 
             i += len;
@@ -399,12 +424,12 @@ public static class JSStringSpecialCasing
     {
         while (j < s.Length)
         {
-            var cp = char.ConvertToUtf32(s, j);
+            var cp = CodePointAt(s, j, out var len);
             if (cp == 0x0307)
                 return true;
             if (!IsContextTransparent(cp))
                 return false;
-            j += cp > 0xFFFF ? 2 : 1;
+            j += len;
         }
         return false;
     }
@@ -421,7 +446,7 @@ public static class JSStringSpecialCasing
             if (prev > 0 && char.IsLowSurrogate(s[prev]) && char.IsHighSurrogate(s[prev - 1]))
                 prev--;
 
-            var cp = char.ConvertToUtf32(s, prev);
+            var cp = CodePointAt(s, prev, out _);
             if (cp == 0x0049)
                 return true;
             if (!IsContextTransparent(cp))
@@ -447,8 +472,7 @@ public static class JSStringSpecialCasing
         var i = 0;
         while (i < s.Length)
         {
-            var cp = char.ConvertToUtf32(s, i);
-            var len = cp > 0xFFFF ? 2 : 1;
+            var cp = CodePointAt(s, i, out var len);
 
             switch (cp)
             {
@@ -603,17 +627,12 @@ public static class JSStringSpecialCasing
         var sb = new StringBuilder(s.Length + 4);
         for (var i = 0; i < s.Length;)
         {
-            var cp = char.ConvertToUtf32(s, i);
-            var len = cp > 0xFFFF ? 2 : 1;
+            var cp = CodePointAt(s, i, out var len);
             if (special.TryGetValue(cp, out var mapped))
                 sb.Append(mapped);
             else
             {
-                var one = char.ConvertFromUtf32(cp);
-                if (culture != null)
-                    sb.Append(toUpper ? culture.TextInfo.ToUpper(one) : culture.TextInfo.ToLower(one));
-                else
-                    sb.Append(toUpper ? one.ToUpperInvariant() : one.ToLowerInvariant());
+                AppendCased(sb, s, i, len, toUpper, culture);
             }
 
             i += len;
