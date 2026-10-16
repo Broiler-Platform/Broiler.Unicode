@@ -20,9 +20,8 @@ under a heading with nothing to report.
 
 ## 0.1.0-preview.4, 2026-10-16
 
-*(Published to nuget.org by the Publish workflow, [run 38952273946](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38952273946), from `6e14f93`. The heading read "Unreleased" until then.)*
-
-To be packed as the next preview the publish workflow selects.
+*(Published to nuget.org by the Publish workflow, [run 38952273946](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38952273946), from `6e14f93`. The heading read "Unreleased" until then, and this line "To be packed as the next preview the publish workflow
+selects.")*
 
 ### Added
 
