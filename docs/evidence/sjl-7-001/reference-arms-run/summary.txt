@@ -1,0 +1,5 @@
+run: 16022956 differences; {"(a')": 27380, "(a)": 15985359, "(b)": 10217} ; unnamed 0 ; listing 7d23a43259c484b2ad21d40e4d5507e6342b70c828091ecec3fe125c317ded5a 16022956 lines
+run-tr-TR: 234322 differences; {"(a')": 15318, "(a)": 219004} ; unnamed 0 ; listing 9b1af6776b2f9c8498be456b3dd41bd7f2a76995cb4964338aac763941599445 234322 lines
+run-lt-LT: 183238 differences; {"(a')": 15318, "(a)": 167920} ; unnamed 0 ; listing 6b4ff2f249bb751a32e52a01dfbbf3658bbb593aa08309efca23ac9337835449 183238 lines
+negative-control: 5295577 differences; {"unclassified": 5295577} ; unnamed 0 ; listing d24c6c878877cd29e582d71e0041b85c52874b8de825348d4fbbe6f6b8e8d132 5295577 lines
+every step ended

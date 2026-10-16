@@ -1,0 +1,7 @@
+$ dotnet /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.ReferenceArms/release/Unicode.ReferenceArms.dll compare --population /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population --out /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/negative-control --negative-control
+mode negative-control; culture invariant; ICU 74.2.0.0 (Unicode 15.1.0); population /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population
+normalize U4: 1279837 inputs, 25596740 cases, V-control:JsRealm.NormalizeText 4918021 of 20477392 differ, charge 377554 of 20477392 (5119348 not called) (0 not taken; 15.1 s)
+lexical U1: 1114112 inputs, 1114112 cases, J-control:CharExtensions.IsIdentifierStart 2 of 1114112 differ (0 not called) (0 not taken; 0.4 s)
+5295577 differences; listing sha256 d24c6c878877cd29e582d71e0041b85c52874b8de825348d4fbbe6f6b8e8d132; 16 s
+negative control: V-control: charge of normalize, U4 line 1, NFC;max=16777216, one unit more on its first charge: reported as a difference
+negative control: J-control: lexical IdentifierStartChar, U1 0041, CharExtensions.IsIdentifierStart negated: reported as a difference

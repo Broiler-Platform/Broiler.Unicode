@@ -1,0 +1,387 @@
+{
+  "classifier": "scripts/reference-arms/classify_reference_arms.py",
+  "version": "sjl-7-001-classifier@2",
+  "reference": "unicoderef@1",
+  "pin_sha256": "7eb0f08f0b408d278f1c08b29ea93d17a3216c02c45d6dfbe4bbd440cbcd51b0",
+  "host unicode": {
+    "icuUnicodeVersion": "15.1.0",
+    "python unicodedata": "15.1.0"
+  },
+  "recorded answers": {
+    "directory": "/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/reference",
+    "manifest_sha256": "b1a0ecfeeb6114b1e713e2ce25337ff4151e576fd878f80688e52fd6c199c865",
+    "differences cross-checked": 183233
+  },
+  "differences": 183238,
+  "verdicts": {
+    "(a')": 15318,
+    "(a)": 167920
+  },
+  "unnamed by the correspondence": 0,
+  "rows": [
+    {
+      "verdict": "(a')",
+      "row": "C2",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 1467
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 4656
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 5074
+    },
+    {
+      "verdict": "(a')",
+      "row": "N2",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "count": 864
+    },
+    {
+      "verdict": "(a')",
+      "row": "N2",
+      "arm": "J:JSString.Normalize",
+      "count": 3257
+    },
+    {
+      "verdict": "(a)",
+      "row": "C1",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 5675
+    },
+    {
+      "verdict": "(a)",
+      "row": "C4",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 3606
+    },
+    {
+      "verdict": "(a)",
+      "row": "C5",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 22
+    },
+    {
+      "verdict": "(a)",
+      "row": "C6",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 6083
+    },
+    {
+      "verdict": "(a)",
+      "row": "C6",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 244
+    },
+    {
+      "verdict": "(a)",
+      "row": "C7",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 2
+    },
+    {
+      "verdict": "(a)",
+      "row": "C7",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 2
+    },
+    {
+      "verdict": "(a)",
+      "row": "C8",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "count": 24354
+    },
+    {
+      "verdict": "(a)",
+      "row": "C8",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "count": 3197
+    },
+    {
+      "verdict": "(a)",
+      "row": "C8",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 6158
+    },
+    {
+      "verdict": "(a)",
+      "row": "C8",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 2537
+    },
+    {
+      "verdict": "(a)",
+      "row": "N1",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "count": 23208
+    },
+    {
+      "verdict": "(a)",
+      "row": "N1",
+      "arm": "J:JSString.Normalize",
+      "count": 92832
+    }
+  ],
+  "operations": [
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a)",
+      "count": 24354
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "count": 6123
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "count": 21524
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a')",
+      "count": 864
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "count": 23208
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a')",
+      "count": 3257
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "count": 92832
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "verdict": "(a)",
+      "count": 3197
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a')",
+      "count": 5074
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "count": 2805
+    }
+  ],
+  "groups": [
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a)",
+      "row": "C8",
+      "reason": "correction of Broiler.JS: casing no longer depends on the host culture",
+      "count": 24354
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C2",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased and Case_Ignorable from the runtime's data, which does not know code points Unicode 16 and 17 add (SJL-D-6 (c))",
+      "count": 1467
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 4224
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches, and Final_Sigma reads Cased and Case_Ignorable from the same data, or Cased as row C1 reads it (SJL-D-6 (c))",
+      "count": 432
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C1",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased from DerivedCoreProperties.txt (Other_Lowercase, Other_Uppercase)",
+      "count": 5675
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C4",
+      "reason": "correction of Broiler.JS: the Turkic lower-case path skips the class's table, so the runtime's older data shows",
+      "count": 3121
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C4",
+      "reason": "correction of Broiler.JS: the Turkic lower-case path skips the class's table, so the runtime's older data shows, in the mappings and in Final_Sigma, whose Cased is read from the same data or as row C1 reads it",
+      "count": 485
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: After_I, Before_Dot, After_Soft_Dotted and More_Above admit no intervening character of combining class 0 or 230; IsContextTransparent reads a mark not of class 230",
+      "count": 15
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: More_Above: no intervening character of combining class 0 or 230",
+      "count": 6068
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C7",
+      "reason": "correction of Broiler.JS: ECMA-402's TransformCase canonicalizes the list and takes its first element",
+      "count": 2
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C8",
+      "reason": "correction of Broiler.JS: casing no longer depends on the host culture",
+      "count": 6158
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a')",
+      "row": "N2",
+      "reason": "correction of Broiler.JS: the host's ICU carries older Unicode data (SJL-D-6 (c))",
+      "count": 864
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: a lone surrogate is a code point of class 0 without a decomposition",
+      "count": 23207
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: normalize reads code points; the runtime's normalizer refuses U+FFFE as it refuses a lone surrogate",
+      "count": 1
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a')",
+      "row": "N2",
+      "reason": "correction of Broiler.JS: the host's ICU carries older Unicode data (SJL-D-6 (c))",
+      "count": 3257
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: a lone surrogate is a code point of class 0 without a decomposition",
+      "count": 92828
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: normalize reads code points; the runtime's normalizer refuses U+FFFE as it refuses a lone surrogate",
+      "count": 4
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "verdict": "(a)",
+      "row": "C8",
+      "reason": "correction of Broiler.JS: casing no longer depends on the host culture",
+      "count": 3197
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 5074
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C5",
+      "reason": "correction of Broiler.JS: Soft_Dotted from PropList.txt: the hand set lacks U+1DF1A, U+1E04C, U+1E04D and U+1E068",
+      "count": 22
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: After_I, Before_Dot, After_Soft_Dotted and More_Above admit no intervening character of combining class 0 or 230; IsContextTransparent reads a mark not of class 230",
+      "count": 244
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C7",
+      "reason": "correction of Broiler.JS: ECMA-402's TransformCase canonicalizes the list and takes its first element",
+      "count": 2
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C8",
+      "reason": "correction of Broiler.JS: casing no longer depends on the host culture",
+      "count": 2537
+    }
+  ],
+  "differences.tsv": {
+    "lines": 183238,
+    "sha256": "6b4ff2f249bb751a32e52a01dfbbf3658bbb593aa08309efca23ac9337835449"
+  },
+  "classification.tsv": {
+    "lines": 183239,
+    "sha256": "4c58022f0a6d616e56104df4fd127f0c30c022b70128316b0f81bd328085fbae"
+  }
+}

@@ -1,0 +1,3 @@
+operation	class	input	parameter	arm	S	result	arbiter	verdict	row	unnamed	reason
+charge	U4	0000	normalize NFC;max=16777216	V-control:JsRealm.NormalizeText	1	2	-	unclassified	-	-	a negative control: reported, not classified
+lexical	U1	0041	IdentifierStartChar	J-control:CharExtensions.IsIdentifierStart	true	false	-	unclassified	-	-	a negative control: reported, not classified

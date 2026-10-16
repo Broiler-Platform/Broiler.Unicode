@@ -145,10 +145,24 @@ Broiler.VM's to measure at SJL-7.4, under its rules, with this record's figure a
 | U9 | **Met, in the code package rather than the emoji package.** The ECMAScript name map for the `v`-flag properties of strings is `UnicodeStringProperties`. Its sequences are read into the caller's span by a cursor that allocates nothing. JSD-0074's decision 1 put the properties of strings in the code package, which the engines consume; the emoji package keeps its own trie for its consumers. | Test A5; C2 |
 | U10 | **Met here; CI's first run is the remaining evidence.** The repository now has: the tests above; the conventions in their owner's copy; SL1 to SL10 in `tests/Unicode.Architecture.Tests`, each with a witness; `IsAotCompatible` and `IsTrimmable` on the consumed packages; the probe and the assurance gate as CI jobs. The identifier series is U1 to U10. | Bundle parts C and D; [`ci.yml`](../.github/workflows/ci.yml) |
 
-**What is not settled here.** Reference arms V and J compare the library with both engines'
-implementations before their cut-overs, under [`reference-arms.md`](evidence/sjl-7-001/reference-arms.md).
-They are SJL-7.2's last part and are recorded in the bundle. The preview package an engine admits is
-published when the owner chooses, from this stream.
+**The reference arms.** Arms V and J compare the library with both engines' implementations before their
+cut-overs, under [`reference-arms.md`](evidence/sjl-7-001/reference-arms.md).
+- **The comparison is met at `3f7dbce`**, under the rule as revised after its first run had been seen
+  ([`reference-arms-revised-2026-10-16-after-first-run.md`](evidence/sjl-7-001/reference-arms-revised-2026-10-16-after-first-run.md)),
+  which makes it weaker evidence. The bundle's section 6 records it.
+- **The library's answer was the arbiter's on every input of both runs.**
+- **What the revision changed:**
+  - the classification of charges inside row N6's correction;
+  - Broiler.JS's data-policy rows;
+  - two defects of the classifier.
+
+  Broiler.VM's correspondence named the Broiler.JS corrections it had missed before the run that judges.
+
+**What is not settled here.** The preview package an engine admits is published when the owner chooses, from this
+stream. *(Revised 2026-10-16, when the comparison was taken. The paragraph read: "Reference arms V and J compare
+the library with both engines' implementations before their cut-overs, under
+[`reference-arms.md`](evidence/sjl-7-001/reference-arms.md). They are SJL-7.2's last part and are recorded in the
+bundle. The preview package an engine admits is published when the owner chooses, from this stream.")*
 
 ## 1. Items
 

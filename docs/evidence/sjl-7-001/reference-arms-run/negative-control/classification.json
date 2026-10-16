@@ -1,0 +1,88 @@
+{
+  "classifier": "scripts/reference-arms/classify_reference_arms.py",
+  "version": "sjl-7-001-classifier@2",
+  "reference": "unicoderef@1",
+  "pin_sha256": "7eb0f08f0b408d278f1c08b29ea93d17a3216c02c45d6dfbe4bbd440cbcd51b0",
+  "host unicode": {
+    "icuUnicodeVersion": "15.1.0",
+    "python unicodedata": "15.1.0"
+  },
+  "recorded answers": {
+    "directory": "/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/reference",
+    "manifest_sha256": "b1a0ecfeeb6114b1e713e2ce25337ff4151e576fd878f80688e52fd6c199c865",
+    "differences cross-checked": 4918021
+  },
+  "differences": 5295577,
+  "verdicts": {
+    "unclassified": 5295577
+  },
+  "unnamed by the correspondence": 0,
+  "rows": [
+    {
+      "verdict": "unclassified",
+      "row": "-",
+      "arm": "J-control:CharExtensions.IsIdentifierStart",
+      "count": 2
+    },
+    {
+      "verdict": "unclassified",
+      "row": "-",
+      "arm": "V-control:JsRealm.NormalizeText",
+      "count": 5295575
+    }
+  ],
+  "operations": [
+    {
+      "operation": "charge",
+      "arm": "V-control:JsRealm.NormalizeText",
+      "verdict": "unclassified",
+      "count": 377554
+    },
+    {
+      "operation": "lexical",
+      "arm": "J-control:CharExtensions.IsIdentifierStart",
+      "verdict": "unclassified",
+      "count": 2
+    },
+    {
+      "operation": "normalize",
+      "arm": "V-control:JsRealm.NormalizeText",
+      "verdict": "unclassified",
+      "count": 4918021
+    }
+  ],
+  "groups": [
+    {
+      "operation": "charge",
+      "arm": "V-control:JsRealm.NormalizeText",
+      "verdict": "unclassified",
+      "row": "-",
+      "reason": "a negative control: reported, not classified",
+      "count": 377554
+    },
+    {
+      "operation": "lexical",
+      "arm": "J-control:CharExtensions.IsIdentifierStart",
+      "verdict": "unclassified",
+      "row": "-",
+      "reason": "a negative control: reported, not classified",
+      "count": 2
+    },
+    {
+      "operation": "normalize",
+      "arm": "V-control:JsRealm.NormalizeText",
+      "verdict": "unclassified",
+      "row": "-",
+      "reason": "a negative control: reported, not classified",
+      "count": 4918021
+    }
+  ],
+  "differences.tsv": {
+    "lines": 5295577,
+    "sha256": "d24c6c878877cd29e582d71e0041b85c52874b8de825348d4fbbe6f6b8e8d132"
+  },
+  "classification.tsv": {
+    "lines": 5295578,
+    "sha256": "06ce9c03b643c052d19e30de2ac2d46051b623020ef961e6df13e29999d330d2"
+  }
+}
