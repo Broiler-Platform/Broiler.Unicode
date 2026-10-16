@@ -86,7 +86,75 @@ of the milestone: `docs/evidence/sjl-7-001/decision-rule.md` (Unicode's test fil
 byte) and `docs/evidence/sjl-7-001/reference-arms.md` (the library against both engines' implementations
 before their cut-overs).
 
+## SJL-7.2: the packages, the provider and the format, settled 2026-10-16
+
+*Added 2026-10-16, at work package SJL-7.2, by the Broiler.Unicode maintainer.* Bundle `sjl-7-001`'s rule
+leaves three things to "a dated record here, within JSD-0074's constraints": the packages' names, the
+provider's binding and the tables' format. This is that record. It also states where each item U1 to U10
+stands.
+
+**The packages.** Each targets `net10.0` and is held to the [conventions](conventions.md). Each takes this
+repository's one version stream.
+
+| Package and namespace | What it is | Who references it |
+|---|---|---|
+| `Broiler.Unicode.Algorithms` | JSD-0074's code package: properties and lexical classes, case folding, case mapping, normalization and properties of strings. It carries no table. | Both engines, from the projects their cut-overs name |
+| `Broiler.Unicode.Segmentation` | JSD-0074's optional package: UAX #29. It carries no table. | Only an engine's Intl assembly |
+| `Broiler.Unicode.Tables` | This repository's embedding of the generated tables | This repository's tests and probe, and consumers other than the engines; neither engine |
+| `Broiler.Unicode.Generation` | The pin's checks and the generator, ported from Broiler.VM's `UnicodeDatabase` and `UnicodeTableGenerator` | Each engine's tests, as a pinned test-only package; never a product closure |
+
+**The provider.** It is `IUnicodeTables`, in `Broiler.Unicode.Algorithms`, in the shape of Broiler.VM's
+`IJsIntlData`:
+
+- a `UnicodeVersion` string;
+- `ReadOnlySpan<byte> Table(UnicodeTable)`, for each of the 37 members of the `UnicodeTable` enumeration.
+
+Every algorithm type reads its tables once at construction, refuses a provider of another version or one
+that lacks a table it reads, and decodes nothing the provider has not handed it. An engine binds it by
+implementing the interface over the tables it embeds. The members each engine passes are listed in the
+[adapter guide](adapter-guide-unicode.md).
+
+**The format: Broiler.VM's byte layouts, unchanged.** The generator writes 37 tables, 311,408 bytes:
+
+- **31 tables are Broiler.VM's, byte for byte.** These are the tables Broiler.VM's `.g.cs` files and its
+  Intl tables carry today: its properties, case folding, string properties, normalization, casing and
+  segmentation break tables.
+- **Five layout tables, 3 bytes per value, hold what Broiler.VM keeps as C# constants**, such as the
+  longest decomposition and the property-set counts. A provider must hand them in, because the code no
+  longer compiles them in.
+- **One new table, Soft_Dotted's ranges**, serves the Lithuanian casing condition. Broiler.VM carries the
+  same ranges in another form today: hexadecimal text in its Intl assembly's CLDR tables
+  (`JsIntlTable.SoftDotted`).
+
+Those six add 261 bytes. JSD-0074 asks for a format "chosen to fit N22's and N28's budgets, which sit close
+to their limits today". The budgets need not move for the 31 shared tables. Whether the 261 bytes fit is
+Broiler.VM's to measure at SJL-7.4, under its rules, with this record's figure as its input.
+
+**Where the items stand at the end of SJL-7.2:**
+
+| # | State | Where it is shown |
+|---|---|---|
+| U1 | **Met.** `UnicodeProperties.TryResolve` is the exact lookup. The loose lookups of `Broiler.Unicode.Properties` stay for their consumers and carry the warning. | Tests A5 and C1 |
+| U2 | **Met.** The new lookups answer `CodePointSet`, a view over constant data. The old package's four lookups return a copy on every call: an observable change, in the [changelog](../CHANGELOG.md). | Tests C2 and `RangeLookupTests` |
+| U3 | **Met.** `GeneralCategoryOf`, `IdStart`, `IdContinue`, `SpaceSeparator`, `WhiteSpace`, `SoftDotted` and the lexical classes, each compared range for range with the UCD files. | Test A6 |
+| U4 | **Met.** The pin is [`data/unicode/pins/unicode.pin`](../data/unicode/pins/unicode.pin), equal to Broiler.VM's by file name, length and hash. The generator reads nothing it has not verified, and every table regenerates byte for byte. | The regeneration tests; bundle part B |
+| U5 | **Met.** Every algorithm reads its tables through `IUnicodeTables`. The old packages keep their own tables. | The provider above |
+| U6 | **Met.** `UnicodeAlgorithms.UnicodeVersion`, `UnicodeSegmentation.UnicodeVersion`, `UnicodeTables.Version` and `UnicodePin.PinnedVersion` are `17.0.0`, and the old property package gains `UnicodeProperties.UnicodeVersion`. | Test C3 |
+| U7 | **Met.** The README, `Directory.Build.props`, the data tool's and generator's defaults and the benchmarks name 17.0, the version `EmojiTrieData.g.cs` carries. | The diff of this record's commit |
+| U8 | **Met.** Every sub-area passes Unicode's own test files at the pin, every case: NFC, NFD, NFKC and NFKD; full case mappings with Final_Sigma and the default, Turkic and Lithuanian languages; simple folding, orbits and the non-Unicode canonicalisation; UAX #29's three granularities, in the optional package. Each transform takes a maximum length and a meter of `WorkCharge`'s shape, passes lone surrogates through and reads no host Unicode data. | Tests A1 to A4, C4 and C5; the probe, under Native AOT |
+| U9 | **Met, in the code package rather than the emoji package.** The ECMAScript name map for the `v`-flag properties of strings is `UnicodeStringProperties`. Its sequences are read into the caller's span by a cursor that allocates nothing. JSD-0074's decision 1 put the properties of strings in the code package, which the engines consume; the emoji package keeps its own trie for its consumers. | Test A5; C2 |
+| U10 | **Met here; CI's first run is the remaining evidence.** The repository now has: the tests above; the conventions in their owner's copy; SL1 to SL10 in `tests/Unicode.Architecture.Tests`, each with a witness; `IsAotCompatible` and `IsTrimmable` on the consumed packages; the probe and the assurance gate as CI jobs. The identifier series is U1 to U10. | Bundle parts C and D; [`ci.yml`](../.github/workflows/ci.yml) |
+
+**What is not settled here.** Reference arms V and J compare the library with both engines'
+implementations before their cut-overs, under [`reference-arms.md`](evidence/sjl-7-001/reference-arms.md).
+They are SJL-7.2's last part and are recorded in the bundle. The preview package an engine admits is
+published when the owner chooses, from this stream.
+
 ## 1. Items
+
+*(2026-10-16: each item's state at the end of SJL-7.2 is in the record above. The table is kept as SJL-0
+wrote it, its "Today" column included, until SJL-7.6 judges the milestone and the met items leave this
+file.)*
 
 | # | Item | Today | Exit criterion |
 |---|---|---|---|

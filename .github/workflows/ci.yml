@@ -79,3 +79,87 @@ jobs:
           name: nuget-packages
           path: artifacts/*
           if-no-files-found: error
+
+  # The shared JavaScript libraries' convention 12 for the Unicode packages the engines consume
+  # (milestone SJL-7, docs/conventions.md): the probe publishes with Broiler.VM's root settings and no
+  # warning, runs Unicode's own test files from the pinned archive, and gives the report the same probe
+  # gives under the JIT.
+  native-aot-probe:
+    name: Native AOT probe (${{ matrix.rid }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            executable: Broiler.Unicode.Probe
+          - os: windows-latest
+            rid: win-x64
+            executable: Broiler.Unicode.Probe.exe
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Publish with Native AOT
+        run: |
+          set -o pipefail
+          dotnet publish probes/Unicode.Probe -c Release -r ${{ matrix.rid }} --nologo 2>&1 | tee probe-publish.log
+          # Warnings are errors already; this states the zero convention 12 asks for.
+          if grep -E "warning [A-Z]+[0-9]+" probe-publish.log; then
+            echo "::error::the Native AOT publish reported a warning"
+            exit 1
+          fi
+          publish=probes/Unicode.Probe/bin/Release/net10.0/${{ matrix.rid }}/publish
+          if ls "$publish"/*.dll >/dev/null 2>&1; then
+            echo "::error::the publish directory holds a managed assembly"
+            exit 1
+          fi
+      - name: Run Unicode's test files under Native AOT
+        run: ./probes/Unicode.Probe/bin/Release/net10.0/${{ matrix.rid }}/publish/${{ matrix.executable }} data/unicode/pins --report probe-aot.txt
+      - name: Run them under the JIT, and compare
+        run: |
+          dotnet build probes/Unicode.Probe -c Release --nologo
+          dotnet probes/Unicode.Probe/bin/Release/net10.0/Broiler.Unicode.Probe.dll data/unicode/pins --report probe-jit.txt
+          cmp probe-aot.txt probe-jit.txt
+      - name: Keep the logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-aot-probe-${{ matrix.rid }}
+          path: |
+            probe-publish.log
+            probe-aot.txt
+            probe-jit.txt
+          if-no-files-found: warn
+
+  # Convention 18 (rule SL8): every governed unit under src/ carries its Broiler Code Assurance
+  # annotation and the generated artefacts in src/ are current.
+  assurance:
+    name: Assurance check (SL8)
+    runs-on: ubuntu-latest
+    steps:
+      # The assurance tool lives in Broiler.Code. The two are checked out side by side, the layout
+      # src/assurance.config.json's regenerateCommand names.
+      - name: Check out Broiler.Unicode
+        uses: actions/checkout@v7
+        with:
+          path: Broiler.Unicode
+      - name: Check out Broiler.Code
+        uses: actions/checkout@v7
+        with:
+          repository: Broiler-Platform/Broiler.Code
+          path: Broiler.Code
+          token: ${{ secrets.BROILER_CODE_TOKEN || github.token }}
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Check src/ against its generated artefacts
+        run: dotnet run --project Broiler.Code/src/Broiler.Code.Review.Cli -c Release -- assurance check --root Broiler.Unicode/src

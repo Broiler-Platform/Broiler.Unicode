@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release</Configurations>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <UnicodeEmojiVersion>16.0</UnicodeEmojiVersion>
+    <UnicodeEmojiVersion>17.0</UnicodeEmojiVersion>
     <PackageProjectUrl>https://github.com/Broiler-Platform/Broiler.Unicode</PackageProjectUrl>
     <PackageTags>broiler;unicode;cldr;emoji</PackageTags>
   </PropertyGroup>

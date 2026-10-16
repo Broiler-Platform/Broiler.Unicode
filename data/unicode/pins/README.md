@@ -43,5 +43,8 @@ rewrites a line ending and moves a hash on one platform.
 The Unicode files are © Unicode, Inc., under the Unicode License v3 (SPDX `Unicode-3.0`), whose text
 is retained as [`unicode-LICENSE.txt`](unicode-LICENSE.txt) and reproduced in
 [`THIRD_PARTY_NOTICES.md`](../../../THIRD_PARTY_NOTICES.md). The ECMAScript tables are © Ecma
-International, from the ECMA-262 specification's source. **The files are unmodified**, which their
-hashes attest.
+International, from the ECMA-262 specification's source, under the Ecma alternative copyright notice,
+whose full text is retained beside them at
+[`ecma262/ECMA-alternative-copyright-notice.txt`](ecma262/ECMA-alternative-copyright-notice.txt) with
+the notice of changes it asks for. That file is not pinned: the generator never reads it. **The files are
+unmodified**, which their hashes attest.

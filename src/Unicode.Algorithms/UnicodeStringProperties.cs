@@ -16,7 +16,7 @@ namespace Broiler.Unicode.Algorithms;
 /// <para>
 /// <b>Nothing is allocated.</b> A property's sequences are read in order by
 /// <see cref="StringPropertySequences"/>, which writes each into the caller's span; the code points are
-/// <see cref="StringProperty.CodePointRanges"/>. An instance is immutable and safe to share between
+/// <see cref="StringProperty.FirstCodePoint"/> and <see cref="StringProperty.LastCodePoint"/>. An instance is immutable and safe to share between
 /// threads.
 /// </para>
 /// </remarks>

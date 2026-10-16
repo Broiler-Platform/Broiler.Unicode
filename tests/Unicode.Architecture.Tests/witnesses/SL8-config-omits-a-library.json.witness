@@ -1,0 +1,16 @@
+// SL8 witness: an assurance configuration that leaves a library out of coverage (the generator), uses
+// the owning component's narrower exemption predicate, permits preprocessor directives, and excludes a
+// source of a library the engines consume without giving a reason.
+{
+  "schema": 1,
+  "component": "Broiler.Unicode",
+  "projects": [
+    "Unicode.Algorithms/Unicode.Algorithms.csproj",
+    "Unicode.Segmentation/Unicode.Segmentation.csproj"
+  ],
+  "exemptionPredicate": "owning-component",
+  "forbidDirectives": false,
+  "exclude": [
+    { "glob": "Unicode.Algorithms/UnicodeNormalization.cs" }
+  ]
+}

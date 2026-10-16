@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SL1 witness, read as Broiler.Unicode.Algorithms: two references the layering does not give the
+       algorithms library. It references the base class library only, so a package (System.Text.Json is
+       outside the empty allow-list) and another library of the programme (the segmentation library
+       references the algorithms, never the reverse) are both against the layering. -->
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" />
+    <ProjectReference Include="..\Unicode.Segmentation\Unicode.Segmentation.csproj" />
+  </ItemGroup>
+</Project>

@@ -22,7 +22,8 @@
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <EnableAotAnalyzer>true</EnableAotAnalyzer>
     <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-    <NoWarn>$([System.String]::Copy('$(NoWarn)').Replace('CS1591', ''))</NoWarn>
+    <NoWarn>1701;1702</NoWarn>
+    <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
 </Project>

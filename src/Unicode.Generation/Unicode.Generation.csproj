@@ -18,7 +18,8 @@
     <PackageTags>broiler;unicode;generator;tables;test</PackageTags>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <NoWarn>$([System.String]::Copy('$(NoWarn)').Replace('CS1591', ''))</NoWarn>
+    <NoWarn>1701;1702</NoWarn>
+    <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
   <ItemGroup>

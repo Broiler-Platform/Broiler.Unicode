@@ -2,6 +2,9 @@
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/UnicodeEmoji.StringProperties.Benchmarks/UnicodeEmoji.StringProperties.Benchmarks.csproj" />
   </Folder>
+  <Folder Name="/probes/">
+    <Project Path="probes/Unicode.Probe/Unicode.Probe.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/UnicodeEmoji.StringProperties.DataTool/UnicodeEmoji.StringProperties.DataTool.csproj" />
     <Project Path="src/UnicodeEmoji.StringProperties.Generator/UnicodeEmoji.StringProperties.Generator.csproj" />
@@ -20,5 +23,6 @@
     <Project Path="tests/UnicodeCldr.LocaleData.Tests/UnicodeCldr.LocaleData.Tests.csproj" />
     <Project Path="tests/UnicodeProperties.Tests/UnicodeProperties.Tests.csproj" />
     <Project Path="tests/Unicode.Algorithms.Tests/Unicode.Algorithms.Tests.csproj" />
+    <Project Path="tests/Unicode.Architecture.Tests/Unicode.Architecture.Tests.csproj" />
   </Folder>
 </Solution>

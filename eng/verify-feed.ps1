@@ -14,6 +14,10 @@ $scratch = Join-Path ([IO.Path]::GetTempPath()) ("broiler-feed-check-" + [guid]:
 New-Item -ItemType Directory -Path $scratch | Out-Null
 $references = @()
 $mappings = @()
+# The consumer targets every framework a package ships. A package that ships fewer, such as the
+# net10.0-only packages of the shared JavaScript libraries' Unicode area, is referenced only from the
+# frameworks it has, so the restore checks each package where it can be consumed.
+$consumerFrameworks = @('net8.0', 'net10.0')
 foreach ($archive in $archives) {
     $zip = [IO.Compression.ZipFile]::OpenRead($archive.FullName)
     try {
@@ -22,7 +26,14 @@ foreach ($archive in $archives) {
         try { [xml] $nuspec = $reader.ReadToEnd() } finally { $reader.Dispose() }
         $id = [Security.SecurityElement]::Escape($nuspec.package.metadata.id)
         $version = [Security.SecurityElement]::Escape($nuspec.package.metadata.version)
-        $references += "    <PackageReference Include=`"$id`" Version=`"[$version]`" />"
+        $frameworks = @($zip.Entries | Where-Object FullName -like 'lib/*/*' | ForEach-Object { $_.FullName.Split('/')[1] } | Select-Object -Unique)
+        $supported = @($consumerFrameworks | Where-Object { $frameworks -contains $_ })
+        if (!$supported.Count) { throw "$id ships none of $($consumerFrameworks -join ', ')." }
+        $condition = ''
+        if ($supported.Count -ne $consumerFrameworks.Count) {
+            $condition = ' Condition="' + (($supported | ForEach-Object { "'`$(TargetFramework)' == '$_'" }) -join ' Or ') + '"'
+        }
+        $references += "    <PackageReference Include=`"$id`" Version=`"[$version]`"$condition />"
         $mappings += "      <package pattern=`"$id`" />"
     } finally { $zip.Dispose() }
 }

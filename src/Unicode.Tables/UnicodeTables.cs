@@ -30,11 +30,14 @@ public sealed class UnicodeTables : IUnicodeTables
     {
     }
 
+    /// <summary>The Unicode version of the tables, <c>17.0.0</c>: the pin's.</summary>
+    public const string Version = UnicodeAlgorithms.UnicodeVersion;
+
     /// <summary>The one instance; it holds nothing, and every table it answers is constant data.</summary>
     public static UnicodeTables Instance { get; } = new();
 
     /// <inheritdoc/>
-    public string UnicodeVersion => UnicodeAlgorithms.UnicodeVersion;
+    public string UnicodeVersion => Version;
 
     /// <inheritdoc/>
     public ReadOnlySpan<byte> Table(UnicodeTable table) => UnicodeTableData.Get(table);

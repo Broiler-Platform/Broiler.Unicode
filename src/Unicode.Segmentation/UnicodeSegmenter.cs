@@ -4,6 +4,16 @@ using Broiler.Unicode.Algorithms;
 
 namespace Broiler.Unicode.Segmentation;
 
+/// <summary>The data version this package's segmentation is written for.</summary>
+public static class UnicodeSegmentation
+{
+    /// <summary>
+    /// The Unicode version of the break table <see cref="UnicodeSegmenter"/> reads: <c>17.0.0</c>, the
+    /// version of <see cref="UnicodeAlgorithms.UnicodeVersion"/>. A table of another version is refused.
+    /// </summary>
+    public const string UnicodeVersion = UnicodeAlgorithms.UnicodeVersion;
+}
+
 /// <summary>The three segmentations of UAX #29 that ECMA-402's <c>Intl.Segmenter</c> offers (ECMA-402 section 18).</summary>
 public enum SegmentGranularity
 {
