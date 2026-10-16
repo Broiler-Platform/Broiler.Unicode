@@ -20,6 +20,7 @@ src/Unicode.Tables/** text eol=lf
 src/Unicode.Generation/** text eol=lf
 tests/Unicode.Algorithms.Tests/** text eol=lf
 tests/Unicode.Architecture.Tests/** text eol=lf
+tests/Unicode.ReferenceArms/** text eol=lf
 # Rule SL10's witness for CRLF line endings must keep its CRs, so it alone is stored as-is.
 tests/Unicode.Architecture.Tests/witnesses/SL10-crlf-line-endings.cs.witness -text
 probes/** text eol=lf

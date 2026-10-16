@@ -70,6 +70,7 @@ internal static class Program
         var pins = Option("--pins") ?? Path.Combine(FindRoot(), "data", "unicode", "pins");
         Arms.ReadNames(pins);
         Arms.NegativeControl = negativeControl;
+        Arms.CultureSuffix = cultureName is null ? string.Empty : "@" + cultureName;
 
         long? limit = Option("--limit") is { } text ? long.Parse(text, CultureInfo.InvariantCulture) : null;
         var operations = Option("--operations")?.Split(',').ToHashSet(StringComparer.Ordinal);

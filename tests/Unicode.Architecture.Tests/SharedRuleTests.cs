@@ -41,7 +41,7 @@ public class SharedRuleTests
             ],
             SharedTree.Libraries.Select(static p => (p.Name, p.Kind)));
         Assert.Equal("Broiler.Unicode.Probe", Assert.Single(SharedTree.Projects, static p => p.Kind == SharedProjectKind.Probe).Name);
-        Assert.Equal(["Unicode.Algorithms.Tests", "Unicode.Architecture.Tests"], SharedTree.Projects.Where(static p => p.Kind == SharedProjectKind.Test).Select(static p => p.Name));
+        Assert.Equal(["Unicode.Algorithms.Tests", "Unicode.Architecture.Tests", "Unicode.ReferenceArms"], SharedTree.Projects.Where(static p => p.Kind == SharedProjectKind.Test).Select(static p => p.Name));
         Assert.All(Assemblies.Values, static a => Assert.NotEmpty(a.TypeReferences));
     }
 

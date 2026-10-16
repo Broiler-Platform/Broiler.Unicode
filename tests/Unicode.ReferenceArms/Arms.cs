@@ -20,59 +20,62 @@ using VF = Broiler.VM.Profile.JavaScript.Format;
 namespace Broiler.Unicode.ReferenceArms;
 
 /// <summary>
-/// One answer, compared exactly: its kind, its value, and for casing and normalization against arm V the
-/// total charge (-1 for none). <see cref="Render"/> writes it in the listing's notation (README.md).
+/// One answer, compared exactly: its kind and value, and for casing and normalization against arm V the
+/// total charge (-1 for none), which is compared on a line of its own. <see cref="Render"/> writes it in the
+/// notation scripts/reference-arms/README.md fixes ("differences.tsv"), which the classifier reads.
 /// </summary>
 internal readonly record struct Result(string Tag, string Value, long Charge = -1)
 {
+    /// <summary>A text: its code units, or for a <c>repeat</c> input its length and digest.</summary>
     public static Result Text(string text) => new("t", text);
 
-    public static Result Refused(string kind) => new("refused", kind);
+    /// <summary>A result longer than the maximum: S's LimitExceeded, arm V's ceiling RangeError.</summary>
+    public static readonly Result Over = new("over", string.Empty);
 
-    public static Result Failed(Exception exception) => new("exception", exception.GetType().Name);
+    /// <summary>A lookup's refusal: S's false, arm V's false and arm J's SyntaxError, the one kind a lookup refuses with.</summary>
+    public static readonly Result Refused = new("refused", string.Empty);
 
-    public static Result Bool(bool value) => new("bool", value ? "true" : "false");
+    /// <summary>Any other refusal or failure, by its kind: an engine error's constructor name or an exception's type.</summary>
+    public static Result Exception(string kind) => new("exception", kind);
 
-    public static Result CodePoint(int codePoint) => new("cp", Arms.Hex(codePoint));
+    /// <summary>An answer written as it is: a boolean, a code point, a list, a resolution, boundaries.</summary>
+    public static Result Plain(string value) => new("plain", value);
+
+    public static Result Bool(bool value) => Plain(value ? "true" : "false");
+
+    public static Result CodePoint(int codePoint) => Plain(Arms.Hex(codePoint));
 
     public static Result CodePoints(ReadOnlySpan<int> codePoints)
     {
         var built = new StringBuilder();
         foreach (var codePoint in codePoints)
-            built.Append(built.Length == 0 ? string.Empty : ",").Append(Arms.Hex(codePoint));
-        return new("cps", built.ToString());
+            built.Append(built.Length == 0 ? string.Empty : " ").Append(Arms.Hex(codePoint));
+        return Plain(built.ToString());
     }
 
-    public static Result Values(IEnumerable<string> names) => new("values", string.Join(',', names));
-
-    public static Result Set(IEnumerable<(int Lo, int Hi)> ranges) => new("set", Arms.RangesText(ranges));
-
-    public static Result Strings(string digest) => new("strings", digest);
-
     public static Result Boundaries(IEnumerable<int> positions) =>
-        new("b", string.Join(',', positions.Select(static p => p.ToString(CultureInfo.InvariantCulture))));
+        Plain(string.Join(' ', positions.Select(static p => p.ToString(CultureInfo.InvariantCulture))));
 
     public Result WithCharge(ulong charge) => this with { Charge = (long)charge };
 
-    /// <summary>The listing's notation: see README.md, "Output".</summary>
-    public string Render()
-    {
-        var text = Tag switch
-        {
-            "t" => "t:" + Population.Shown(Value),
-            "bool" => Value,
-            _ => Tag + ":" + Value,
-        };
+    /// <summary>The answer without its charge, which is compared apart.</summary>
+    public Result Answer => this with { Charge = -1 };
 
-        return Charge >= 0 ? text + ";charge=" + Charge.ToString(CultureInfo.InvariantCulture) : text;
-    }
+    public string Render(Item item) => Tag switch
+    {
+        "t" => item.IsRepeat ? Population.LengthAndDigest(Value) : Population.Hex(Value),
+        "over" => "over",
+        "refused" => "refused",
+        "exception" => "exception:" + Value,
+        _ => Value,
+    };
 }
 
 /// <summary>A case: one input of an operation with one value of its parameters.</summary>
 /// <param name="Item">The input.</param>
 /// <param name="Parameter">How the listing writes the parameters.</param>
-/// <param name="A">The operation's first parameter: a property's index, a language, a form, a mode, or a segment's start.</param>
-/// <param name="B">The second: the maximum result length (-1 for none), or a segment's end.</param>
+/// <param name="A">The operation's first parameter: a property's index, a language, a form, a mode or a lexical set.</param>
+/// <param name="B">The second: the maximum result length, or -1 for none.</param>
 internal readonly record struct Case(Item Item, string Parameter, int A = 0, int B = -1);
 
 /// <summary>
@@ -85,8 +88,8 @@ internal sealed record Variant(string Arm, string Name, Func<Case, Result?> Run,
     public string Label => Arm + ":" + Name;
 }
 
-/// <summary>An operation of the rule: the classes it runs over, how an input becomes its cases, and its variants.</summary>
-internal sealed record Operation(string Name, string[] Classes, Func<Item, IEnumerable<Case>> Expand, Variant[] Variants);
+/// <summary>An operation: the classes it runs over, the inputs of a class it takes, how an input becomes its cases, and its variants.</summary>
+internal sealed record Operation(string Name, string[] Classes, Func<Item, IEnumerable<Case>> Expand, Variant[] Variants, Func<Item, bool>? Takes = null);
 
 /// <summary>
 /// The operations of bundle sjl-7-001's reference-arm rule, and for each S and the variants of the arms that
@@ -95,15 +98,16 @@ internal sealed record Operation(string Name, string[] Classes, Func<Item, IEnum
 /// <remarks>
 /// <para>
 /// <b>S under each engine's policy.</b> Arm V is compared with S as Broiler.VM's adapter will call it: with
-/// its meter, whose total charge is part of the answer, and with Broiler.VM's string ceiling, 2^24 code
-/// units, as the maximum result length, or the rule's U7 limit for a limit variant; for casing in a language
-/// other than the default, the adapter's own charge for the language pass is added before the call
-/// (<see cref="LanguagePassCharge"/>). Arm J is compared with S as Broiler.JS's adapter will call it: with no
-/// meter and no limit the population reaches (int.MaxValue).
+/// its meter and with Broiler.VM's string ceiling, 2^24 code units, as the maximum result length
+/// (<c>;max=16777216</c>), or the U7 limit of a limit variant; for casing in a language other than the default, the adapter's own charge for
+/// the language pass is added before the call (<see cref="LanguagePassCharge"/>). Arm J is compared with S
+/// as Broiler.JS's adapter will call it: with no meter and no limit the population reaches (int.MaxValue).
 /// </para>
 /// <para>
-/// <b>A refusal is compared by its kind.</b> S's false from a lookup is the adapter's SyntaxError, and its
-/// LimitExceeded the adapter's RangeError, which is what each engine raises (adapter guide).
+/// <b>A refusal is compared by its kind.</b> A lookup's refusal is <c>refused</c> in S and every arm (S's
+/// false is its adapter's SyntaxError, which is arm V's and arm J's kind too); a result over the maximum is
+/// <c>over</c> in S (LimitExceeded) and in arm V (its RangeError "Invalid string length"); any other is
+/// <c>exception:</c> and its kind.
 /// </para>
 /// </remarks>
 internal static class Arms
@@ -111,7 +115,7 @@ internal static class Arms
     // ---- arm S: the owner's implementation, every table read through its provider ----------------
 
     private static readonly UnicodeTables Tables = UnicodeTables.Instance;
-    internal static readonly UnicodeProperties SProperties = new(Tables);
+    private static readonly UnicodeProperties SProperties = new(Tables);
     private static readonly EcmaScriptLexical SLexical = new(SProperties);
     private static readonly UnicodeCaseFolding SFolding = new(Tables);
     private static readonly UnicodeCaseMapping SCasing = new(Tables);
@@ -125,19 +129,39 @@ internal static class Arms
     /// <summary>The negative control: one arm V charge for one U4 input, and one arm J result for one U1 input.</summary>
     public static bool NegativeControl { get; set; }
 
-    /// <summary>The planted arm V change: the first U4 line, NFC, no limit, one unit more on its first charge.</summary>
-    public const string PlantedVParameter = "NFC/none";
+    /// <summary>The host culture of arm J's second run, written after <c>@</c> on every parameter; empty otherwise.</summary>
+    public static string CultureSuffix { get; set; } = string.Empty;
+
+    /// <summary>The planted arm V change: the first U4 line, NFC at Broiler.VM's ceiling, one unit more on its first charge.</summary>
+    public const string PlantedVParameter = "NFC;max=16777216";
 
     /// <summary>The planted arm J change: CharExtensions.IsIdentifierStart's answer for U+0041 negated.</summary>
     public const int PlantedJCodePoint = 0x41;
 
-    public static readonly string[] Languages = ["Default", "Turkic", "Lithuanian"];
+    public const string ControlV = "V-control";
+
+    public const string ControlJ = "J-control";
+
+    /// <summary>
+    /// The casing parameters: the three languages; then, for the run cells of rows C7 and C9 alone (tags
+    /// <c>cell:C7</c> and <c>cell:C9</c>), the locales those rows pass, which arm J alone takes as its argument:
+    /// the list ['tr','en'] as Broiler.JS's ToString makes it, <c>az</c>, <c>TR</c> and <c>tr-u-co-search</c>.
+    /// S takes each as ECMA-402's TransformCase resolves it: Turkic.
+    /// </summary>
+    public static readonly string[] Languages = ["default", "turkic", "lithuanian", "tr,en", "az", "TR", "tr-u-co-search"];
+
+    private static readonly CaseLanguage[] SLanguages =
+        [CaseLanguage.Default, CaseLanguage.Turkic, CaseLanguage.Lithuanian, CaseLanguage.Turkic, CaseLanguage.Turkic, CaseLanguage.Turkic, CaseLanguage.Turkic];
 
     public static readonly string[] Forms = ["NFC", "NFD", "NFKC", "NFKD"];
 
     public static readonly string[] Granularities = ["grapheme", "word", "sentence"];
 
-    // ---- the names U1's operations run over, read from the pinned tables ------------------------
+    /// <summary>The lexical sets, by the names the arbiter gives them (unicoderef.py, sets.tsv).</summary>
+    public static readonly string[] LexicalSets =
+        ["IdentifierStartChar", "IdentifierPartChar", "RegExpIdentifierStart", "RegExpIdentifierPart", "WhiteSpace", "Soft_Dotted"];
+
+    // ---- the names, read from the pinned tables --------------------------------------------------
 
     /// <summary>The canonical names of ECMA-262's binary properties, in the table's order.</summary>
     public static IReadOnlyList<string> BinaryNames { get; private set; } = [];
@@ -145,13 +169,19 @@ internal static class Arms
     /// <summary>The thirty single General_Category values' short names, in ordinal order, which is S's enum order.</summary>
     public static IReadOnlyList<string> CategoryNames { get; private set; } = [];
 
-    /// <summary>Every Script value's short name in PropertyValueAliases.txt, in ordinal order.</summary>
+    /// <summary>Every General_Category value and group of PropertyValueAliases.txt: short name, long name, every alias.</summary>
+    public static IReadOnlyList<string[]> CategoryRecords { get; private set; } = [];
+
+    /// <summary>Every Script value's short name, in ordinal order.</summary>
     public static IReadOnlyList<string> ScriptNames { get; private set; } = [];
+
+    /// <summary>Every Script value of PropertyValueAliases.txt: short name, long name, every alias.</summary>
+    public static IReadOnlyList<string[]> ScriptRecords { get; private set; } = [];
 
     /// <summary>The seven properties of strings, in ECMA-262's table's order.</summary>
     public static IReadOnlyList<string> StringPropertyNames { get; private set; } = [];
 
-    /// <summary>The names an arm refused among those U1's operations resolve, with the arm.</summary>
+    /// <summary>The canonical names an arm refused, or answered as no set, among those the comparison resolves.</summary>
     public static List<(string Arm, string Operation, string Name, string Answer)> Unresolved { get; } = [];
 
     /// <summary>Reads the names from the pinned ECMA-262 tables and PropertyValueAliases.txt.</summary>
@@ -162,21 +192,23 @@ internal static class Arms
         var strings = File.ReadAllText(Path.Combine(pins, "ecma262", "table-binary-unicode-properties-of-strings.html"));
         StringPropertyNames = Regex.Matches(strings, "<td>`([A-Za-z_]+)`</td>").Select(static m => m.Groups[1].Value).ToList();
 
-        var categories = new List<string>();
-        var scripts = new List<string>();
+        var categories = new List<string[]>();
+        var scripts = new List<string[]>();
         foreach (var line in File.ReadLines(Path.Combine(pins, "ucd-17.0.0", "PropertyValueAliases.txt")))
         {
             if (line.Length == 0 || line[0] == '#')
                 continue;
             var fields = line.Split('#')[0].Split(';').Select(static f => f.Trim()).ToArray();
-            if (fields[0] == "gc" && fields[1].Length == 2 && fields[1] != "LC")
-                categories.Add(fields[1]);
+            if (fields[0] == "gc")
+                categories.Add(fields[1..]);
             else if (fields[0] == "sc")
-                scripts.Add(fields[1]);
+                scripts.Add(fields[1..]);
         }
 
-        CategoryNames = categories.Order(StringComparer.Ordinal).ToList();
-        ScriptNames = scripts.Order(StringComparer.Ordinal).ToList();
+        CategoryRecords = categories;
+        ScriptRecords = scripts;
+        CategoryNames = categories.Select(static r => r[0]).Where(static s => s.Length == 2 && s != "LC").Order(StringComparer.Ordinal).ToList();
+        ScriptNames = scripts.Select(static r => r[0]).Order(StringComparer.Ordinal).ToList();
         if (BinaryNames.Count != 53 || StringPropertyNames.Count != 7 || CategoryNames.Count != 30 || ScriptNames.Count == 0)
         {
             throw new InvalidDataException(
@@ -185,24 +217,24 @@ internal static class Arms
         }
     }
 
-    // ---- rendering ---------------------------------------------------------------------------------
+    // ---- notation ----------------------------------------------------------------------------------
 
     public static string Hex(int codePoint) => codePoint.ToString("X4", CultureInfo.InvariantCulture);
 
-    /// <summary>A set's members as ranges, sorted and merged: <c>0041-005A,0061</c>; the empty set is empty.</summary>
+    /// <summary>A set in UCD notation, sorted and merged, separated by single spaces: <c>0041..005A 00B5</c>; the empty set is <c>-</c>.</summary>
     public static string RangesText(IEnumerable<(int Lo, int Hi)> ranges)
     {
         var built = new StringBuilder();
         foreach (var (lo, hi) in Merge(ranges))
         {
             if (built.Length > 0)
-                built.Append(',');
+                built.Append(' ');
             built.Append(Hex(lo));
             if (hi != lo)
-                built.Append('-').Append(Hex(hi));
+                built.Append("..").Append(Hex(hi));
         }
 
-        return built.ToString();
+        return built.Length == 0 ? "-" : built.ToString();
     }
 
     /// <summary>Ranges sorted by start and merged where they overlap or touch.</summary>
@@ -226,16 +258,11 @@ internal static class Arms
         return merged;
     }
 
-    /// <summary>
-    /// A property of strings by its members: their count and the first 16 hexadecimal digits of the SHA-256 of
-    /// their UTF-16LE code units, sorted ordinally and joined by U+000A, each code point a member of its own.
-    /// </summary>
-    public static string MembersDigest(IEnumerable<string> members)
+    /// <summary>The members of a property of strings, as a key: SHA-256 of their sorted UTF-16LE code units joined by U+000A.</summary>
+    private static string MembersKey(IEnumerable<string> members)
     {
-        var sorted = members.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToList();
-        var joined = string.Join('\n', sorted);
-        var digest = SHA256.HashData(System.Runtime.InteropServices.MemoryMarshal.AsBytes(joined.AsSpan()));
-        return sorted.Count.ToString(CultureInfo.InvariantCulture) + ":" + Convert.ToHexStringLower(digest)[..16];
+        var joined = string.Join('\n', members.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
+        return Convert.ToHexStringLower(SHA256.HashData(System.Runtime.InteropServices.MemoryMarshal.AsBytes(joined.AsSpan())));
     }
 
     private static IEnumerable<string> RangeMembers(IEnumerable<(int Lo, int Hi)> ranges)
@@ -285,15 +312,15 @@ internal static class Arms
         }
         catch (V.JsThrow error)
         {
-            return Result.Refused(error.Kind);
+            return Result.Exception(error.Kind);
         }
         catch (JX.JSException error)
         {
-            return Result.Refused(error.Kind);
+            return Result.Exception(error.Kind);
         }
         catch (Exception exception) when (exception is not OutOfMemoryException)
         {
-            return Result.Failed(exception);
+            return Result.Exception(exception.GetType().Name);
         }
     }
 
@@ -302,34 +329,50 @@ internal static class Arms
     /// <summary>The operations an arm does not implement, with the reason the bundle gives.</summary>
     public static IReadOnlyList<(string Arm, string Operation, string Reason)> NotImplemented { get; } =
     [
-        ("J", "SimpleFold, Orbit, SimpleUpper, UpperOrbit",
+        ("J", "fold, orbit, canonicalize, canonicalize-orbit",
             "no member of arm J's list implements Canonicalize: Broiler.JS folds through Broiler.Regex's CaseFolding and, without u, the translator's .NET casing (rows F1 and F2), which the rule does not copy"),
-        ("J", "Soft_Dotted",
+        ("J", "lexical Soft_Dotted",
             "arm J's Soft_Dotted is JSStringSpecialCasing's private hand set inside the package, which no copied member exposes; it is compared through Lithuanian casing (row C5)"),
-        ("J", "toUpperCase, toLowerCase and normalize under a maximum result length (the U7 limit variants len-1, len and len+1)",
+        ("J", "upper, lower and normalize under a maximum result length (;max=: Broiler.VM's ceiling and the U7 limit variants)",
             "Broiler.JS has no limit and no meter (rows C12, C13, N6 and N7): arm J is called with no limit only, against S at int.MaxValue"),
-        ("J", "the charge of casing and normalization", "Broiler.JS charges nothing (rows C13 and N7)"),
-        ("J", "name with JSRegExp.ResolvePropertyOperand in the u mode", "ResolvePropertyOperand is the v-mode set operand's resolution; in u mode only TranslateUnicodeProperty is reached"),
+        ("V", "upper, lower and normalize with no maximum (a parameter without ;max=)",
+            "Broiler.VM always has its ceiling: arm V is called with ;max=16777216, its ceiling as its adapter passes it, and with the U7 limits"),
+        ("J", "charge", "Broiler.JS charges nothing (rows C13 and N7)"),
+        ("J", "lookup with JSRegExp.ResolvePropertyOperand under u", "ResolvePropertyOperand resolves a v-mode class set operand; under u only TranslateUnicodeProperty is reached"),
         ("J", "normalize with JSIntlCollator.Compare's normalization in NFC, NFKC and NFKD", "the collator normalizes to NFD only"),
-        ("J", "toUpperCase and toLowerCase with JSString.ToLocale*Case(undefined) in the Turkic and Lithuanian languages",
-            "with no locale argument the culture is the host's current culture, which the rule's runs set to the invariant culture, tr-TR and lt-LT; the Turkic and Lithuanian languages are reached with the locales tr and lt"),
+        ("J", "upper and lower with JSString.ToLocale*Case(undefined) in any parameter but default",
+            "with no locale argument the culture is the host's current culture: the invariant culture in the comparison run, tr-TR and lt-LT in the rule's second runs (@tr-TR, @lt-LT)"),
+        ("V", "upper and lower with the locales tr,en, az, TR and tr-u-co-search (the run cells of rows C7 and C9)",
+            "a locale's resolution is Broiler.VM's adapter's (TransformCase's CanonicalizeLocaleList and LookupMatchingLocale, not copied); arm V is called with the language it resolves, as turkic"),
         ("J,V", "word-status: the status's value",
-            "both arms answer isWordLike, a boolean, where S answers a WordStatus; each is compared with S's isWordLike, status != None, on S's word segments (row G4)"),
+            "both arms answer isWordLike, a boolean, where S answers a WordStatus; each is compared, as Y or N per word segment of S, with S's status != None (row G4)"),
         ("J,V", "the charge of segmentation", "the rule compares segmentation's charge with no arm: its units change by JSD-0074 decision 4 (row G5)"),
-        ("J,V", "segmentation of U1, U2, U3, U4, U5 and U7", "segmentation runs over U6, the class whose inputs it takes"),
     ];
 
     // ---- the operations ------------------------------------------------------------------------
 
     public static IReadOnlyList<Operation> Operations(bool cultureRun, bool negativeControl)
     {
-        PrepareResolutions();
-        var all = new List<Operation>();
+        Prepare();
         if (negativeControl)
         {
-            all.Add(Normalize());
-            all.Add(Lexical("IdentifierStart"));
-            return all.Select(static o => o.Name == "normalize" ? o with { Classes = ["U4"] } : o with { Classes = ["U1"] }).ToList();
+            // The rule's two negative controls: a copy of arm V with one charge changed for one input of U4, and
+            // a copy of arm J with one result changed for one input of U1, each run once, alone.
+            var normalize = Normalize();
+            var lexical = Lexical();
+            return
+            [
+                normalize with
+                {
+                    Classes = ["U4"],
+                    Variants = [normalize.Variants.Single(static v => v.Arm == "V") with { Arm = ControlV }],
+                },
+                lexical with
+                {
+                    Expand = static item => [new Case(item, LexicalSets[0], 0)],
+                    Variants = [lexical.Variants.Single(static v => v.Name == "CharExtensions.IsIdentifierStart") with { Arm = ControlJ }],
+                },
+            ];
         }
 
         if (cultureRun)
@@ -341,16 +384,16 @@ internal static class Arms
                 .ToList();
         }
 
-        all.Add(Binary());
-        all.Add(Values("General_Category", "General_Category", CategoryNames));
-        all.Add(Values("Script", "Script", ScriptNames));
-        all.Add(Values("Script_Extensions", "Script_Extensions", ScriptNames));
-        all.Add(Lexical("IdentifierStart"));
-        all.Add(Lexical("IdentifierPart"));
-        all.Add(Lexical("WhiteSpace"));
-        all.Add(SoftDotted());
+        var all = new List<Operation>
+        {
+            Binary(),
+            Values("gc", "General_Category", CategoryNames),
+            Values("sc", "Script", ScriptNames),
+            Values("scx", "Script_Extensions", ScriptNames),
+            Lexical(),
+        };
         all.AddRange(Folding());
-        all.Add(Names());
+        all.Add(Lookup());
         all.Add(Casing(upper: true));
         all.Add(Casing(upper: false));
         all.Add(Normalize());
@@ -363,7 +406,7 @@ internal static class Arms
 
     private static IEnumerable<Case> Once(Item item) => [new Case(item, "-")];
 
-    // ---- U1: properties, lexical classes, Soft_Dotted, folding -------------------------------------
+    // ---- the sets each arm resolves the canonical names to, once, before any parallel work ----------
 
     private static CodePointSet?[] sBinary = [];
     private static VF.JsUnicodeSet?[] vBinary = [];
@@ -372,10 +415,12 @@ internal static class Arms
     private static StringMembers[] sStringMembers = [];
     private static StringMembers[] vStringMembers = [];
     private static StringMembers?[] jStringMembers = [];
+    private static Namer sNamer = new();
+    private static Namer vNamer = new();
+    private static Namer jNamer = new();
     private static bool prepared;
 
-    /// <summary>Resolves, once and before any parallel work, the names U1's operations and U5's run over, in each arm.</summary>
-    private static void PrepareResolutions()
+    private static void Prepare()
     {
         if (prepared)
             return;
@@ -396,18 +441,32 @@ internal static class Arms
         sStringMembers = StringPropertyNames.Select(SMembers).ToArray();
         vStringMembers = StringPropertyNames.Select(VMembers).ToArray();
         jStringMembers = StringPropertyNames.Select(JMembers).ToArray();
+
+        // Each arm's resolutions of every canonical name, by members, to name what a lookup resolves to.
+        sNamer = BuildNamer(
+            (p, v) => SProperties.TryResolve(p, v, out var set) ? RangesOf(set).ToList() : null,
+            n => SProperties.TryResolve(n, out var set) ? RangesOf(set).ToList() : null,
+            sStringMembers);
+        vNamer = BuildNamer(
+            (p, v) => VF.JsUnicodeProperties.TryResolve(p, v, out var set) ? RangesOf(set).ToList() : null,
+            n => VF.JsUnicodeProperties.TryResolveLone(n, out var set) ? RangesOf(set).ToList() : null,
+            vStringMembers);
+        jNamer = BuildNamer(
+            (p, v) => JRanges(null, v, p + "=" + v)?.ToList(),
+            n => JRanges(null, n, n)?.ToList(),
+            jStringMembers);
     }
 
     private static T? Unresolve<T>(string arm, string operation, string name)
         where T : struct
     {
         lock (Unresolved)
-            Unresolved.Add((arm, operation, name, "refused:SyntaxError"));
+            Unresolved.Add((arm, operation, name, "refused"));
         return null;
     }
 
-    /// <summary>Arm J's set for a name, as JResolve resolves it, or null when it refuses the name or answers no set.</summary>
-    private static (int Lo, int Hi)[]? JRanges(string operation, string name, string inner)
+    /// <summary>Arm J's set for a standalone \p{inner}, as its translator and fall-through resolve it, or null.</summary>
+    private static (int Lo, int Hi)[]? JRanges(string? operation, string name, string inner)
     {
         string answer;
         try
@@ -415,17 +474,108 @@ internal static class Arms
             var resolution = JR.JSRegExp.TranslateUnicodeProperty(false, inner, false, false, false) ?? JR.JSRegExp.NetFallThrough("\\p", inner);
             if (resolution.Ranges is { } ranges)
                 return Merge(ranges).ToArray();
-            answer = Render(resolution).Render();
+            answer = "no set";
         }
         catch (JX.JSException error)
         {
-            answer = "refused:" + error.Kind;
+            answer = "exception:" + error.Kind;
         }
 
-        lock (Unresolved)
-            Unresolved.Add(("J", operation, name, answer));
+        if (operation is not null)
+        {
+            lock (Unresolved)
+                Unresolved.Add(("J", operation, name, answer));
+        }
+
         return null;
     }
+
+    // ---- naming a lookup's resolution ------------------------------------------------------------
+
+    /// <summary>
+    /// Names the set a lookup resolves to, in the arbiter's notation: a binary property's canonical name,
+    /// <c>Property=Value</c> with both long names, or a property of strings' name. A set is named by the
+    /// canonical name the same arm resolves to the same members: among the family the lookup's property
+    /// names (General_Category, Script or Script_Extensions for a pair; General_Category and the binary
+    /// properties for a lone name) first, the candidate an alias of which is the name given, loosely
+    /// compared, before the others. A set no canonical name of the arm has is written <c>set:</c> and its
+    /// ranges in UCD notation.
+    /// </summary>
+    private sealed class Namer
+    {
+        public readonly Dictionary<string, List<(string Family, string Name, string[] Aliases)>> BySet = new(StringComparer.Ordinal);
+
+        public readonly Dictionary<string, string> ByStrings = new(StringComparer.Ordinal);
+
+        public void Add(string family, string name, string[] aliases, IEnumerable<(int Lo, int Hi)>? ranges)
+        {
+            if (ranges is null)
+                return;
+            var key = RangesText(ranges);
+            if (!BySet.TryGetValue(key, out var list))
+                BySet[key] = list = [];
+            list.Add((family, name, aliases));
+        }
+
+        public string Name(IEnumerable<(int Lo, int Hi)> ranges, string[] families, string given)
+        {
+            var key = RangesText(ranges);
+            if (!BySet.TryGetValue(key, out var candidates))
+                return "set:" + key;
+
+            var loose = Loose(given);
+            foreach (var pool in new[] { candidates.Where(c => families.Contains(c.Family)).ToList(), candidates })
+            {
+                if (pool.Count == 0)
+                    continue;
+                var named = pool.FirstOrDefault(c => c.Aliases.Any(a => Loose(a) == loose));
+                return named.Name ?? pool[0].Name;
+            }
+
+            return "set:" + key;
+        }
+    }
+
+    private static string Loose(string name) =>
+        new(name.Where(static c => c is not ('_' or '-' or ' ')).Select(char.ToLowerInvariant).ToArray());
+
+    private static Namer BuildNamer(
+        Func<string, string, List<(int Lo, int Hi)>?> pair, Func<string, List<(int Lo, int Hi)>?> lone, IReadOnlyList<StringMembers?> strings)
+    {
+        var namer = new Namer();
+        foreach (var record in CategoryRecords)
+            namer.Add("General_Category", "General_Category=" + record[1], record, pair("General_Category", record[0]));
+        foreach (var name in BinaryNames)
+            namer.Add("binary", name, [name], lone(name));
+        foreach (var record in ScriptRecords)
+        {
+            namer.Add("Script", "Script=" + record[1], record, pair("Script", record[0]));
+            namer.Add("Script_Extensions", "Script_Extensions=" + record[1], record, pair("Script_Extensions", record[0]));
+        }
+
+        for (var i = 0; i < StringPropertyNames.Count; i++)
+        {
+            if (strings[i] is { } members)
+                namer.ByStrings[members.Key] = StringPropertyNames[i];
+        }
+
+        return namer;
+    }
+
+    /// <summary>The families a lookup's property names: by the property, loosely read, for a pair; General_Category and binary alone.</summary>
+    private static string[] Families(Item item) => item.Kind == "lone"
+        ? ["General_Category", "binary"]
+        : Loose(item.Property) switch
+        {
+            "gc" or "generalcategory" => ["General_Category"],
+            "sc" or "script" => ["Script"],
+            "scx" or "scriptextensions" => ["Script_Extensions"],
+            _ => ["General_Category", "Script", "Script_Extensions", "binary"],
+        };
+
+    private static string Given(Item item) => item.Kind == "lone" ? item.Property : item.Value;
+
+    // ---- U1: properties, lexical classes, folding ------------------------------------------------
 
     private static Operation Binary() => new(
         "binary", ["U1"],
@@ -438,12 +588,12 @@ internal static class Arms
         ]);
 
     private static Result SBinary(Case c) =>
-        sBinary[c.A] is { } set ? Result.Bool(set.Contains(c.Item.CodePoint)) : Result.Refused("SyntaxError");
+        sBinary[c.A] is { } set ? Result.Bool(set.Contains(c.Item.CodePoint)) : Result.Refused;
 
     /// <summary>
-    /// A non-binary property's value at each code point: the names of the values whose set holds it, in
-    /// ordinal order. S answers General_Category with GeneralCategoryOf, and Script and Script_Extensions
-    /// from the sets its lookup resolves, as neither has a member of its own.
+    /// A non-binary property's value at each code point: the short names of the values whose set holds it,
+    /// space-separated in ordinal order (<c>-</c> for none). S answers General_Category with GeneralCategoryOf,
+    /// and Script and Script_Extensions from the sets its lookup resolves, as neither has a member of its own.
     /// </summary>
     private static Operation Values(string name, string property, IReadOnlyList<string> names)
     {
@@ -457,93 +607,92 @@ internal static class Arms
                     found.Add(names[i]);
             }
 
-            return Result.Values(found);
-        }
-
-        Result? JCollect(Case c)
-        {
-            var sets = valueSets[property].J;
-            var found = new List<string>(2);
-            for (var i = 0; i < sets.Length; i++)
-            {
-                if (sets[i] is { } ranges && InRanges(ranges, c.Item.CodePoint))
-                    found.Add(names[i]);
-            }
-
-            return Result.Values(found);
+            return Result.Plain(found.Count == 0 ? "-" : string.Join(' ', found));
         }
 
         Result Shared(Case c) => property == "General_Category"
-            ? Result.Values([CategoryNames[(int)SProperties.GeneralCategoryOf(c.Item.CodePoint)]])
+            ? Result.Plain(CategoryNames[(int)SProperties.GeneralCategoryOf(c.Item.CodePoint)])
             : Collect(valueSets[property].S, set => set.Contains(c.Item.CodePoint));
 
         return new(name, ["U1"], Once,
         [
             new("V", "JsUnicodeProperties.TryResolve", c => Collect(valueSets[property].V, set => set.Contains(c.Item.CodePoint)), Shared, "S"),
-            new("J", "JSRegExp.TranslateUnicodeProperty", JCollect, Shared, "S"),
+            new("J", "JSRegExp.TranslateUnicodeProperty", c =>
+                {
+                    var sets = valueSets[property].J;
+                    var found = new List<string>(2);
+                    for (var i = 0; i < sets.Length; i++)
+                    {
+                        if (sets[i] is { } ranges && InRanges(ranges, c.Item.CodePoint))
+                            found.Add(names[i]);
+                    }
+
+                    return Result.Plain(found.Count == 0 ? "-" : string.Join(' ', found));
+                }, Shared, "S"),
         ]);
     }
 
-    private static Operation Lexical(string name)
+    /// <summary>
+    /// The lexical sets at each code point. Arm V's tokenizer and its matcher's group names read
+    /// JsUnicodeLexical (correspondence rows I1 to I3); arm J's scanner reads CharExtensions and FastScanner, and
+    /// its group names JSRegExp's own tests.
+    /// </summary>
+    private static Operation Lexical()
     {
         static char Unit(int codePoint) => codePoint <= 0xFFFF ? (char)codePoint : char.ConvertFromUtf32(codePoint)[0];
 
-        return name switch
+        static Result Shared(Case c) => Result.Bool(c.A switch
         {
-            "IdentifierStart" => new(name, ["U1"], Once,
+            0 or 2 => SLexical.IsIdentifierStart(c.Item.CodePoint),
+            1 or 3 => SLexical.IsIdentifierPart(c.Item.CodePoint),
+            4 => SLexical.IsWhiteSpace(c.Item.CodePoint),
+            _ => SCasing.IsSoftDotted(c.Item.CodePoint),
+        });
+
+        return new("lexical", ["U1"],
+            static item => LexicalSets.Select((name, index) => new Case(item, name, index)),
             [
-                new("V", "JsUnicodeLexical.IsIdentifierStart", static c => Result.Bool(VF.JsUnicodeLexical.IsIdentifierStart(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsIdentifierStart(c.Item.CodePoint)), "S"),
+                new("V", "JsUnicodeLexical and JsIntlTables.IsSoftDotted", static c => Result.Bool(c.A switch
+                    {
+                        0 or 2 => VF.JsUnicodeLexical.IsIdentifierStart(c.Item.CodePoint),
+                        1 or 3 => VF.JsUnicodeLexical.IsIdentifierPart(c.Item.CodePoint),
+                        4 => VF.JsUnicodeLexical.IsWhiteSpace(c.Item.CodePoint),
+                        _ => new V.JsEngine().Intl!.IsSoftDotted(c.Item.CodePoint),
+                    }), Shared, "S"),
                 new("J", "CharExtensions.IsIdentifierStart", static c =>
                     {
+                        if (c.A != 0)
+                            return null;
                         var answer = JP.CharExtensions.IsIdentifierStart(c.Item.CodePoint);
                         return Result.Bool(NegativeControl && c.Item.CodePoint == PlantedJCodePoint ? !answer : answer);
-                    },
-                    static c => Result.Bool(SLexical.IsIdentifierStart(c.Item.CodePoint)), "S"),
-                new("J", "JSRegExp.IsRegExpIdentifierStart", static c => Result.Bool(JR.JSRegExp.IsRegExpIdentifierStart(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsIdentifierStart(c.Item.CodePoint)), "S"),
-            ]),
-            "IdentifierPart" => new(name, ["U1"], Once,
-            [
-                new("V", "JsUnicodeLexical.IsIdentifierPart", static c => Result.Bool(VF.JsUnicodeLexical.IsIdentifierPart(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsIdentifierPart(c.Item.CodePoint)), "S"),
-                new("J", "CharExtensions.IsIdentifierPart", static c => Result.Bool(JP.CharExtensions.IsIdentifierPart(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsIdentifierPart(c.Item.CodePoint)), "S"),
-                new("J", "JSRegExp.IsRegExpIdentifierPart", static c => Result.Bool(JR.JSRegExp.IsRegExpIdentifierPart(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsIdentifierPart(c.Item.CodePoint)), "S"),
-            ]),
-            _ => new(name, ["U1"], Once,
-            [
-                new("V", "JsUnicodeLexical.IsWhiteSpace", static c => Result.Bool(VF.JsUnicodeLexical.IsWhiteSpace(c.Item.CodePoint)),
-                    static c => Result.Bool(SLexical.IsWhiteSpace(c.Item.CodePoint)), "S"),
-                // The scanner reads one code unit: a supplementary code point's first unit, its high surrogate.
-                // A unit its skip loop consumes is white space unless the loop reads it as a line terminator.
+                    }, Shared, "S"),
+                new("J", "CharExtensions.IsIdentifierPart", static c => c.A == 1 ? Result.Bool(JP.CharExtensions.IsIdentifierPart(c.Item.CodePoint)) : null,
+                    Shared, "S"),
+                new("J", "JSRegExp.IsRegExpIdentifierStart", static c => c.A == 2 ? Result.Bool(JR.JSRegExp.IsRegExpIdentifierStart(c.Item.CodePoint)) : null,
+                    Shared, "S"),
+                new("J", "JSRegExp.IsRegExpIdentifierPart", static c => c.A == 3 ? Result.Bool(JR.JSRegExp.IsRegExpIdentifierPart(c.Item.CodePoint)) : null,
+                    Shared, "S"),
+                // The scanner reads one code unit: a supplementary code point's first unit, its high surrogate. A
+                // unit its skip loop consumes is white space unless the loop reads it as a line terminator.
                 new("J", "FastScanner.IsWhiteSpace", static c =>
                     {
+                        if (c.A != 4)
+                            return null;
                         var first = Unit(c.Item.CodePoint);
                         return Result.Bool(JP.FastScanner.IsWhiteSpace(first) && !JP.FastScanner.IsLineTerminatorInSkip(first));
-                    },
-                    static c => Result.Bool(SLexical.IsWhiteSpace(c.Item.CodePoint)), "S"),
-            ]),
-        };
+                    }, Shared, "S"),
+            ]);
     }
-
-    private static Operation SoftDotted() => new(
-        "Soft_Dotted", ["U1"], Once,
-        [
-            new("V", "JsIntlTables.IsSoftDotted", static c => Result.Bool(new V.JsEngine().Intl!.IsSoftDotted(c.Item.CodePoint)),
-                static c => Result.Bool(SCasing.IsSoftDotted(c.Item.CodePoint)), "S"),
-        ]);
 
     private static IEnumerable<Operation> Folding()
     {
-        yield return new("SimpleFold", ["U1"], Once,
+        yield return new("fold", ["U1"], Once,
         [
             new("V", "JsUnicodeCaseFolding.SimpleFold", static c => Result.CodePoint(VF.JsUnicodeCaseFolding.SimpleFold(c.Item.CodePoint)),
                 static c => Result.CodePoint(SFolding.SimpleFold(c.Item.CodePoint)), "S"),
         ]);
 
-        yield return new("Orbit", ["U1"], Once,
+        yield return new("orbit", ["U1"], Once,
         [
             new("V", "JsUnicodeCaseFolding.Orbit", static c =>
                 {
@@ -557,13 +706,13 @@ internal static class Arms
                 }, "S"),
         ]);
 
-        yield return new("SimpleUpper", ["U1"], Once,
+        yield return new("canonicalize", ["U1"], Once,
         [
             new("V", "JsUnicodeCaseFolding.SimpleUpper", static c => Result.CodePoint(VF.JsUnicodeCaseFolding.SimpleUpper(c.Item.CodePoint)),
                 static c => Result.CodePoint(SFolding.SimpleUpper(c.Item.CodePoint)), "S"),
         ]);
 
-        yield return new("UpperOrbit", ["U1"], Once,
+        yield return new("canonicalize-orbit", ["U1"], Once,
         [
             new("V", "JsUnicodeCaseFolding.UpperOrbit", static c =>
                 {
@@ -580,73 +729,101 @@ internal static class Arms
 
     // ---- U2: the lookup of a name ---------------------------------------------------------------
 
-    /// <summary>
-    /// The lookup of a name, lone or Name=Value, in u mode and in v mode, by its result: a set by its members,
-    /// a property of strings by its members, or a refusal by its kind.
-    /// </summary>
-    private static Operation Names() => new(
-        "name", ["U2"],
-        static item => [new Case(item, item.Kind + "/u", 0), new Case(item, item.Kind + "/v", 1)],
+    /// <summary>The lookup of a name, lone or Name=Value, under u and under v, by its resolution or its refusal.</summary>
+    private static Operation Lookup() => new(
+        "lookup", ["U2"],
+        static item => [new Case(item, "u", 0), new Case(item, "v", 1)],
         [
-            new("V", "JsUnicodeProperties.TryResolve and JsUnicodeStringProperties.TryResolve", VName, SName, "S"),
-            new("J", "JSRegExp.TranslateUnicodeProperty", static c => JResolve(Inner(c.Item), unicodeSets: c.A == 1), SName, "S"),
-            new("J", "JSRegExp.ResolvePropertyOperand", static c => c.A == 1 ? JOperand(Inner(c.Item)) : null, SName, "S"),
+            new("V", "JsUnicodeProperties.TryResolve and JsUnicodeStringProperties.TryResolve", VLookup, SLookup, "S"),
+            new("J", "JSRegExp.TranslateUnicodeProperty", static c => JLookup(c.Item, unicodeSets: c.A == 1), SLookup, "S"),
+            new("J", "JSRegExp.ResolvePropertyOperand", static c => c.A == 1 ? JOperand(c.Item) : null, SLookup, "S"),
         ]);
 
     private static string Inner(Item item) => item.Kind == "lone" ? item.Property : item.Property + "=" + item.Value;
 
-    private static Result SName(Case c)
+    private static Result SLookup(Case c)
     {
         var item = c.Item;
         if (item.Kind == "pair")
-            return SProperties.TryResolve(item.Property, item.Value, out var pair) ? Result.Set(RangesOf(pair)) : Result.Refused("SyntaxError");
+        {
+            return SProperties.TryResolve(item.Property, item.Value, out var pair)
+                ? Result.Plain(sNamer.Name(RangesOf(pair), Families(item), Given(item)))
+                : Result.Refused;
+        }
 
         // Under v, a lone name is first a property of strings (adapter guide, UnicodeProperties step 3).
         if (c.A == 1 && SStrings.TryResolve(item.Property, out var property))
-            return Result.Strings(sStringMembers[property.Id].Digest);
+            return Result.Plain(sNamer.ByStrings.GetValueOrDefault(sStringMembers[property.Id].Key, "strings:" + sStringMembers[property.Id].Key));
 
-        return SProperties.TryResolve(item.Property, out var set) ? Result.Set(RangesOf(set)) : Result.Refused("SyntaxError");
+        return SProperties.TryResolve(item.Property, out var set) ? Result.Plain(sNamer.Name(RangesOf(set), Families(item), Given(item))) : Result.Refused;
     }
 
     /// <summary>
-    /// Arm V's lookup as its matcher calls it (JsRegExpMatcher.cs:2776-2810): under v, a lone name is first
-    /// a property of strings; then the lone or the Name=Value lookup. False is its SyntaxError.
+    /// Arm V's lookup as its matcher calls it (JsRegExpMatcher.cs:2776-2810): under v, a lone name is first a
+    /// property of strings; then the lone or the Name=Value lookup. Its false is the matcher's SyntaxError.
     /// </summary>
-    private static Result? VName(Case c)
+    private static Result? VLookup(Case c)
     {
         var item = c.Item;
         if (item.Kind == "pair")
-            return VF.JsUnicodeProperties.TryResolve(item.Property, item.Value, out var pair) ? Result.Set(RangesOf(pair)) : Result.Refused("SyntaxError");
+        {
+            return VF.JsUnicodeProperties.TryResolve(item.Property, item.Value, out var pair)
+                ? Result.Plain(vNamer.Name(RangesOf(pair), Families(item), Given(item)))
+                : Result.Refused;
+        }
 
         if (c.A == 1 && VF.JsUnicodeStringProperties.TryResolve(item.Property, out var property))
-            return Result.Strings(vStringMembers[property].Digest);
+            return Result.Plain(vNamer.ByStrings.GetValueOrDefault(vStringMembers[property].Key, "strings:" + vStringMembers[property].Key));
 
-        return VF.JsUnicodeProperties.TryResolveLone(item.Property, out var set) ? Result.Set(RangesOf(set)) : Result.Refused("SyntaxError");
+        return VF.JsUnicodeProperties.TryResolveLone(item.Property, out var set) ? Result.Plain(vNamer.Name(RangesOf(set), Families(item), Given(item))) : Result.Refused;
     }
 
     /// <summary>
-    /// Arm J's translator on a standalone \p{inner}: TranslateUnicodeProperty, and on its null the fall-through
-    /// to .NET's \p, as JSRegExp builds the pattern.
+    /// Arm J's translator on a standalone \p{inner}: TranslateUnicodeProperty, and on its null the fall-through to
+    /// .NET's \p, whose answer is written <c>dotnet:</c> and the code units .NET matches in UCD notation. Its
+    /// SyntaxError is the lookup's refusal.
     /// </summary>
-    private static Result? JResolve(string inner, bool unicodeSets)
+    private static Result? JLookup(Item item, bool unicodeSets)
     {
-        var resolution = JR.JSRegExp.TranslateUnicodeProperty(false, inner, false, unicodeSets, false)
-            ?? JR.JSRegExp.NetFallThrough("\\p", inner);
-        return Render(resolution);
+        var inner = Inner(item);
+        try
+        {
+            if (JR.JSRegExp.TranslateUnicodeProperty(false, inner, false, unicodeSets, false) is { } resolution)
+            {
+                return resolution.Sequences is { } sequences
+                    ? Result.Plain(jNamer.ByStrings.GetValueOrDefault(MembersKey(sequences), "strings:" + MembersKey(sequences)))
+                    : resolution.Ranges is { } ranges
+                        ? Result.Plain(jNamer.Name(ranges, Families(item), Given(item)))
+                        : Result.Plain("dotnet:" + resolution.NetPattern);
+            }
+
+            var fallThrough = JR.JSRegExp.NetFallThrough("\\p", inner);
+            return Result.Plain("dotnet:" + RangesText(fallThrough.Ranges!));
+        }
+        catch (JX.JSException error) when (error.Kind == "SyntaxError")
+        {
+            return Result.Refused;
+        }
     }
 
-    private static Result Render(JR.PropertyResolution resolution) =>
-        resolution.Sequences is { } sequences ? Result.Strings(MembersDigest(sequences))
-        : resolution.Ranges is { } ranges ? Result.Set(ranges)
-        : new Result("net", resolution.NetPattern ?? string.Empty);
-
-    /// <summary>Arm J's v-mode set operand: its class set value, a property of strings when it holds strings.</summary>
-    private static Result? JOperand(string inner)
+    /// <summary>Arm J's v-mode class set operand: a property of strings when it holds strings, else its set; its SyntaxError the refusal.</summary>
+    private static Result? JOperand(Item item)
     {
-        var value = JR.JSRegExp.ResolvePropertyOperand(false, inner);
-        return value.Strings.Count > 0
-            ? Result.Strings(MembersDigest(RangeMembers(value.Ranges).Concat(value.Strings)))
-            : Result.Set(value.Ranges);
+        try
+        {
+            var value = JR.JSRegExp.ResolvePropertyOperand(false, Inner(item));
+            if (value.Strings.Count > 0)
+            {
+                var key = MembersKey(RangeMembers(value.Ranges).Concat(value.Strings));
+                return Result.Plain(jNamer.ByStrings.GetValueOrDefault(key, "strings:" + key));
+            }
+
+            return Result.Plain(jNamer.Name(value.Ranges, Families(item), Given(item)));
+        }
+        catch (JX.JSException error) when (error.Kind == "SyntaxError")
+        {
+            return Result.Refused;
+        }
     }
 
     // ---- U1, U5: the properties of strings ------------------------------------------------------
@@ -654,9 +831,10 @@ internal static class Arms
     /// <summary>One arm's members of one property of strings, built once: its code points and its sequences.</summary>
     private sealed class StringMembers(IReadOnlyList<(int Lo, int Hi)> ranges, HashSet<string> sequences, Func<int, bool>? codePoint = null)
     {
-        public string Digest { get; } = MembersDigest(RangeMembers(ranges).Concat(sequences));
+        /// <summary>The members as a key (<see cref="MembersKey"/>), each code point a member of its own.</summary>
+        public string Key { get; } = MembersKey(RangeMembers(ranges).Concat(sequences));
 
-        /// <summary>Whether <paramref name="text"/> is a member: a code point by the arm's own test when it has one, else by its ranges, and a sequence by its sequences.</summary>
+        /// <summary>Whether <paramref name="text"/> is a member: a code point by the arm's own test when it has one, else by its ranges; any text by its sequences.</summary>
         public bool Contains(string text)
         {
             var single = text.Length == 1 || (text.Length == 2 && char.IsSurrogatePair(text[0], text[1]));
@@ -715,7 +893,7 @@ internal static class Arms
         return new StringMembers(Merge(ranges), strings);
     }
 
-    /// <summary>Arm J's members of a property of strings, as its translator resolves the name under v, or null when it refuses it.</summary>
+    /// <summary>Arm J's members of a property of strings, as its translator resolves the name under v, or null when it does not.</summary>
     private static StringMembers? JMembers(string name)
     {
         string answer;
@@ -724,11 +902,11 @@ internal static class Arms
             var resolution = JR.JSRegExp.TranslateUnicodeProperty(false, name, false, true, false);
             if (resolution?.Sequences is { } sequences)
                 return new StringMembers([], new HashSet<string>(sequences, StringComparer.Ordinal));
-            answer = resolution is null ? "fall-through" : Render(resolution).Render();
+            answer = resolution is null ? "fall-through" : "no sequences";
         }
         catch (JX.JSException error)
         {
-            answer = "refused:" + error.Kind;
+            answer = "exception:" + error.Kind;
         }
 
         lock (Unresolved)
@@ -746,7 +924,7 @@ internal static class Arms
                 static c => Result.Bool(sStringMembers[c.A].Contains(c.Item.Text)), "S"),
         ]);
 
-    // ---- U1, U3, U7: casing ---------------------------------------------------------------------
+    // ---- U3, U7: casing -------------------------------------------------------------------------
 
     /// <summary>
     /// The charge Broiler.VM's adapter adds for the language pass, before it calls S, when the language is not
@@ -758,52 +936,83 @@ internal static class Arms
     public static ulong LanguagePassCharge(string text, CaseLanguage language) =>
         language == CaseLanguage.Default ? 0UL : text.Length <= 0 ? 1UL : (ulong)text.Length;
 
-    /// <summary>The limit variants of U7: none, and S's own result's length, one less and one more.</summary>
-    private static IEnumerable<Case> Limited(Item item, string prefix, int a, int length)
+    /// <summary>
+    /// The cases of one parameter. With no limit, the bare parameter, which arm J alone takes (Broiler.JS has no
+    /// limit; S at int.MaxValue). Then, in the comparison run, arm V's: Broiler.VM's ceiling as its adapter passes
+    /// it (<c>;max=16777216</c>), and the U7 limits, S's own result's length, one less and one more, each written
+    /// <c>;max=n</c>, a limit equal to the ceiling only once.
+    /// </summary>
+    private static IEnumerable<Case> Limited(Item item, string parameter, int a, Func<int> length)
     {
-        yield return new Case(item, prefix + "/none", a, -1);
-        if (length >= 1)
-            yield return new Case(item, prefix + "/len-1=" + (length - 1).ToString(CultureInfo.InvariantCulture), a, length - 1);
-        yield return new Case(item, prefix + "/len=" + length.ToString(CultureInfo.InvariantCulture), a, length);
-        yield return new Case(item, prefix + "/len+1=" + (length + 1).ToString(CultureInfo.InvariantCulture), a, length + 1);
+        yield return new Case(item, parameter + CultureSuffix, a);
+        if (CultureSuffix.Length > 0)
+            yield break;
+
+        yield return new Case(item, parameter + ";max=" + VmCeiling.ToString(CultureInfo.InvariantCulture), a, VmCeiling);
+        var n = length();
+        foreach (var max in new[] { n - 1, n, n + 1 })
+        {
+            // The adapter never passes a negative maximum: an empty result has no "one less".
+            if (max >= 0 && max != VmCeiling)
+                yield return new Case(item, parameter + ";max=" + max.ToString(CultureInfo.InvariantCulture), a, max);
+        }
     }
 
     private static UnicodeStatus SMap(string text, bool upper, CaseLanguage language, int maxLength, UnicodeWorkCharge? charge, out string? result) =>
         upper ? SCasing.ToUpperCase(text, language, maxLength, charge, out result) : SCasing.ToLowerCase(text, language, maxLength, charge, out result);
 
+    private static bool IsFamily(Item item, string family) =>
+        item.Class != "U7" || item.Tag.Length == 0 || item.Tag.StartsWith(family + ":", StringComparison.Ordinal);
+
     private static Operation Casing(bool upper)
     {
         IEnumerable<Case> Expand(Item item)
         {
-            for (var language = 0; language < Languages.Length; language++)
+            for (var language = 0; language < 3; language++)
             {
-                SMap(item.Text, upper, (CaseLanguage)language, int.MaxValue, null, out var unlimited);
-                foreach (var c in Limited(item, Languages[language], language, unlimited!.Length))
+                var captured = language;
+                foreach (var c in Limited(item, Languages[language], language, () =>
+                         {
+                             SMap(item.Text, upper, SLanguages[captured], int.MaxValue, null, out var unlimited);
+                             return unlimited!.Length;
+                         }))
+                {
                     yield return c;
+                }
+            }
+
+            if (item.Tag is "cell:C7" or "cell:C9")
+            {
+                for (var locale = 3; locale < Languages.Length; locale++)
+                    yield return new Case(item, Languages[locale] + CultureSuffix, locale);
             }
         }
 
         Result SForV(Case c)
         {
             var meter = new Meter();
-            var language = (CaseLanguage)c.A;
+            var language = SLanguages[c.A];
             var extra = LanguagePassCharge(c.Item.Text, language);
             if (extra > 0)
                 meter.Charge(extra);
             var status = SMap(c.Item.Text, upper, language, c.B < 0 ? VmCeiling : c.B, meter.Charge, out var result);
-            return (status == UnicodeStatus.Success ? Result.Text(result!) : Result.Refused("RangeError")).WithCharge(meter.Total);
+            return (status == UnicodeStatus.Success ? Result.Text(result!) : Result.Over).WithCharge(meter.Total);
         }
 
         Result SForJ(Case c)
         {
-            SMap(c.Item.Text, upper, (CaseLanguage)c.A, int.MaxValue, null, out var result);
+            SMap(c.Item.Text, upper, SLanguages[c.A], int.MaxValue, null, out var result);
             return Result.Text(result!);
         }
 
         Result? VCase(Case c)
         {
+            // Arm V is called with a maximum only: Broiler.VM's ceiling, or a U7 limit.
+            if (c.A >= 3 || c.B < 0)
+                return null;
+
             var engine = new V.JsEngine();
-            var ceiling = c.B < 0 ? VmCeiling : c.B;
+            var ceiling = c.B;
             try
             {
                 var result = c.A == 0
@@ -813,7 +1022,7 @@ internal static class Arms
             }
             catch (V.JsThrow error)
             {
-                return Result.Refused(error.Kind).WithCharge(engine.Charged);
+                return VRefusal(error).WithCharge(engine.Charged);
             }
         }
 
@@ -823,11 +1032,13 @@ internal static class Arms
                 return null;
 
             var text = c.Item.Text;
+            var culture = CultureInfo.CurrentCulture;
             return Result.Text(c.A switch
             {
                 0 => upper ? JS.JSString.ToUpperCase(text) : JS.JSString.ToLowerCase(text),
-                1 => upper ? JS.JSString.ToLocaleUpperCase(text, "tr", CultureInfo.CurrentCulture) : JS.JSString.ToLocaleLowerCase(text, "tr", CultureInfo.CurrentCulture),
-                _ => upper ? JS.JSString.ToLocaleUpperCase(text, "lt", CultureInfo.CurrentCulture) : JS.JSString.ToLocaleLowerCase(text, "lt", CultureInfo.CurrentCulture),
+                1 => upper ? JS.JSString.ToLocaleUpperCase(text, "tr", culture) : JS.JSString.ToLocaleLowerCase(text, "tr", culture),
+                2 => upper ? JS.JSString.ToLocaleUpperCase(text, "lt", culture) : JS.JSString.ToLocaleLowerCase(text, "lt", culture),
+                _ => upper ? JS.JSString.ToLocaleUpperCase(text, Languages[c.A], culture) : JS.JSString.ToLocaleLowerCase(text, Languages[c.A], culture),
             });
         }
 
@@ -842,17 +1053,21 @@ internal static class Arms
                 : JS.JSString.ToLocaleLowerCase(text, null, CultureInfo.CurrentCulture));
         }
 
-        var name = upper ? "toUpperCase" : "toLowerCase";
         var member = upper ? "Upper" : "Lower";
-        return new(name, ["U1", "U3", "U7"], Expand,
+        return new(upper ? "upper" : "lower", ["U3", "U7"], Expand,
         [
             new("V", "JsRealm.StringChangeCase and TransformCase", VCase, SForV, "S/V"),
-            new("J", $"JSString.To{member}Case and ToLocale{member}Case(tr, lt)", JCase, SForJ, "S/J"),
+            new("J", $"JSString.To{member}Case and ToLocale{member}Case(locale)", JCase, SForJ, "S/J"),
             new("J", $"JSString.ToLocale{member}Case(undefined)", JNoLocale, SForJ, "S/J"),
-        ]);
+        ],
+        static item => IsFamily(item, "casing"));
     }
 
-    // ---- U1, U4, U7: normalization --------------------------------------------------------------
+    /// <summary>Arm V's refusal: its RangeError "Invalid string length" is the ceiling's, the kind S's LimitExceeded is.</summary>
+    private static Result VRefusal(V.JsThrow error) =>
+        error.Kind == "RangeError" && error.Message == "Invalid string length" ? Result.Over : Result.Exception(error.Kind);
+
+    // ---- U4, U7: normalization ------------------------------------------------------------------
 
     private static Operation Normalize()
     {
@@ -860,9 +1075,15 @@ internal static class Arms
         {
             for (var form = 0; form < Forms.Length; form++)
             {
-                SNormalization.Transform(item.Text, (NormalForm)form, int.MaxValue, null, out var unlimited);
-                foreach (var c in Limited(item, Forms[form], form, unlimited!.Length))
+                var captured = form;
+                foreach (var c in Limited(item, Forms[form], form, () =>
+                         {
+                             SNormalization.Transform(item.Text, (NormalForm)captured, int.MaxValue, null, out var unlimited);
+                             return unlimited!.Length;
+                         }))
+                {
                     yield return c;
+                }
             }
         }
 
@@ -870,7 +1091,7 @@ internal static class Arms
         {
             var meter = new Meter();
             var status = SNormalization.Transform(c.Item.Text, (NormalForm)c.A, c.B < 0 ? VmCeiling : c.B, meter.Charge, out var result);
-            return (status == UnicodeStatus.Success ? Result.Text(result!) : Result.Refused("RangeError")).WithCharge(meter.Total);
+            return (status == UnicodeStatus.Success ? Result.Text(result!) : Result.Over).WithCharge(meter.Total);
         }
 
         static Result SForJ(Case c)
@@ -881,16 +1102,20 @@ internal static class Arms
 
         static Result? VNormalize(Case c)
         {
-            var planted = NegativeControl && c.Item.Class.StartsWith("U4", StringComparison.Ordinal) && c.Item.Line == 1 && c.Parameter == PlantedVParameter;
+            // Arm V is called with a maximum only: Broiler.VM's ceiling, or a U7 limit.
+            if (c.B < 0)
+                return null;
+
+            var planted = NegativeControl && c.Item.Class == "U4" && c.Item.Line == 1 && c.Parameter == PlantedVParameter;
             var engine = new V.JsEngine(planted);
             try
             {
-                var result = V.JsRealm.NormalizeBuiltIn(engine, c.Item.Text, Forms[c.A], c.B < 0 ? VmCeiling : c.B);
+                var result = V.JsRealm.NormalizeBuiltIn(engine, c.Item.Text, Forms[c.A], c.B);
                 return Result.Text(result).WithCharge(engine.Charged);
             }
             catch (V.JsThrow error)
             {
-                return Result.Refused(error.Kind).WithCharge(engine.Charged);
+                return VRefusal(error).WithCharge(engine.Charged);
             }
         }
 
@@ -898,15 +1123,16 @@ internal static class Arms
 
         static Result? JCollator(Case c) => c.B >= 0 || c.A != 1 ? null : Result.Text(JS.JSString.CollatorNormalize(c.Item.Text));
 
-        return new("normalize", ["U1", "U4", "U7"], Expand,
+        return new("normalize", ["U4", "U7"], Expand,
         [
             new("V", "JsRealm.NormalizeText", VNormalize, SForV, "S/V"),
             new("J", "JSString.Normalize", JNormalize, SForJ, "S/J"),
             new("J", "JSIntlCollator.Compare's NFD", JCollator, SForJ, "S/J"),
-        ]);
+        ],
+        static item => IsFamily(item, "normalization"));
     }
 
-    /// <summary>A meter: every charge S's or arm V's work makes, recorded, and their total.</summary>
+    /// <summary>A meter: the total of every charge S's work makes.</summary>
     private sealed class Meter
     {
         public ulong Total { get; private set; }
@@ -941,25 +1167,32 @@ internal static class Arms
         return boundaries;
     }
 
-    /// <summary>Each word segment's status, on S's word segments: isWordLike in each arm against S's status != None.</summary>
+    /// <summary>
+    /// The word status, on S's word segments: Y or N per segment, in order, as the arbiter writes it; S's Y is
+    /// a status other than None, and each arm's its isWordLike on the same segment.
+    /// </summary>
     private static Operation WordStatuses() => new(
-        "word-status", ["U6"],
-        static item =>
-        {
-            var boundaries = SSegmenter.Boundaries(item.Text, SegmentGranularity.Word, null);
-            return Enumerable.Range(0, Math.Max(0, boundaries.Length - 1)).Select(i => new Case(
-                item,
-                boundaries[i].ToString(CultureInfo.InvariantCulture) + "-" + boundaries[i + 1].ToString(CultureInfo.InvariantCulture),
-                boundaries[i],
-                boundaries[i + 1]));
-        },
+        "word-status", ["U6"], Once,
         [
-            new("V", "JsSegmentation.IsWordLike", static c => Result.Bool(V.JsSegmentation.IsWordLike(new V.JsEngine().Intl!.Breaks, c.Item.Text, c.A, c.B)),
-                SWordLike, "S"),
-            new("J", "JSIntlSegments.IsWordLike", static c => Result.Bool(JI.JSIntlSegments.IsWordLike(c.Item.Text.Substring(c.A, c.B - c.A))),
-                SWordLike, "S"),
+            new("V", "JsSegmentation.IsWordLike", static c =>
+                {
+                    var breaks = new V.JsEngine().Intl!.Breaks;
+                    return Statuses(c.Item.Text, (start, end) => V.JsSegmentation.IsWordLike(breaks, c.Item.Text, start, end));
+                },
+                SStatuses, "S"),
+            new("J", "JSIntlSegments.IsWordLike", static c => Statuses(c.Item.Text, (start, end) => JI.JSIntlSegments.IsWordLike(c.Item.Text.Substring(start, end - start))),
+                SStatuses, "S"),
         ]);
 
-    private static Result SWordLike(Case c) =>
-        Result.Bool(SSegmenter.GetWordStatus(c.Item.Text.AsSpan(c.A, c.B - c.A), null) != WordStatus.None);
+    private static Result SStatuses(Case c) =>
+        Statuses(c.Item.Text, (start, end) => SSegmenter.GetWordStatus(c.Item.Text.AsSpan(start, end - start), null) != WordStatus.None);
+
+    private static Result Statuses(string text, Func<int, int, bool> wordLike)
+    {
+        var boundaries = SSegmenter.Boundaries(text, SegmentGranularity.Word, null);
+        var built = new StringBuilder(boundaries.Length);
+        for (var i = 0; i + 1 < boundaries.Length; i++)
+            built.Append(wordLike(boundaries[i], boundaries[i + 1]) ? 'Y' : 'N');
+        return Result.Plain(built.ToString());
+    }
 }

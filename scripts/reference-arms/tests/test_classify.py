@@ -7,6 +7,7 @@ import gzip
 import json
 import sys
 import tempfile
+import unicodedata
 import unittest
 from pathlib import Path
 
@@ -16,6 +17,9 @@ if str(HERE) not in sys.path:
 
 import classify_reference_arms as C  # noqa: E402
 import unicoderef as U  # noqa: E402
+
+# The classifier's main() reads the host's Unicode version from the run; the row tests call classify() directly.
+C.HOST_UNICODE[:] = [unicodedata.unidata_version]
 
 
 def ucd() -> U.UCD:
@@ -99,10 +103,59 @@ class RowTests(unittest.TestCase):
         self.assertEqual(("unclassified", "-", "-"), verdict("charge", "0041", "NFC", "V-control", "1", "2", "U4"))
 
 
+class RevisionTwoTests(unittest.TestCase):
+    """The rows revision 2 adds, each on a line of the first judged run, and the lines they must not take."""
+
+    def test_charges_inside_row_n6(self) -> None:
+        # U+00A8's NFKD is two code points, longer than the maximum of 1: arm V refused after charging 1, and S
+        # charged 1, then 1 + 3 * 2.
+        self.assertEqual(("(a)", "N6", "no"), verdict("charge", "00A8", "normalize NFKC;max=1", "V", "8", "1", "U4"))
+        self.assertEqual(("(a)", "N6", "no"), verdict("charge", "0061 DC00 0301", "normalize NFC;max=2", "V", "15", "3", "U4"))
+        giant_input = "repeat:0065 0301:8388608:0061"
+        self.assertEqual(("(a)", "N6", "no"), verdict("charge", giant_input, "normalize NFC;max=16777216", "V", "83886085", "16777217", "U7"))
+        # Not row N7's units, a decomposed form, a decomposition that fits, or no maximum: class (c).
+        self.assertEqual(("(c)", "-", "-"), verdict("charge", "00A8", "normalize NFKC;max=1", "V", "9", "1", "U4"))
+        self.assertEqual(("(c)", "-", "-"), verdict("charge", "00A8", "normalize NFKD;max=1", "V", "8", "1", "U4"))
+        self.assertEqual(("(c)", "-", "-"), verdict("charge", "00A8", "normalize NFKC;max=2", "V", "8", "1", "U4"))
+        self.assertEqual(("(c)", "-", "-"), verdict("charge", "00A8", "normalize NFKC", "V", "8", "1", "U4"))
+
+    def test_casing_from_the_host_s_data(self) -> None:
+        # U+1ACF is Case_Ignorable at Unicode 17 and unknown to the host's data.
+        self.assertEqual(("(a')", "C2", "no"), verdict("lower", "0041 1ACF 03A3", "default", "J", "0061 1ACF 03C2", "0061 1ACF 03C3"))
+        # U+A7CE is mapped by a hand patch but not Cased in the host's data.
+        self.assertEqual(("(a')", "C2", "no"), verdict("lower", "0041 A7CE 03A3", "default", "J", "0061 A7CF 03C2", "0061 A7CF 03C3"))
+        self.assertEqual(("(a')", "C3", "no"), verdict("lower", "0041 D81B DEA0 03A3", "default", "J", "0061 D81B DEBB 03C2", "0061 D81B DEA0 03C3"))
+        self.assertEqual(("(a)", "C4", "no"), verdict("lower", "0041 A7CE 03A3", "turkic", "J", "0061 A7CF 03C2", "0061 A7CE 03C3"))
+        # Row C4 with Final_Sigma's Cased read as row C1 reads it: U+216F is Cased but Nl.
+        self.assertEqual(("(a)", "C4", "no"), verdict("lower", "DB40 DD9F D803 DD61 03A3 216F 0307", "turkic", "J",
+                                                      "DB40 DD9F D803 DD81 03C3 217F 0307", "DB40 DD9F D803 DD61 03C2 217F 0307"))
+        # No code point newer than the host's data: still row C2's approximation, class (c).
+        self.assertEqual(("(c)", "C2", "no"), verdict("lower", "0391 03A3 00AD", "default", "J", "03B1 03C2 00AD", "03B1 03C3 00AD"))
+
+    def test_row_c6_s_contexts(self) -> None:
+        # U+0903 is a mark of class 0, which ends After_Soft_Dotted and After_I.
+        self.assertEqual(("(a)", "C6", "no"), verdict("upper", "0069 0903 0307", "lithuanian", "J", "0049 0903 0307", "0049 0903"))
+        self.assertEqual(("(a)", "C6", "no"), verdict("lower", "0049 0903 0307", "turkic", "J", "0131 0903 0307", "0069 0903"))
+        # Not a casing context's difference.
+        self.assertEqual(("(c)", "-", "yes"), verdict("upper", "0069 0903 0307", "lithuanian", "J", "0049 0903 0307", "0049"))
+
+    def test_normalization(self) -> None:
+        self.assertEqual(("(a)", "N1", "no"), verdict("normalize", "FFFE", "NFC", "J", "FFFE", "exception:ArgumentException", "U4"))
+        # A starter first: version 1 composed nothing with it.
+        self.assertEqual(("(a')", "N2", "no"), verdict("normalize", "1111 1169 D835 DD72 0F71 D833 DCF4 0618 D835 DE04", "NFKC", "J",
+                                                       "D3EC 0047 0F71 0034 0618 0077", "D3EC 0047 0F71 D833 DCF4 0618 0077", "U4"))
+        # Two code points the host's data does not know.
+        self.assertEqual(("(a')", "N2", "no"), verdict("normalize", "0322 D833 DCEC 1EA1 0F75 D81B DD69 3068", "NFKD", "J",
+                                                       "0322 0057 0061 0F71 0F74 0323 D81B DD63 D81B DD67 3068",
+                                                       "0322 D833 DCEC 0061 0F71 0F74 0323 D81B DD69 3068", "U4"))
+
+
 class OutputTests(unittest.TestCase):
-    def run_classifier(self, lines: list[str]) -> tuple[int, Path, tempfile.TemporaryDirectory]:
+    def run_classifier(self, lines: list[str], host: str | None = None) -> tuple[int, Path, tempfile.TemporaryDirectory]:
         directory = tempfile.TemporaryDirectory()
         run = Path(directory.name)
+        (run / "summary.json").write_text(json.dumps({"host": {"icuUnicodeVersion": host or unicodedata.unidata_version}}),
+                                          encoding="utf-8")
         with gzip.open(run / "differences.tsv.gz", "wt", encoding="utf-8", newline="\n") as stream:
             stream.write("".join(line + "\n" for line in lines))
         return C.main(["--run", str(run)]), run, directory
@@ -126,6 +179,12 @@ class OutputTests(unittest.TestCase):
         status, run, directory = self.run_classifier(["charge\tU3\t0041\tupper/default\tV\t12\t13"])
         with directory:
             self.assertEqual(1, status)
+
+    def test_a_python_of_another_unicode_version_is_refused(self) -> None:
+        status, run, directory = self.run_classifier(["word-status\tU6\t005F\t-\tJ\tN\tY"], host="9.0.0")
+        with directory:
+            self.assertEqual(2, status)
+            self.assertFalse((run / "classification.json").exists())
 
     def test_recorded_answers_are_checked(self) -> None:
         line = "lower\tU3\t00AA 03A3\tdefault\tJ\t00AA 03C2\t00AA 03C3"

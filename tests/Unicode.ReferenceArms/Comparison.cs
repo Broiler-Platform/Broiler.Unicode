@@ -29,9 +29,12 @@ internal sealed record RunOptions(string Mode, long? LineLimit, IReadOnlySet<str
 /// <remarks>
 /// <para>
 /// <b>Output.</b> <c>differences.tsv.gz</c> holds one line per case and variant whose answer differs from
-/// S's, <c>operation TAB class TAB input TAB parameter TAB arm TAB S's result TAB the arm's result</c>, in the
-/// order of the operations, then of their classes, then of the inputs in their files (U1 in code point
-/// order), then of each input's parameters, then of the variants: the same population gives the same bytes.
+/// S's, <c>operation TAB class TAB input TAB parameter TAB arm TAB S's result TAB the arm's result</c>, and for
+/// casing and normalization against arm V one line <c>charge TAB class TAB input TAB operation parameter TAB
+/// arm TAB S's total TAB arm V's total</c> per case whose charges differ, in the notation
+/// scripts/reference-arms/README.md fixes. The lines follow the order of the operations, then of their classes,
+/// then of the inputs in their files (U1 in code point order), then of each input's parameters, then of the
+/// variants, each answer's line before its charge's: the same population gives the same bytes.
 /// <c>summary.json</c> holds the counts per operation, class and variant, the run's environment, the
 /// population's manifest and its digest, the listing's line count and SHA-256, and what each arm does not
 /// implement. README.md documents the notation.
@@ -50,6 +53,10 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
 
     private const int AloneLength = 1 << 20;
 
+    private const string PlantedV = "V-control: charge of normalize, U4 line 1, NFC;max=16777216, one unit more on its first charge";
+
+    private const string PlantedJ = "J-control: lexical IdentifierStartChar, U1 0041, CharExtensions.IsIdentifierStart negated";
+
     /// <summary>The planted differences of the negative control, and whether the listing holds each.</summary>
     private readonly Dictionary<string, bool> planted = new(StringComparer.Ordinal);
 
@@ -60,8 +67,8 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
         var clock = Stopwatch.StartNew();
         if (options.Mode == "negative-control")
         {
-            planted["V: normalize, U4 line 1, NFC/none, one unit more on the first charge"] = false;
-            planted["J: IdentifierStart, U1 U+0041, CharExtensions.IsIdentifierStart negated"] = false;
+            planted[PlantedV] = false;
+            planted[PlantedJ] = false;
         }
 
         var summary = new List<Dictionary<string, object?>>();
@@ -89,9 +96,11 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                     foreach (var chunk in Chunks(name))
                         RunChunk(operation, chunk, counters, Write);
 
-                    var line = $"{operation.Name} {name}: {counters.Inputs} inputs, {counters.Cases} cases, " +
-                               string.Join(", ", operation.Variants.Select((v, i) => $"{v.Label} {counters.Differ[i]} of {counters.Ran[i]} differ ({counters.NotCalled[i]} not called)")) +
-                               $" ({operationClock.Elapsed.TotalSeconds:F1} s)";
+                    var line = string.Create(CultureInfo.InvariantCulture, $"{operation.Name} {name}: {counters.Inputs} inputs, {counters.Cases} cases, ") +
+                               string.Join(", ", operation.Variants.Select((v, i) => string.Create(CultureInfo.InvariantCulture, $"{v.Label} {counters.Differ[i]} of {counters.Ran[i]} differ") +
+                                   (counters.ChargesCompared[i] > 0 ? string.Create(CultureInfo.InvariantCulture, $", charge {counters.ChargeDiffer[i]} of {counters.ChargesCompared[i]}") : string.Empty) +
+                                   string.Create(CultureInfo.InvariantCulture, $" ({counters.NotCalled[i]} not called)"))) +
+                               string.Create(CultureInfo.InvariantCulture, $" ({counters.NotTaken} not taken; {operationClock.Elapsed.TotalSeconds:F1} s)");
                     log.WriteLine(line);
                     log.Flush();
 
@@ -99,6 +108,11 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                     {
                         var key = operation.Name + "\t" + operation.Variants[i].Label;
                         totals[key] = totals.GetValueOrDefault(key) + counters.Differ[i];
+                        if (counters.ChargesCompared[i] > 0)
+                        {
+                            var charge = "charge (" + operation.Name + ")\t" + operation.Variants[i].Label;
+                            totals[charge] = totals.GetValueOrDefault(charge) + counters.ChargeDiffer[i];
+                        }
                     }
 
                     summary.Add(new Dictionary<string, object?>
@@ -106,6 +120,7 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                         ["operation"] = operation.Name,
                         ["class"] = name,
                         ["inputs"] = counters.Inputs,
+                        ["notTaken"] = counters.NotTaken,
                         ["cases"] = counters.Cases,
                         ["sharedRuns"] = counters.SharedRuns,
                         ["seconds"] = Math.Round(operationClock.Elapsed.TotalSeconds, 1),
@@ -115,6 +130,8 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                             ["variant"] = v.Name,
                             ["ran"] = counters.Ran[i],
                             ["differ"] = counters.Differ[i],
+                            ["chargesCompared"] = counters.ChargesCompared[i],
+                            ["chargeDiffer"] = counters.ChargeDiffer[i],
                             ["notCalled"] = counters.NotCalled[i],
                         }).ToList(),
                     });
@@ -140,7 +157,7 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                 ["manifestSha256"] = population.ManifestDigest,
                 ["manifest"] = population.ManifestText is { } text ? JsonDocument.Parse(text).RootElement : null,
                 ["files"] = population.Files,
-                ["U1"] = "implicit: every code point from U+0000 to U+10FFFF, in every code point operation, and alone in casing, normalization and the properties of strings",
+                ["U1"] = "implicit: every code point from U+0000 to U+10FFFF, in every code point operation and in the properties of strings; casing.tsv and normalization.tsv hold every code point alone (tag alone)",
             },
             ["names"] = new Dictionary<string, object?>
             {
@@ -181,7 +198,7 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
             Path.Combine(outputDirectory, "summary.json"),
             JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true }) + "\n",
             new UTF8Encoding(false));
-        log.WriteLine($"{lines} differences; listing sha256 {listingDigest}; {clock.Elapsed.TotalSeconds:F0} s");
+        log.WriteLine(string.Create(CultureInfo.InvariantCulture, $"{lines} differences; listing sha256 {listingDigest}; {clock.Elapsed.TotalSeconds:F0} s"));
         foreach (var (plant, found) in planted)
             log.WriteLine($"negative control: {plant}: {(found ? "reported as a difference" : "NOT reported")}");
     }
@@ -224,7 +241,7 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
     {
         var width = operation.Variants.Length;
         var rows = new List<string>?[chunk.Count];
-        var counts = new long[chunk.Count, (3 * width) + 2];
+        var counts = new long[chunk.Count, (5 * width) + 3];
         var sharedKeys = operation.Variants.Select(static v => v.SharedKey).Distinct(StringComparer.Ordinal).ToArray();
         var sharedIndex = operation.Variants.Select(v => Array.IndexOf(sharedKeys, v.SharedKey)).ToArray();
         var options = new ParallelOptions { MaxDegreeOfParallelism = chunk.Count == 1 ? 1 : Environment.ProcessorCount };
@@ -232,6 +249,12 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
         Parallel.For(0, chunk.Count, options, at =>
         {
             var item = chunk[at];
+            if (operation.Takes is { } takes && !takes(item))
+            {
+                counts[at, (3 * width) + 2]++;
+                return;
+            }
+
             var shared = new Result?[sharedKeys.Length];
             foreach (var input in operation.Expand(item))
             {
@@ -249,19 +272,33 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
 
                     if (shared[sharedIndex[v]] is not { } expected)
                     {
-                        expected = Arms.Safe(c => variant.Shared(c), input) ?? Result.Refused("null");
+                        expected = Arms.Safe(c => variant.Shared(c), input) ?? Result.Exception("null");
                         shared[sharedIndex[v]] = expected;
                         counts[at, (3 * width) + 1]++;
                     }
 
                     counts[at, 3 * v]++;
-                    if (answer != expected)
+                    if (answer.Answer != expected.Answer)
                     {
                         counts[at, (3 * v) + 1]++;
                         (rows[at] ??= []).Add(string.Join('\t',
-                            operation.Name, item.Class, item.Shown, input.Parameter, variant.Label, expected.Render(), answer.Render()));
+                            operation.Name, item.Class, item.Shown, input.Parameter, variant.Label, expected.Render(item), answer.Render(item)));
                         if (planted.Count > 0)
-                            Plant(operation, input, variant);
+                            Plant(operation.Name, input, variant);
+                    }
+
+                    if (answer.Charge >= 0 && expected.Charge >= 0)
+                    {
+                        counts[at, (3 * width) + 3 + (2 * v)]++;
+                        if (answer.Charge != expected.Charge)
+                        {
+                            counts[at, (3 * width) + 4 + (2 * v)]++;
+                            (rows[at] ??= []).Add(string.Join('\t',
+                                "charge", item.Class, item.Shown, operation.Name + " " + input.Parameter, variant.Label,
+                                expected.Charge.ToString(CultureInfo.InvariantCulture), answer.Charge.ToString(CultureInfo.InvariantCulture)));
+                            if (planted.Count > 0)
+                                Plant("charge", input, variant);
+                        }
                     }
                 }
             }
@@ -269,6 +306,12 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
 
         for (var at = 0; at < chunk.Count; at++)
         {
+            if (counts[at, (3 * width) + 2] > 0)
+            {
+                counters.NotTaken++;
+                continue;
+            }
+
             counters.Inputs++;
             counters.Cases += counts[at, 3 * width];
             counters.SharedRuns += counts[at, (3 * width) + 1];
@@ -277,6 +320,8 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
                 counters.Ran[v] += counts[at, 3 * v];
                 counters.Differ[v] += counts[at, (3 * v) + 1];
                 counters.NotCalled[v] += counts[at, (3 * v) + 2];
+                counters.ChargesCompared[v] += counts[at, (3 * width) + 3 + (2 * v)];
+                counters.ChargeDiffer[v] += counts[at, (3 * width) + 4 + (2 * v)];
             }
 
             if (rows[at] is { } found)
@@ -288,27 +333,30 @@ internal sealed class Comparison(Population population, IReadOnlyList<Operation>
     }
 
     /// <summary>Marks a planted change of the negative control as reported, when this difference is it.</summary>
-    private void Plant(Operation operation, Case input, Variant variant)
+    private void Plant(string operation, Case input, Variant variant)
     {
         lock (planted)
         {
-            if (operation.Name == "normalize" && variant.Arm == "V" && input.Item.Class.StartsWith("U4", StringComparison.Ordinal)
+            if (operation == "charge" && variant.Arm == Arms.ControlV && input.Item.Class == "U4"
                 && input.Item.Line == 1 && input.Parameter == Arms.PlantedVParameter)
-                planted["V: normalize, U4 line 1, NFC/none, one unit more on the first charge"] = true;
+                planted[PlantedV] = true;
 
-            if (operation.Name == "IdentifierStart" && variant.Name == "CharExtensions.IsIdentifierStart"
+            if (operation == "lexical" && variant.Arm == Arms.ControlJ && input.Parameter == Arms.LexicalSets[0]
                 && input.Item.Class == "U1" && input.Item.CodePoint == Arms.PlantedJCodePoint)
-                planted["J: IdentifierStart, U1 U+0041, CharExtensions.IsIdentifierStart negated"] = true;
+                planted[PlantedJ] = true;
         }
     }
 
     private sealed class Counters(int variants)
     {
         public long Inputs;
+        public long NotTaken;
         public long Cases;
         public long SharedRuns;
         public readonly long[] Ran = new long[variants];
         public readonly long[] Differ = new long[variants];
         public readonly long[] NotCalled = new long[variants];
+        public readonly long[] ChargesCompared = new long[variants];
+        public readonly long[] ChargeDiffer = new long[variants];
     }
 }
