@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The owner's code package of the shared JavaScript libraries programme's Unicode area (milestone
+    SJL-7, Broiler.VM's JSD-0074): exact property lookups, the ECMAScript lexical classes, case
+    folding, case mapping, normalization and the properties of strings, each reading its tables
+    through IUnicodeTables. It carries no table: each engine embeds the tables
+    Broiler.Unicode.Generation writes and passes them in (decision SJL-D-6 (c)).
+    It is held to the programme's conventions (docs/conventions.md).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Broiler.Unicode.Algorithms</RootNamespace>
+    <AssemblyName>Broiler.Unicode.Algorithms</AssemblyName>
+    <PackageId>Broiler.Unicode.Algorithms</PackageId>
+    <Description>Unicode 17.0.0 algorithms for ECMAScript engines over tables the caller supplies: exact property lookups, lexical classes, case folding, case mapping, normalization and properties of strings, with caller-owned metering and result limits.</Description>
+    <PackageTags>broiler;unicode;ecmascript;normalization;casing;properties</PackageTags>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <NoWarn>$([System.String]::Copy('$(NoWarn)').Replace('CS1591', ''))</NoWarn>
+  </PropertyGroup>
+
+</Project>

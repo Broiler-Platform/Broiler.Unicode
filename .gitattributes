@@ -1,0 +1,25 @@
+# Line endings of the shared JavaScript libraries programme's work in this repository (milestone
+# SJL-7, convention 17: LF line endings under .gitattributes), added on 2026-10-16. Files that existed
+# before keep the endings they were committed with; these lines name only what SJL-7 adds.
+
+# THE PINNED UNICODE ARCHIVE IS BINARY. Its files are held by their SHA-256 in
+# data/unicode/pins/unicode.pin, and a checkout filter that rewrote one line ending would move a hash
+# on one platform. The pin and the archive's README stay text: nothing hashes them.
+data/unicode/pins/ucd-17.0.0/** binary
+data/unicode/pins/emoji-17.0.0/** binary
+data/unicode/pins/ecma262/** binary
+data/unicode/pins/unicode-LICENSE.txt binary
+data/unicode/pins/unicode.pin text eol=lf
+data/unicode/pins/README.md text eol=lf
+
+# The projects SJL-7 adds, their tests and probe, and the documents of the programme.
+src/Unicode.Algorithms/** text eol=lf
+src/Unicode.Segmentation/** text eol=lf
+src/Unicode.Tables/** text eol=lf
+src/Unicode.Generation/** text eol=lf
+tests/Unicode.Algorithms.Tests/** text eol=lf
+tests/Unicode.Architecture.Tests/** text eol=lf
+probes/** text eol=lf
+docs/** text eol=lf
+.gitattributes text eol=lf
+data/unicode/pins/broiler-vm/** text eol=lf

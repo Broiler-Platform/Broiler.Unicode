@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The owner's own embedding of the generated Unicode tables (milestone SJL-7, decision SJL-D-6 (c)):
+    the tables Broiler.Unicode.Generation writes from the pinned archive, as spans over constant data,
+    and an IUnicodeTables over them. For this repository's tests and Native AOT probe and for consumers
+    other than the engines: neither engine references a package that carries tables, and each embeds
+    its own from its own pin.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Broiler.Unicode.Tables</RootNamespace>
+    <AssemblyName>Broiler.Unicode.Tables</AssemblyName>
+    <PackageId>Broiler.Unicode.Tables</PackageId>
+    <Description>The Unicode 17.0.0 tables Broiler.Unicode.Algorithms and Broiler.Unicode.Segmentation read, generated from the pinned Unicode Character Database, with a provider over them.</Description>
+    <PackageTags>broiler;unicode;tables;ucd</PackageTags>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <NoWarn>$([System.String]::Copy('$(NoWarn)').Replace('CS1591', ''))</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+  </ItemGroup>
+
+</Project>

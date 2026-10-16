@@ -10,10 +10,15 @@
     <Project Path="src/UnicodeCldr.LocaleData.Generator/UnicodeCldr.LocaleData.Generator.csproj" />
     <Project Path="src/UnicodeCldr.LocaleData.DataTool/UnicodeCldr.LocaleData.DataTool.csproj" />
     <Project Path="src/UnicodeProperties/UnicodeProperties.csproj" />
+    <Project Path="src/Unicode.Algorithms/Unicode.Algorithms.csproj" />
+    <Project Path="src/Unicode.Segmentation/Unicode.Segmentation.csproj" />
+    <Project Path="src/Unicode.Tables/Unicode.Tables.csproj" />
+    <Project Path="src/Unicode.Generation/Unicode.Generation.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/UnicodeEmoji.StringProperties.Tests/UnicodeEmoji.StringProperties.Tests.csproj" />
     <Project Path="tests/UnicodeCldr.LocaleData.Tests/UnicodeCldr.LocaleData.Tests.csproj" />
     <Project Path="tests/UnicodeProperties.Tests/UnicodeProperties.Tests.csproj" />
+    <Project Path="tests/Unicode.Algorithms.Tests/Unicode.Algorithms.Tests.csproj" />
   </Folder>
 </Solution>
