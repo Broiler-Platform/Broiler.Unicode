@@ -1,0 +1,711 @@
+{
+  "what": "the run cells of correspondence rows C1-C11, N1-N7, S1-S3 and G1-G7: every input marked (run), with the row and the line it came from",
+  "source": {
+    "repository": "Broiler.VM",
+    "path": "docs/evidence/sjl-7-001/correspondence.md",
+    "read_at": "7b44dc7",
+    "git_blob": "16bcad4fe44be0e3cb9d7adcdef9d7874fa76503",
+    "sha256": "aee310074195ac9d88776ddb9d983fa92e09611abcdec087e0eebd8b246baacb"
+  },
+  "fields": {
+    "row": "the correspondence's row",
+    "line": "the source line, 1-based",
+    "quote": "the input as the line writes it, verbatim",
+    "family": "the population file it goes into: casing, normalization, string-properties, segmentation or names",
+    "units": "the text as UTF-16 code units in hexadecimal (authoritative); null for a name",
+    "operation": "what the row ran (informative: the harness runs every operation of the family)",
+    "parameter": "the language, form, property or lookup the row ran it with (informative); null where the row names none"
+  },
+  "cells": [
+    {
+      "row": "C1",
+      "line": 174,
+      "quote": "`'ªΣ'.toLowerCase()`",
+      "family": "casing",
+      "units": "00AA 03A3",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C1",
+      "line": 174,
+      "quote": "`'ºΣ'.toLowerCase()`",
+      "family": "casing",
+      "units": "00BA 03A3",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C2",
+      "line": 175,
+      "quote": "`'ΑΣ\\'Α'`",
+      "family": "casing",
+      "units": "0391 03A3 0027 0391",
+      "operation": "lower",
+      "parameter": "default",
+      "note": "the source's \\' is JavaScript's escape of the apostrophe"
+    },
+    {
+      "row": "C2",
+      "line": 175,
+      "quote": "`'ΑΣ.Α'`",
+      "family": "casing",
+      "units": "0391 03A3 002E 0391",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C2",
+      "line": 175,
+      "quote": "`'ΑΣ·Α'`",
+      "family": "casing",
+      "units": "0391 03A3 00B7 0391",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C2",
+      "line": 175,
+      "quote": "`'ΑΣʰ'`",
+      "family": "casing",
+      "units": "0391 03A3 02B0",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+1C89",
+      "family": "casing",
+      "units": "1C89",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+A7CB",
+      "family": "casing",
+      "units": "A7CB",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+A7CE",
+      "family": "casing",
+      "units": "A7CE",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+A7CF",
+      "family": "casing",
+      "units": "A7CF",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+A7DC",
+      "family": "casing",
+      "units": "A7DC",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+019B",
+      "family": "casing",
+      "units": "019B",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+10D50",
+      "family": "casing",
+      "units": "D803 DD50",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "`ß`",
+      "family": "casing",
+      "units": "00DF",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "`İ`",
+      "family": "casing",
+      "units": "0130",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "`ǅ`",
+      "family": "casing",
+      "units": "01C5",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "`ŉ`",
+      "family": "casing",
+      "units": "0149",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+1F80",
+      "family": "casing",
+      "units": "1F80",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+10400",
+      "family": "casing",
+      "units": "D801 DC00",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C3",
+      "line": 176,
+      "quote": "U+1E030",
+      "family": "casing",
+      "units": "D838 DC30",
+      "operation": "upper and lower",
+      "parameter": "default"
+    },
+    {
+      "row": "C4",
+      "line": 177,
+      "quote": "`'Ɤ'.toLocaleLowerCase('tr')`",
+      "family": "casing",
+      "units": "A7CB",
+      "operation": "lower",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C4",
+      "line": 177,
+      "quote": "`'꟎'.toLocaleLowerCase('tr')`",
+      "family": "casing",
+      "units": "A7CE",
+      "operation": "lower",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C5",
+      "line": 178,
+      "quote": "`'\\u{1DF1A}̇'.toLocaleUpperCase('lt')`",
+      "family": "casing",
+      "units": "D837 DF1A 0307",
+      "operation": "upper",
+      "parameter": "lithuanian"
+    },
+    {
+      "row": "C6",
+      "line": 179,
+      "quote": "`'Iः̀'.toLocaleLowerCase('lt')`",
+      "family": "casing",
+      "units": "0049 0903 0300",
+      "operation": "lower",
+      "parameter": "lithuanian"
+    },
+    {
+      "row": "C7",
+      "line": 180,
+      "quote": "`'i'.toLocaleUpperCase(['tr','en'])`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "turkic",
+      "note": "the locale list is ['tr','en']: ECMA-402's TransformCase canonicalizes it and takes tr; the list itself is the adapter's"
+    },
+    {
+      "row": "C8",
+      "line": 181,
+      "quote": "`'i'.toLocaleUpperCase(null)`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "default",
+      "note": "null is refused by the adapter (TypeError); at the library the language is the default; the reading half (no argument on a Turkish host) is arm J's second run under tr-TR"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`'i'.toLocaleUpperCase('tr')`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`('az')`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`('TR')`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`('tr-u-co-search')`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "turkic"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`()`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "default"
+    },
+    {
+      "row": "C9",
+      "line": 182,
+      "quote": "`('x!')`",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": null,
+      "note": "'x!' is not a language tag: the adapter throws RangeError and calls no library member"
+    },
+    {
+      "row": "C10",
+      "line": 183,
+      "quote": "the same in a realm without Intl",
+      "family": "casing",
+      "units": "0069",
+      "operation": "upper",
+      "parameter": "default",
+      "note": "C9's calls in a realm without Intl: the default mapping, the argument unread"
+    },
+    {
+      "row": "C11",
+      "line": 184,
+      "quote": "`'\\uD800a'.toUpperCase()`",
+      "family": "casing",
+      "units": "D800 0061",
+      "operation": "upper",
+      "parameter": "default"
+    },
+    {
+      "row": "C11",
+      "line": 184,
+      "quote": "`'\\uDC00Σ'.toLowerCase()`",
+      "family": "casing",
+      "units": "DC00 03A3",
+      "operation": "lower",
+      "parameter": "default"
+    },
+    {
+      "row": "N1",
+      "line": 204,
+      "quote": "`'\\uD800'.normalize()`",
+      "family": "normalization",
+      "units": "D800",
+      "operation": "normalize",
+      "parameter": "NFC"
+    },
+    {
+      "row": "N1",
+      "line": 204,
+      "quote": "`'a\\uDC00́'.normalize('NFD')`",
+      "family": "normalization",
+      "units": "0061 DC00 0301",
+      "operation": "normalize",
+      "parameter": "NFD"
+    },
+    {
+      "row": "N2",
+      "line": 205,
+      "quote": "`'\\u{105C9}'`",
+      "family": "normalization",
+      "units": "D801 DDC9",
+      "operation": "normalize",
+      "parameter": "NFD"
+    },
+    {
+      "row": "N2",
+      "line": 205,
+      "quote": "`'\\u{11383}'`",
+      "family": "normalization",
+      "units": "D804 DF83",
+      "operation": "normalize",
+      "parameter": "NFD"
+    },
+    {
+      "row": "N2",
+      "line": 205,
+      "quote": "`'\\u{1611E}\\u{1611E}'`",
+      "family": "normalization",
+      "units": "D818 DD1E D818 DD1E",
+      "operation": "normalize",
+      "parameter": "NFC"
+    },
+    {
+      "row": "N2",
+      "line": 205,
+      "quote": "`'\\u{105D2}̇'`",
+      "family": "normalization",
+      "units": "D801 DDD2 0307",
+      "operation": "normalize",
+      "parameter": "NFC"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "`é` to NFD",
+      "family": "normalization",
+      "units": "00E9",
+      "operation": "normalize",
+      "parameter": "NFD"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "`e` U+0301 to NFC",
+      "family": "normalization",
+      "units": "0065 0301",
+      "operation": "normalize",
+      "parameter": "NFC"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+FB01 to NFKC",
+      "family": "normalization",
+      "units": "FB01",
+      "operation": "normalize",
+      "parameter": "NFKC"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "Hangul both ways",
+      "family": "normalization",
+      "units": "D4DB",
+      "operation": "normalize",
+      "parameter": "NFD",
+      "note": "the row names no syllable; U+D4DB is UAX #15's example, chosen here"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "Hangul both ways",
+      "family": "normalization",
+      "units": "1111 1171 11B6",
+      "operation": "normalize",
+      "parameter": "NFC",
+      "note": "U+D4DB's jamo, chosen here"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+0344",
+      "family": "normalization",
+      "units": "0344",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "the row names no form"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+1E9B U+0323 to NFKC",
+      "family": "normalization",
+      "units": "1E9B 0323",
+      "operation": "normalize",
+      "parameter": "NFKC"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "`q` U+0307 U+0323",
+      "family": "normalization",
+      "units": "0071 0307 0323",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "the row names no form"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+FDFA to NFKD",
+      "family": "normalization",
+      "units": "FDFA",
+      "operation": "normalize",
+      "parameter": "NFKD"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+1D15E",
+      "family": "normalization",
+      "units": "D834 DD5E",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "the row names no form"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+0F73",
+      "family": "normalization",
+      "units": "0F73",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "the row names no form"
+    },
+    {
+      "row": "N4",
+      "line": 207,
+      "quote": "U+16D67",
+      "family": "normalization",
+      "units": "D81B DD67",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "the row names no form"
+    },
+    {
+      "row": "N5",
+      "line": 208,
+      "quote": "`'a'.normalize('nfc')`",
+      "family": "normalization",
+      "units": "0061",
+      "operation": "normalize",
+      "parameter": null,
+      "note": "'nfc' is not a form: the adapter throws RangeError before reading the text; the text is run in every form"
+    },
+    {
+      "row": "S1",
+      "line": 227,
+      "quote": "`/^\\p{RGI_Emoji}$/v` on 👍🏽",
+      "family": "string-properties",
+      "units": "D83D DC4D D83C DFFD",
+      "operation": "string-property",
+      "parameter": "RGI_Emoji"
+    },
+    {
+      "row": "S1",
+      "line": 227,
+      "quote": "`/^\\p{Basic_Emoji}$/v` on ⌚",
+      "family": "string-properties",
+      "units": "231A",
+      "operation": "string-property",
+      "parameter": "Basic_Emoji"
+    },
+    {
+      "row": "S1",
+      "line": 227,
+      "quote": "`/\\p{RGI_Emoji}/u`",
+      "family": "names",
+      "units": null,
+      "operation": "lookup",
+      "parameter": "lone/RGI_Emoji/ without v"
+    },
+    {
+      "row": "S1",
+      "line": 227,
+      "quote": "`/\\P{RGI_Emoji}/v`",
+      "family": "names",
+      "units": null,
+      "operation": "lookup",
+      "parameter": "lone/RGI_Emoji/ with v",
+      "note": "the lookup resolves; refusing the complement of a property of strings is the regular-expression compiler's"
+    },
+    {
+      "row": "S2",
+      "line": 228,
+      "quote": "`/\\p{rgiemoji}/v`",
+      "family": "names",
+      "units": null,
+      "operation": "lookup",
+      "parameter": "lone/rgiemoji/ with v"
+    },
+    {
+      "row": "G1",
+      "line": 251,
+      "quote": "`One. Two? Three! Mr. Smith`",
+      "family": "segmentation",
+      "units": "004F 006E 0065 002E 0020 0054 0077 006F 003F 0020 0054 0068 0072 0065 0065 0021 0020 004D 0072 002E 0020 0053 006D 0069 0074 0068",
+      "operation": "sentence",
+      "parameter": null
+    },
+    {
+      "row": "G1",
+      "line": 251,
+      "quote": "`Hello world. 世界。終わり`",
+      "family": "segmentation",
+      "units": "0048 0065 006C 006C 006F 0020 0077 006F 0072 006C 0064 002E 0020 4E16 754C 3002 7D42 308F 308A",
+      "operation": "sentence",
+      "parameter": null
+    },
+    {
+      "row": "G2",
+      "line": 252,
+      "quote": "`can't`",
+      "family": "segmentation",
+      "units": "0063 0061 006E 0027 0074",
+      "operation": "word",
+      "parameter": null
+    },
+    {
+      "row": "G2",
+      "line": 252,
+      "quote": "`a_b c.d 3,000`",
+      "family": "segmentation",
+      "units": "0061 005F 0062 0020 0063 002E 0064 0020 0033 002C 0030 0030 0030",
+      "operation": "word",
+      "parameter": null
+    },
+    {
+      "row": "G2",
+      "line": 252,
+      "quote": "`日本語のテキスト`",
+      "family": "segmentation",
+      "units": "65E5 672C 8A9E 306E 30C6 30AD 30B9 30C8",
+      "operation": "word",
+      "parameter": null
+    },
+    {
+      "row": "G3",
+      "line": 253,
+      "quote": "`é👍🏽🇩🇪`",
+      "family": "segmentation",
+      "units": "0065 0301 D83D DC4D D83C DFFD D83C DDE9 D83C DDEA",
+      "operation": "grapheme",
+      "parameter": null,
+      "note": "the source's é is e followed by U+0301"
+    },
+    {
+      "row": "G3",
+      "line": 253,
+      "quote": "a Hangul syllable sequence",
+      "family": "segmentation",
+      "units": "D55C AE00",
+      "operation": "grapheme",
+      "parameter": null,
+      "note": "the row names no sequence; 한글 as two precomposed syllables, chosen here"
+    },
+    {
+      "row": "G3",
+      "line": 253,
+      "quote": "a Hangul syllable sequence",
+      "family": "segmentation",
+      "units": "1112 1161 11AB 1100 1173 11AF",
+      "operation": "grapheme",
+      "parameter": null,
+      "note": "the same syllables as conjoining jamo, chosen here"
+    },
+    {
+      "row": "G3",
+      "line": 253,
+      "quote": "`\\r\\n`",
+      "family": "segmentation",
+      "units": "000D 000A",
+      "operation": "grapheme",
+      "parameter": null
+    },
+    {
+      "row": "G3",
+      "line": 253,
+      "quote": "`\\uD800a`",
+      "family": "segmentation",
+      "units": "D800 0061",
+      "operation": "grapheme",
+      "parameter": null
+    }
+  ],
+  "rows_without_run_cells": [
+    {
+      "row": "C12",
+      "line": 185,
+      "why": "(reading)"
+    },
+    {
+      "row": "C13",
+      "line": 186,
+      "why": "(reading): the charge"
+    },
+    {
+      "row": "N3",
+      "line": 206,
+      "why": "(reading)"
+    },
+    {
+      "row": "N6",
+      "line": 209,
+      "why": "(reading)"
+    },
+    {
+      "row": "N7",
+      "line": 210,
+      "why": "(reading): the charge"
+    },
+    {
+      "row": "S3",
+      "line": 229,
+      "why": "no cell is marked (run)"
+    },
+    {
+      "row": "G4",
+      "line": 254,
+      "why": "(reading)"
+    },
+    {
+      "row": "G5",
+      "line": 255,
+      "why": "(reading): the charge"
+    },
+    {
+      "row": "G6",
+      "line": 256,
+      "why": "no cell is marked (run)"
+    },
+    {
+      "row": "G7",
+      "line": 257,
+      "why": "outside the area: the objects stay in each engine's adapter"
+    }
+  ]
+}
