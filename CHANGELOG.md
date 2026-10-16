@@ -18,7 +18,9 @@ While the stream is a preview it keeps its `0.1.0` prefix, and the preview numbe
 Each entry has the headings **Added**, **Changed**, **Observable changes** and **Data**, and says "none"
 under a heading with nothing to report.
 
-## Unreleased
+## 0.1.0-preview.4, 2026-10-16
+
+*(Published to nuget.org by the Publish workflow, [run 38952273946](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38952273946), from `6e14f93`. The heading read "Unreleased" until then.)*
 
 To be packed as the next preview the publish workflow selects.
 
