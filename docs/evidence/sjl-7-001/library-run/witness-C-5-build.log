@@ -1,0 +1,14 @@
+$ dotnet build tests/Unicode.Algorithms.Tests -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Unicode.Algorithms -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Algorithms/bin/Release/net10.0/Broiler.Unicode.Algorithms.dll
+  Unicode.Generation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Generation/bin/Release/net10.0/Broiler.Unicode.Generation.dll
+  Unicode.Segmentation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Segmentation/bin/Release/net10.0/Broiler.Unicode.Segmentation.dll
+  Unicode.Tables -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Tables/bin/Release/net10.0/Broiler.Unicode.Tables.dll
+  Unicode.Algorithms.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.69

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="69753bff-8d67-4347-811d-56634f2ca291" name="@vm 2026-10-16 16:23:50" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-16T16:23:50.9459252+00:00" queuing="2026-10-16T16:23:50.9459253+00:00" start="2026-10-16T16:23:50.1370707+00:00" finish="2026-10-16T16:23:50.9543203+00:00" />
+  <TestSettings name="default" id="611e853f-7101-4e35-8fe6-3bf842ae8d67">
+    <Deployment runDeploymentRoot="_vm_2026-10-16_16_23_50" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ff7abd77-799a-4cb1-94b6-6d2d6068a5ae" testId="143da9f5-92da-e7d8-d30c-516615f9bf02" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;abc&quot;, form: Nfc, expected: [3])" computerName="vm" duration="00:00:00.0000056" startTime="2026-10-16T16:23:50.7773283+00:00" endTime="2026-10-16T16:23:50.7773283+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ff7abd77-799a-4cb1-94b6-6d2d6068a5ae" />
+    <UnitTestResult executionId="b2c8627d-5fd6-4bce-80c2-e0c51539134c" testId="45c85acb-c564-c225-6102-1cf253772632" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;é&quot;, form: Nfc, expected: [2, 8])" computerName="vm" duration="00:00:00.0009072" startTime="2026-10-16T16:23:50.7773570+00:00" endTime="2026-10-16T16:23:50.7773570+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b2c8627d-5fd6-4bce-80c2-e0c51539134c" />
+    <UnitTestResult executionId="44ef5fe5-01e1-42ed-ad17-758b027ffb1c" testId="21cc108f-dc92-ddd7-1585-0b8b2501f05e" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;가&quot;, form: Nfd, expected: [1, 7])" computerName="vm" duration="00:00:00.0223691" startTime="2026-10-16T16:23:50.7715584+00:00" endTime="2026-10-16T16:23:50.7715820+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="44ef5fe5-01e1-42ed-ad17-758b027ffb1c" />
+    <UnitTestResult executionId="dfcb6dab-16e0-4f46-9d66-ea2c75824a6c" testId="05e6e6d0-7e98-731c-6f80-d02cf09a3396" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;&quot;, form: Nfd, expected: [1])" computerName="vm" duration="00:00:00.0000172" startTime="2026-10-16T16:23:50.7772723+00:00" endTime="2026-10-16T16:23:50.7772724+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfcb6dab-16e0-4f46-9d66-ea2c75824a6c" />
+    <UnitTestResult executionId="9556c760-f198-4545-b807-6e1fa5b6d927" testId="d82d91d9-f294-669c-263b-a2bcdf159d16" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;é&quot;, form: Nfd, expected: [1, 7])" computerName="vm" duration="00:00:00.0000588" startTime="2026-10-16T16:23:50.7773928+00:00" endTime="2026-10-16T16:23:50.7773928+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9556c760-f198-4545-b807-6e1fa5b6d927" />
+    <UnitTestResult executionId="939b64ef-dd82-423e-979d-3dde3a714d4d" testId="c10491e2-a659-5780-d589-1bdf46fb45cb" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;ﷺ&quot;, form: Nfkd, expected: [1, 55])" computerName="vm" duration="00:00:00.0010124" startTime="2026-10-16T16:23:50.7766079+00:00" endTime="2026-10-16T16:23:50.7766080+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="939b64ef-dd82-423e-979d-3dde3a714d4d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;abc&quot;, form: Nfc, expected: [3])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="143da9f5-92da-e7d8-d30c-516615f9bf02">
+      <Execution id="ff7abd77-799a-4cb1-94b6-6d2d6068a5ae" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;&quot;, form: Nfd, expected: [1])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="05e6e6d0-7e98-731c-6f80-d02cf09a3396">
+      <Execution id="dfcb6dab-16e0-4f46-9d66-ea2c75824a6c" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;é&quot;, form: Nfd, expected: [1, 7])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="d82d91d9-f294-669c-263b-a2bcdf159d16">
+      <Execution id="9556c760-f198-4545-b807-6e1fa5b6d927" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;ﷺ&quot;, form: Nfkd, expected: [1, 55])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="c10491e2-a659-5780-d589-1bdf46fb45cb">
+      <Execution id="939b64ef-dd82-423e-979d-3dde3a714d4d" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;é&quot;, form: Nfc, expected: [2, 8])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="45c85acb-c564-c225-6102-1cf253772632">
+      <Execution id="b2c8627d-5fd6-4bce-80c2-e0c51539134c" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: &quot;가&quot;, form: Nfd, expected: [1, 7])" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="21cc108f-dc92-ddd7-1585-0b8b2501f05e">
+      <Execution id="44ef5fe5-01e1-42ed-ad17-758b027ffb1c" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C4_normalization_charges_Broiler_VM_s_units" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="143da9f5-92da-e7d8-d30c-516615f9bf02" executionId="ff7abd77-799a-4cb1-94b6-6d2d6068a5ae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45c85acb-c564-c225-6102-1cf253772632" executionId="b2c8627d-5fd6-4bce-80c2-e0c51539134c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="21cc108f-dc92-ddd7-1585-0b8b2501f05e" executionId="44ef5fe5-01e1-42ed-ad17-758b027ffb1c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="05e6e6d0-7e98-731c-6f80-d02cf09a3396" executionId="dfcb6dab-16e0-4f46-9d66-ea2c75824a6c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d82d91d9-f294-669c-263b-a2bcdf159d16" executionId="9556c760-f198-4545-b807-6e1fa5b6d927" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c10491e2-a659-5780-d589-1bdf46fb45cb" executionId="939b64ef-dd82-423e-979d-3dde3a714d4d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.22]   Finished:    Unicode.Algorithms.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

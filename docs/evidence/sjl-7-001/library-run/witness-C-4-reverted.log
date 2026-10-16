@@ -1,0 +1,21 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C4_normalization_charges witness-C-4-reverted
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.22]   Finished:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "가", form: Nfd, expected: [1, 7]) [22 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "ﷺ", form: Nfkd, expected: [1, 55]) [1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "", form: Nfd, expected: [1]) [< 1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "abc", form: Nfc, expected: [3]) [< 1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfc, expected: [2, 8]) [< 1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfd, expected: [1, 7]) [< 1 ms]
+
+Test Run Successful.
+Total tests: 6
+     Passed: 6
+ Total time: 0.7976 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-4-reverted.trx

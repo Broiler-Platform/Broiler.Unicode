@@ -1,0 +1,12 @@
+$ dotnet publish probes/Unicode.Probe -c Release -r linux-x64
+  Determining projects to restore...
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/probes/Unicode.Probe/Unicode.Probe.csproj (in 471 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Segmentation/Unicode.Segmentation.csproj (in 471 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Tables/Unicode.Tables.csproj (in 471 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Algorithms/Unicode.Algorithms.csproj (in 471 ms).
+  Unicode.Algorithms -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Algorithms/bin/Release/net10.0/Broiler.Unicode.Algorithms.dll
+  Unicode.Segmentation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Segmentation/bin/Release/net10.0/Broiler.Unicode.Segmentation.dll
+  Unicode.Tables -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Tables/bin/Release/net10.0/Broiler.Unicode.Tables.dll
+  Unicode.Probe -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/probes/Unicode.Probe/bin/Release/net10.0/linux-x64/Broiler.Unicode.Probe.dll
+  Generating native code
+  Unicode.Probe -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/probes/Unicode.Probe/bin/Release/net10.0/linux-x64/publish/

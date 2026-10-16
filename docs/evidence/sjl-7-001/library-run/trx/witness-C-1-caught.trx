@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="12e1978c-5de9-4be2-80a5-9f68579f3e77" name="@vm 2026-10-16 16:22:42" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-16T16:22:42.3691983+00:00" queuing="2026-10-16T16:22:42.3691984+00:00" start="2026-10-16T16:22:41.5257346+00:00" finish="2026-10-16T16:22:42.3779409+00:00" />
+  <TestSettings name="default" id="6676c0aa-e86a-4152-9c7a-843b402bf1e7">
+    <Deployment runDeploymentRoot="_vm_2026-10-16_16_22_42" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="0c5adf17-8f71-47ee-abd8-355cd829fd39" testId="fca5281d-24fd-514c-4bed-e7f01f12ec8e" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning" computerName="vm" duration="00:00:00.0064048" startTime="2026-10-16T16:22:42.2146456+00:00" endTime="2026-10-16T16:22:42.2146645+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c5adf17-8f71-47ee-abd8-355cd829fd39">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Contains() Failure: Sub-string not found
+String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+Not found: "Broiler.Unicode.Algorithms"</Message>
+          <StackTrace>   at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 37
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.pnz5p9f89j/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="fca5281d-24fd-514c-4bed-e7f01f12ec8e">
+      <Execution id="0c5adf17-8f71-47ee-abd8-355cd829fd39" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C1_the_loose_lookup_carries_its_documented_warning" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="fca5281d-24fd-514c-4bed-e7f01f12ec8e" executionId="0c5adf17-8f71-47ee-abd8-355cd829fd39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.16]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.17]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.24]       Assert.Contains() Failure: Sub-string not found
+[xUnit.net 00:00:00.24]       String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+[xUnit.net 00:00:00.24]       Not found: "Broiler.Unicode.Algorithms"
+[xUnit.net 00:00:00.24]       Stack Trace:
+[xUnit.net 00:00:00.25]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(37,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning()
+[xUnit.net 00:00:00.25]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.25]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.26]   Finished:    Unicode.Algorithms.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="vm" outcome="Error" timestamp="2026-10-16T16:22:42.2098912+00:00">
+        <Text>[xUnit.net 00:00:00.24]     Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

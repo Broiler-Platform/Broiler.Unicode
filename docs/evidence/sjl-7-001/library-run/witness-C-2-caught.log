@@ -1,0 +1,38 @@
+$ test_run tests/UnicodeProperties.Tests FullyQualifiedName~RangeLookupTests witness-C-2-caught   # must fail
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: UnicodeProperties.Tests
+[xUnit.net 00:00:00.13]   Discovered:  UnicodeProperties.Tests
+[xUnit.net 00:00:00.13]   Starting:    UnicodeProperties.Tests
+[xUnit.net 00:00:00.23]     Broiler.Unicode.Tests.RangeLookupTests.A_caller_that_changes_its_ranges_does_not_change_the_next_callers [FAIL]
+[xUnit.net 00:00:00.23]       Assert.Equal() Failure: Collections differ
+[xUnit.net 00:00:00.23]                  ↓ (pos 0)
+[xUnit.net 00:00:00.23]       Expected: [Tuple (0, 127)]
+[xUnit.net 00:00:00.23]       Actual:   [Tuple (1114111, 1114111)]
+[xUnit.net 00:00:00.23]                  ↑ (pos 0)
+[xUnit.net 00:00:00.23]       Stack Trace:
+[xUnit.net 00:00:00.23]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/RangeLookupTests.cs(20,0): at Broiler.Unicode.Tests.RangeLookupTests.A_caller_that_changes_its_ranges_does_not_change_the_next_callers()
+[xUnit.net 00:00:00.23]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.23]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.24]   Finished:    UnicodeProperties.Tests
+  Passed Broiler.Unicode.Tests.RangeLookupTests.The_package_states_its_Unicode_version [3 ms]
+  Failed Broiler.Unicode.Tests.RangeLookupTests.A_caller_that_changes_its_ranges_does_not_change_the_next_callers [21 ms]
+  Error Message:
+   Assert.Equal() Failure: Collections differ
+           ↓ (pos 0)
+Expected: [Tuple (0, 127)]
+Actual:   [Tuple (1114111, 1114111)]
+           ↑ (pos 0)
+  Stack Trace:
+     at Broiler.Unicode.Tests.RangeLookupTests.A_caller_that_changes_its_ranges_does_not_change_the_next_callers() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/RangeLookupTests.cs:line 20
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 2
+     Passed: 1
+     Failed: 1
+ Total time: 0.8220 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-2-caught.trx

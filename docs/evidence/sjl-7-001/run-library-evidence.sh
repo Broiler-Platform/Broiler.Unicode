@@ -135,5 +135,8 @@ step part-d-aot-run probes/Unicode.Probe/bin/Release/net10.0/linux-x64/publish/B
 step part-d-aot-compare cmp "$out/probe-aot.txt" "$out/probe-jit.txt"
 
 # The run's verdict lines, read from the logs.
-grep -h "^A[1-6] \|Passed!\|Failed!" "$out"/part-*.log "$out"/witness-*.log > "$out/summary.txt" || true
+for log in "$out"/part-*.log "$out"/witness-*.log; do
+  echo "$(basename "$log" .log): $(grep -hE '^ +(Passed|Failed):|Total tests:|no violations|[0-9]+ violations' "$log" | tr -s ' ' | tr '\n' ' ')"
+  grep -hE '^ A[1-6] ' "$log" | sed 's/^ /  /' || true
+done > "$out/summary.txt"
 echo "every step ended as the rule expects" >> "$out/summary.txt"

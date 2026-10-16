@@ -1,0 +1,23 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~RegenerationTests part-b-run-2
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_hash_in_the_pin_is_refused_before_anything_is_written [61 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_pinned_input_is_refused [31 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_pin_equals_Broiler_VM_pin_by_file_name_length_and_hash [13 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_generator_package_carries_this_repository_s_pin [1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_the_algorithms_read_is_generated [1 s]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_committed_table_is_reported_with_its_table [41 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_regenerates_byte_for_byte_from_the_pin [9 ms]
+[xUnit.net 00:00:01.87]   Finished:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.RegenerationTests.Two_generations_write_the_same_bytes [473 ms]
+
+Test Run Successful.
+Total tests: 8
+     Passed: 8
+ Total time: 2.3768 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/part-b-run-2.trx

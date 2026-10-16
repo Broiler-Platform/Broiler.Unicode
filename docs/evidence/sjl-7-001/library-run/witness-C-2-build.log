@@ -1,0 +1,13 @@
+$ dotnet build tests/UnicodeProperties.Tests -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  UnicodeProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/UnicodeProperties/bin/Release/net8.0/Broiler.Unicode.Properties.dll
+  UnicodeProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net8.0/UnicodeProperties.Tests.dll
+  UnicodeProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/UnicodeProperties/bin/Release/net10.0/Broiler.Unicode.Properties.dll
+  UnicodeProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:05.07
