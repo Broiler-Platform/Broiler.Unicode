@@ -1,9 +1,29 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   23
+// Annotated:        23/23
+// Exempt:           6
+// Human-reviewed:   0/23
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         4/4
+// Resource impact:  5/10 max
+// Unverified:       23
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace Broiler.Unicode.Algorithms;
 
 /// <summary>The languages whose case mappings <c>SpecialCasing.txt</c> tailors, as <see cref="UnicodeCaseMapping"/> applies them.</summary>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=8F0877
+// Broiler-Human:        PENDING
 public enum CaseLanguage
 {
     /// <summary>No language: the Default Case Conversion, with Final_Sigma.</summary>
@@ -47,11 +67,21 @@ public enum CaseLanguage
 /// is <see cref="UnicodeStatus.LimitExceeded"/>, checked as the result grows (row C12).
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=1; Fingerprint=C91117
+// Broiler-Human:        PENDING
 public sealed class UnicodeCaseMapping
 {
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=A44FF1
+    // Broiler-Human:        PENDING
     private const int CapitalSigma = 0x03A3;
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=22CC20
+    // Broiler-Human:        PENDING
     private const int SmallSigma = 0x03C3;
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=6DC9FA
+    // Broiler-Human:        PENDING
     private const int FinalSigma = 0x03C2;
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=7FDE59
+    // Broiler-Human:        PENDING
     private const int CombiningDotAbove = 0x0307;
 
     private readonly IUnicodeTables tables;
@@ -65,6 +95,8 @@ public sealed class UnicodeCaseMapping
     /// normalization tables, whose combining classes the language conditions read.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=68A6CB
+    // Broiler-Human:        PENDING
     public UnicodeCaseMapping(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
@@ -82,7 +114,7 @@ public sealed class UnicodeCaseMapping
 
         if (layout.Length != 3)
         {
-            throw new ArgumentException($"CasingLayout holds {layout.Length / 3} values, not 1.", nameof(tables));
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"CasingLayout holds {layout.Length / 3} values, not 1."), nameof(tables));
         }
 
         MaxMappingLength = TableReader.Layout(layout, 0);
@@ -93,14 +125,20 @@ public sealed class UnicodeCaseMapping
 
     /// <summary>Whether <paramref name="codePoint"/> is Cased (<c>DerivedCoreProperties.txt</c>).</summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=61FAAD
+    // Broiler-Human:        PENDING
     public bool IsCased(int codePoint) => TableReader.InRanges(tables.Table(UnicodeTable.CasedRanges), codePoint);
 
     /// <summary>Whether <paramref name="codePoint"/> is Case_Ignorable (<c>DerivedCoreProperties.txt</c>).</summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=FCA908
+    // Broiler-Human:        PENDING
     public bool IsCaseIgnorable(int codePoint) => TableReader.InRanges(tables.Table(UnicodeTable.CaseIgnorableRanges), codePoint);
 
     /// <summary>Whether <paramref name="codePoint"/> is Soft_Dotted (<c>PropList.txt</c>).</summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=313E9A
+    // Broiler-Human:        PENDING
     public bool IsSoftDotted(int codePoint) => TableReader.InRanges(tables.Table(UnicodeTable.SoftDottedRanges), codePoint);
 
     /// <summary>
@@ -113,6 +151,9 @@ public sealed class UnicodeCaseMapping
     /// <param name="charge">The caller's meter, or null; units as this type states.</param>
     /// <param name="result">The mapped text, or null when the status is not <see cref="UnicodeStatus.Success"/>.</param>
     /// <returns><see cref="UnicodeStatus.Success"/>, or <see cref="UnicodeStatus.LimitExceeded"/> when the result is longer than <paramref name="maxLength"/>.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=2; Fingerprint=1ADC04
+    // Broiler-Falsified-If: a result longer than maxLength is answered as Success
+    // Broiler-Human:        PENDING
     public UnicodeStatus ToUpperCase(string text, CaseLanguage language, int maxLength, UnicodeWorkCharge? charge, out string? result) =>
         Map(text, upper: true, language, maxLength, charge, out result);
 
@@ -127,12 +168,19 @@ public sealed class UnicodeCaseMapping
     /// <param name="charge">The caller's meter, or null; units as this type states.</param>
     /// <param name="result">The mapped text, or null when the status is not <see cref="UnicodeStatus.Success"/>.</param>
     /// <returns><see cref="UnicodeStatus.Success"/>, or <see cref="UnicodeStatus.LimitExceeded"/> when the result is longer than <paramref name="maxLength"/>.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=2; Fingerprint=503D46
+    // Broiler-Falsified-If: a result longer than maxLength is answered as Success
+    // Broiler-Human:        PENDING
     public UnicodeStatus ToLowerCase(string text, CaseLanguage language, int maxLength, UnicodeWorkCharge? charge, out string? result) =>
         Map(text, upper: false, language, maxLength, charge, out result);
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=15F86B
+    // Broiler-Human:        PENDING
     private static void Charge(UnicodeWorkCharge? charge, int units) =>
         charge?.Invoke(units <= 0 ? 1UL : (ulong)units);
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=09B074
+    // Broiler-Human:        PENDING
     private static void AppendCodePoint(StringBuilder built, int codePoint)
     {
         if (codePoint <= 0xFFFF)
@@ -144,6 +192,9 @@ public sealed class UnicodeCaseMapping
         built.Append((char)(0xD7C0 + (codePoint >> 10))).Append((char)(0xDC00 | (codePoint & 0x3FF)));
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=9F0A22
+    // Broiler-Falsified-If: a result longer than maxLength is answered as Success, or a language pass is applied for the default language
+    // Broiler-Human:        PENDING
     private UnicodeStatus Map(string text, bool upper, CaseLanguage language, int maxLength, UnicodeWorkCharge? charge, out string? result)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -163,6 +214,9 @@ public sealed class UnicodeCaseMapping
     /// The Default Case Conversion over <paramref name="text"/>. The text is copied only from the first
     /// code point casing changes, so an unchanged text costs one pass and no allocation.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=B8867F
+    // Broiler-Falsified-If: work is done before the meter is charged for it, or a charge differs from Broiler.VM row C13
+    // Broiler-Human:        PENDING
     private UnicodeStatus DefaultPass(string text, bool upper, int maxLength, UnicodeWorkCharge? charge, out string? result)
     {
         Charge(charge, text.Length);
@@ -220,6 +274,8 @@ public sealed class UnicodeCaseMapping
     /// Conversion. Each condition reads the string as it was, and each scan stops at the first code point
     /// of combining class 0 or 230, so the passes over the string are linear in all.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=E67FCC
+    // Broiler-Human:        PENDING
     private string LanguagePass(string text, bool upper, CaseLanguage language)
     {
         var points = new int[text.Length];
@@ -289,6 +345,8 @@ public sealed class UnicodeCaseMapping
     }
 
     /// <summary>After_I: an upper-case I before, with no combining class 0 or 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=294C3B
+    // Broiler-Human:        PENDING
     private bool AfterCapitalI(int[] points, int index)
     {
         for (var at = index - 1; at >= 0; at--)
@@ -308,6 +366,8 @@ public sealed class UnicodeCaseMapping
     }
 
     /// <summary>After_Soft_Dotted: a Soft_Dotted code point before, with no combining class 0 or 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=E5D22D
+    // Broiler-Human:        PENDING
     private bool AfterSoftDotted(int[] points, int index)
     {
         for (var at = index - 1; at >= 0; at--)
@@ -327,6 +387,8 @@ public sealed class UnicodeCaseMapping
     }
 
     /// <summary>Before_Dot: U+0307 after, with only combining classes other than 0 and 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=2FD338
+    // Broiler-Human:        PENDING
     private bool BeforeDot(int[] points, int count, int index)
     {
         for (var at = index + 1; at < count; at++)
@@ -346,6 +408,8 @@ public sealed class UnicodeCaseMapping
     }
 
     /// <summary>More_Above: a combining class 230 after, with no combining class 0 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=171304
+    // Broiler-Human:        PENDING
     private bool MoreAbove(int[] points, int count, int index)
     {
         for (var at = index + 1; at < count; at++)
@@ -371,6 +435,8 @@ public sealed class UnicodeCaseMapping
     /// Final_Sigma (Unicode Standard section 3.13, table 3-17), and how many code units the test read.
     /// A code point both Cased and Case_Ignorable is skipped, as the definition's sequences read it.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=5D45FD
+    // Broiler-Human:        PENDING
     private bool IsFinalSigma(string text, int at, int width, out int scanned)
     {
         scanned = 0;
@@ -414,6 +480,8 @@ public sealed class UnicodeCaseMapping
     }
 
     /// <summary>The full mapping of <paramref name="codePoint"/> in the default language, when casing changes it.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=10EBD1
+    // Broiler-Human:        PENDING
     private bool TryGetMapping(int codePoint, bool upper, out CodePoints mapping)
     {
         var index = tables.Table(upper ? UnicodeTable.UpperIndex : UnicodeTable.LowerIndex);

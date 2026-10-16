@@ -1,4 +1,22 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   22
+// Annotated:        22/22
+// Exempt:           13
+// Human-reviewed:   0/22
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         1/1
+// Resource impact:  2/10 max
+// Unverified:       22
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
+using System.Globalization;
 
 namespace Broiler.Unicode.Algorithms;
 
@@ -20,6 +38,8 @@ namespace Broiler.Unicode.Algorithms;
 /// threads.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Low; Resources=1; Fingerprint=74F019
+// Broiler-Human:        PENDING
 public sealed class UnicodeStringProperties
 {
     private readonly IUnicodeTables tables;
@@ -36,6 +56,8 @@ public sealed class UnicodeStringProperties
     /// <see cref="UnicodeTable.StringPropertyLayout"/> to <see cref="UnicodeTable.StringPropertyNameIndex"/>.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=48F283
+    // Broiler-Human:        PENDING
     public UnicodeStringProperties(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
@@ -52,7 +74,7 @@ public sealed class UnicodeStringProperties
 
         if (layout.Length != 12)
         {
-            throw new ArgumentException($"StringPropertyLayout holds {layout.Length / 3} values, not 4.", nameof(tables));
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"StringPropertyLayout holds {layout.Length / 3} values, not 4."), nameof(tables));
         }
 
         PropertyCount = TableReader.Layout(layout, 0);
@@ -80,6 +102,8 @@ public sealed class UnicodeStringProperties
     /// <param name="name">The name, exactly as written.</param>
     /// <param name="property">The property, or the default when the name is not one.</param>
     /// <returns>Whether the name is a property of strings.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=FBAFD8
+    // Broiler-Human:        PENDING
     public bool TryResolve(ReadOnlySpan<char> name, out StringProperty property)
     {
         var id = name.Length > longestName
@@ -92,24 +116,38 @@ public sealed class UnicodeStringProperties
 
     /// <summary>The property with id <paramref name="id"/>, in the table's row order.</summary>
     /// <param name="id">From zero to <see cref="PropertyCount"/> less one.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=A9C122
+    // Broiler-Human:        PENDING
     public StringProperty Property(int id) =>
         (uint)id < (uint)PropertyCount ? new StringProperty(this, id) : throw new ArgumentOutOfRangeException(nameof(id));
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=B50E45
+    // Broiler-Human:        PENDING
     internal bool IsUnion(int id) => id == unionProperty;
 
     /// <summary>Row <paramref name="field"/> of property <paramref name="id"/>: first range, range count, first byte, sequence count.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=5AF88D
+    // Broiler-Human:        PENDING
     internal int Row(int id, int field) => TableReader.Int24(tables.Table(UnicodeTable.StringPropertyData), (id * 12) + (field * 3));
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=5F2D25
+    // Broiler-Human:        PENDING
     internal ReadOnlySpan<byte> Ranges => tables.Table(UnicodeTable.StringPropertyRanges);
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=1868AB
+    // Broiler-Human:        PENDING
     internal ReadOnlySpan<byte> Sequences => tables.Table(UnicodeTable.SequenceData);
 
     internal int ShortLimit => shortLimit;
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=B4F1FD
+    // Broiler-Human:        PENDING
     internal int DictionaryEntry(int index) => TableReader.Int24(tables.Table(UnicodeTable.SequenceDictionary), index * 3);
 }
 
 /// <summary>One property of strings: its single code points and its sequences.</summary>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Low; Resources=1; Fingerprint=A557F0
+// Broiler-Human:        PENDING
 public readonly struct StringProperty
 {
     private readonly UnicodeStringProperties? owner;
@@ -124,27 +162,39 @@ public readonly struct StringProperty
     public int Id { get; }
 
     /// <summary>Whether this is <c>RGI_Emoji</c>, the union of the others, which has no data of its own.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=7E748A
+    // Broiler-Human:        PENDING
     public bool IsUnion => owner is not null && owner.IsUnion(Id);
 
     /// <summary>
     /// How many ranges of single code points the property lists; zero for <c>RGI_Emoji</c>, whose
     /// single code points are the other properties'.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=AD5A63
+    // Broiler-Human:        PENDING
     public int CodePointRangeCount => owner is null || IsUnion ? 0 : owner.Row(Id, 1);
 
     /// <summary>How many sequences of two or more code points the property lists; zero for <c>RGI_Emoji</c>.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=2A7A5D
+    // Broiler-Human:        PENDING
     public int SequenceCount => owner is null || IsUnion ? 0 : owner.Row(Id, 3);
 
     /// <summary>The first code point of single-code-point range <paramref name="index"/>.</summary>
     /// <param name="index">From zero to <see cref="CodePointRangeCount"/> less one.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=F2305F
+    // Broiler-Human:        PENDING
     public int FirstCodePoint(int index) => TableReader.Int24(owner!.Ranges, Range(index) * 6);
 
     /// <summary>The last code point of single-code-point range <paramref name="index"/>, inclusive.</summary>
     /// <param name="index">From zero to <see cref="CodePointRangeCount"/> less one.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=D7E7C7
+    // Broiler-Human:        PENDING
     public int LastCodePoint(int index) => TableReader.Int24(owner!.Ranges, (Range(index) * 6) + 3);
 
     /// <summary>Whether <paramref name="codePoint"/> alone is in the property; for <c>RGI_Emoji</c>, in any other.</summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=63D3A9
+    // Broiler-Human:        PENDING
     public bool ContainsCodePoint(int codePoint)
     {
         if (owner is null)
@@ -169,9 +219,13 @@ public readonly struct StringProperty
     }
 
     /// <summary>The property's sequences, in code point order, read one at a time into the caller's span.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=F337A9
+    // Broiler-Human:        PENDING
     public StringPropertySequences GetSequences() =>
         owner is null || IsUnion ? default : new StringPropertySequences(owner, owner.Row(Id, 2), owner.Row(Id, 3));
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=03D995
+    // Broiler-Human:        PENDING
     private int Range(int index) =>
         (uint)index < (uint)CodePointRangeCount ? owner!.Row(Id, 0) + index : throw new ArgumentOutOfRangeException(nameof(index));
 }
@@ -180,9 +234,13 @@ public readonly struct StringProperty
 /// A cursor over one property's sequences: each <see cref="TryRead"/> decodes the next sequence's code
 /// points into the caller's span. A value type that allocates nothing; copy it to read again.
 /// </summary>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Low; Resources=1; Fingerprint=374C67
+// Broiler-Human:        PENDING
 public struct StringPropertySequences
 {
     /// <summary>The longest sequence any property lists, in code points; a span this long reads every sequence.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Low; Resources=0; Fingerprint=C3F42E
+    // Broiler-Human:        PENDING
     public const int MaxSequenceLength = 255;
 
     private readonly UnicodeStringProperties? owner;
@@ -191,6 +249,8 @@ public struct StringPropertySequences
 
     private int remaining;
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=4EF1D1
+    // Broiler-Human:        PENDING
     internal StringPropertySequences(UnicodeStringProperties owner, int offset, int count)
     {
         this.owner = owner;
@@ -208,6 +268,9 @@ public struct StringPropertySequences
     /// <param name="destination">A span long enough for the sequence; <see cref="MaxSequenceLength"/> always is.</param>
     /// <param name="length">The sequence's length in code points.</param>
     /// <exception cref="ArgumentException"><paramref name="destination"/> is shorter than the sequence; the cursor does not advance.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties; IP=Low; Security=High; Resources=2; Fingerprint=995B67
+    // Broiler-Falsified-If: a sequence is written into a destination shorter than it, or the cursor advances after refusing
+    // Broiler-Human:        PENDING
     public bool TryRead(Span<int> destination, out int length)
     {
         length = 0;
@@ -223,7 +286,7 @@ public struct StringPropertySequences
 
         if (destination.Length < count)
         {
-            throw new ArgumentException($"The destination holds {destination.Length} code points and the sequence has {count}.", nameof(destination));
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"The destination holds {destination.Length} code points and the sequence has {count}."), nameof(destination));
         }
 
         for (var step = 0; step < count; step++)

@@ -1,6 +1,25 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   5
+// Annotated:        5/5
+// Exempt:           52
+// Human-reviewed:   0/5
+// IP risk:          Low
+// Security risk:    Low
+// Criteria:         0/0
+// Resource impact:  1/10 max
+// Unverified:       5
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 namespace Broiler.Unicode.Segmentation;
 
 /// <summary>The Grapheme_Cluster_Break values (UAX #29, table 2), numbered as the break table codes them.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=C45A0B
+// Broiler-Human:        PENDING
 public enum GraphemeBreak : byte
 {
     /// <summary>Any other code point.</summary>
@@ -47,6 +66,8 @@ public enum GraphemeBreak : byte
 }
 
 /// <summary>The Word_Break values (UAX #29, table 3), numbered as the break table codes them.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=35E03C
+// Broiler-Human:        PENDING
 public enum WordBreak : byte
 {
     /// <summary>Any other code point.</summary>
@@ -108,6 +129,8 @@ public enum WordBreak : byte
 }
 
 /// <summary>The Sentence_Break values (UAX #29, table 4), numbered as the break table codes them.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=89DE12
+// Broiler-Human:        PENDING
 public enum SentenceBreak : byte
 {
     /// <summary>Any other code point.</summary>
@@ -157,6 +180,8 @@ public enum SentenceBreak : byte
 }
 
 /// <summary>The Indic_Conjunct_Break values grapheme rule GB9c reads (<c>DerivedCoreProperties.txt</c>), numbered as the break table codes them.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=764288
+// Broiler-Human:        PENDING
 public enum ConjunctBreak : byte
 {
     /// <summary>None.</summary>
@@ -183,6 +208,8 @@ public enum ConjunctBreak : byte
 /// <param name="ExtendedPictographic">Extended_Pictographic (<c>emoji-data.txt</c>).</param>
 /// <param name="Conjunct">Indic_Conjunct_Break.</param>
 /// <param name="IdeographicOrHiragana">Ideographic (<c>PropList.txt</c>) or Script=Hiragana.</param>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=1; Fingerprint=05FEA2
+// Broiler-Human:        PENDING
 public readonly record struct BreakProperties(
     GraphemeBreak Grapheme,
     WordBreak Word,

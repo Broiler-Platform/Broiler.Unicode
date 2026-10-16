@@ -1,4 +1,22 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   10
+// Annotated:        10/10
+// Exempt:           3
+// Human-reviewed:   0/10
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         2/2
+// Resource impact:  2/10 max
+// Unverified:       10
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
+using System.Globalization;
 
 namespace Broiler.Unicode.Algorithms;
 
@@ -27,6 +45,8 @@ namespace Broiler.Unicode.Algorithms;
 /// bounded binary search.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Low; Resources=1; Fingerprint=37F812
+// Broiler-Human:        PENDING
 public sealed class UnicodeCaseFolding
 {
     private readonly IUnicodeTables tables;
@@ -37,6 +57,8 @@ public sealed class UnicodeCaseFolding
     /// <see cref="UnicodeTable.FoldingLayout"/> to <see cref="UnicodeTable.UpperOrbitIndex"/>.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=C578E6
+    // Broiler-Human:        PENDING
     public UnicodeCaseFolding(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
@@ -51,7 +73,7 @@ public sealed class UnicodeCaseFolding
 
         if (layout.Length != 6)
         {
-            throw new ArgumentException($"FoldingLayout holds {layout.Length / 3} values, not 2.", nameof(tables));
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"FoldingLayout holds {layout.Length / 3} values, not 2."), nameof(tables));
         }
 
         MaxOrbit = TableReader.Layout(layout, 0);
@@ -69,6 +91,8 @@ public sealed class UnicodeCaseFolding
     /// or the code point itself: Canonicalize under <c>u</c> or <c>v</c> with <c>i</c>.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=F88260
+    // Broiler-Human:        PENDING
     public int SimpleFold(int codePoint)
     {
         var data = tables.Table(UnicodeTable.FoldData);
@@ -86,6 +110,9 @@ public sealed class UnicodeCaseFolding
     /// <param name="destination">At least <see cref="MaxOrbit"/> entries.</param>
     /// <returns>The number written; one for a code point no folding touches.</returns>
     /// <exception cref="ArgumentException"><paramref name="destination"/> is shorter than <see cref="MaxOrbit"/>.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=High; Resources=2; Fingerprint=49FFB8
+    // Broiler-Falsified-If: more code points are written than the destination holds, or a code point of another orbit is written
+    // Broiler-Human:        PENDING
     public int Orbit(int codePoint, Span<int> destination)
     {
         if (destination.Length < MaxOrbit)
@@ -134,6 +161,8 @@ public sealed class UnicodeCaseFolding
     /// into it, or the code unit itself. Anything above U+FFFF answers itself.
     /// </summary>
     /// <param name="codeUnit">A UTF-16 code unit, or any code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=740184
+    // Broiler-Human:        PENDING
     public int SimpleUpper(int codeUnit)
     {
         var data = tables.Table(UnicodeTable.UpperData);
@@ -151,6 +180,9 @@ public sealed class UnicodeCaseFolding
     /// <param name="destination">At least <see cref="MaxUpperOrbit"/> entries.</param>
     /// <returns>The number written.</returns>
     /// <exception cref="ArgumentException"><paramref name="destination"/> is shorter than <see cref="MaxUpperOrbit"/>.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=High; Resources=2; Fingerprint=EF9D2E
+    // Broiler-Falsified-If: more code units are written than the destination holds, or a code unit of another orbit is written
+    // Broiler-Human:        PENDING
     public int UpperOrbit(int codeUnit, Span<int> destination)
     {
         if (destination.Length < MaxUpperOrbit)
@@ -200,6 +232,8 @@ public sealed class UnicodeCaseFolding
     }
 
     /// <summary>An insertion sort: an orbit holds a handful of entries.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=D3DFBC
+    // Broiler-Human:        PENDING
     private static void Sort(Span<int> values)
     {
         for (var sorted = 1; sorted < values.Length; sorted++)
@@ -217,6 +251,8 @@ public sealed class UnicodeCaseFolding
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=9175A1
+    // Broiler-Human:        PENDING
     private static int Search(ReadOnlySpan<byte> data, int codePoint)
     {
         var low = 0;
@@ -245,6 +281,8 @@ public sealed class UnicodeCaseFolding
         return -1;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=02117D
+    // Broiler-Human:        PENDING
     private static int UpperSearch(ReadOnlySpan<byte> data, int codeUnit)
     {
         var low = 0;
@@ -273,6 +311,8 @@ public sealed class UnicodeCaseFolding
         return -1;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.7.3 via Broiler.VM JsUnicodeCaseFolding; IP=Low; Security=Medium; Resources=1; Fingerprint=B3D123
+    // Broiler-Human:        PENDING
     private static int OrbitTarget(ReadOnlySpan<byte> data, ReadOnlySpan<byte> index, int position) =>
         TableReader.Int24(data, (TableReader.UInt16(index, position * 2) * 6) + 3);
 }

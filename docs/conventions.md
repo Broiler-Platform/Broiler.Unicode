@@ -33,9 +33,10 @@ JSD-0074 placed in this repository.
   own pin.
 - **The generator**, `src/Unicode.Generation` (`Broiler.Unicode.Generation`), is test-only. It reaches each
   engine's tests as a pinned package and never a product closure.
-  - Convention 8's I/O clause does not bind it, since generating is reading data. Even so it reads no file
-    itself: the caller hands it the pin's text and the archive's bytes, and only its own pin is read, as an
-    embedded resource.
+  - Convention 8's I/O and reflection clauses do not bind it, since generating is reading data. Even so it
+    reads no file itself: the caller hands it the pin's text and the archive's bytes. The only reflection it
+    uses is `Assembly.GetManifestResourceStream`, to read its own pin as an embedded resource, and a test
+    pins that as rule SL3's one finding in it.
   - It is not Native AOT code and declares neither flag of convention 12.
   - Every other convention holds for it.
 - **The Native AOT probe**, `probes/Unicode.Probe`, is an executable. It reads the pinned archive from

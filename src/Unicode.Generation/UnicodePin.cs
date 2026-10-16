@@ -1,5 +1,23 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   15
+// Annotated:        15/15
+// Exempt:           3
+// Human-reviewed:   0/15
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         3/3
+// Resource impact:  2/10 max
+// Unverified:       15
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,9 +30,13 @@ namespace Broiler.Unicode.Generation;
 /// <param name="Name">The path as the pin writes it: relative to the pin's directory for a <c>file</c>, to the repository's root for a <c>spec-table</c>.</param>
 /// <param name="Bytes">The file's length.</param>
 /// <param name="Sha256">The file's SHA-256, in lower-case hexadecimal.</param>
+// Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=1; Fingerprint=131025
+// Broiler-Human:        PENDING
 public sealed record UnicodePinEntry(string Kind, string Name, long Bytes, string Sha256)
 {
     /// <summary>The file's name without its directories, which a pin comparison across repositories reads.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=D981DF
+    // Broiler-Human:        PENDING
     public string FileName => Name[(Name.LastIndexOf('/') + 1)..];
 }
 
@@ -29,9 +51,13 @@ public sealed record UnicodePinEntry(string Kind, string Name, long Bytes, strin
 /// and a failure is an exception rather than a warning (Broiler.VM's JSD-0031 section 5, which this
 /// port keeps). Each check is a pure function over bytes, so a test can hand it a changed byte.
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=1; Fingerprint=2FDD14
+// Broiler-Human:        PENDING
 public sealed class UnicodePin
 {
     /// <summary>The one version the tables are generated from.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=0; Fingerprint=BF1CB2
+    // Broiler-Human:        PENDING
     public const string PinnedVersion = "17.0.0";
 
     private UnicodePin(IReadOnlyDictionary<string, string> values, IReadOnlyList<UnicodePinEntry> entries)
@@ -47,12 +73,16 @@ public sealed class UnicodePin
     public IReadOnlyList<UnicodePinEntry> Entries { get; }
 
     /// <summary>The version line, or the empty string when there is none.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=7391BA
+    // Broiler-Human:        PENDING
     public string Version => Values.TryGetValue("version", out var version) ? version : string.Empty;
 
     /// <summary>
     /// Broiler.Unicode's own pin, <c>data/unicode/pins/unicode.pin</c>, as this package carries it: the pin an
     /// engine's own must equal, by file name, length and hash (Broiler.VM's rule I4).
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=D16902
+    // Broiler-Human:        PENDING
     public static UnicodePin Owner()
     {
         using var stream = typeof(UnicodePin).Assembly.GetManifestResourceStream("Broiler.Unicode.Generation.unicode.pin")
@@ -65,6 +95,9 @@ public sealed class UnicodePin
     /// <summary>Parses pin text: <c>key value</c> lines, <c>#</c> comments, repeated <c>file</c> and <c>spec-table</c> lines.</summary>
     /// <param name="text">The pin's text.</param>
     /// <exception cref="InvalidDataException">A line is malformed or repeats a key.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=2; Fingerprint=80ECFA
+    // Broiler-Falsified-If: a malformed or repeated line is accepted
+    // Broiler-Human:        PENDING
     public static UnicodePin Parse(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -85,18 +118,18 @@ public sealed class UnicodePin
 
             if (parts[0] is "file" or "spec-table")
             {
-                if (parts.Length != 4 || !long.TryParse(parts[2], out var bytes))
+                if (parts.Length != 4 || !long.TryParse(parts[2], NumberStyles.None, NumberFormatInfo.InvariantInfo, out var bytes))
                 {
-                    throw new InvalidDataException($"unicode.pin: `{line}` is not `{parts[0]} <path> <bytes> <sha256>`");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"unicode.pin: `{line}` is not `{parts[0]} <path> <bytes> <sha256>`"));
                 }
 
-                entries.Add(new UnicodePinEntry(parts[0], parts[1], bytes, parts[3].ToLowerInvariant()));
+                entries.Add(new UnicodePinEntry(parts[0], parts[1], bytes, AsciiLower(parts[3])));
                 continue;
             }
 
             if (parts.Length < 2 || !values.TryAdd(parts[0], string.Join(' ', parts.Skip(1))))
             {
-                throw new InvalidDataException($"unicode.pin: `{line}` is empty or repeats a key");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"unicode.pin: `{line}` is empty or repeats a key"));
             }
         }
 
@@ -105,28 +138,35 @@ public sealed class UnicodePin
 
     /// <summary>The entry the pin writes as <paramref name="name"/>.</summary>
     /// <param name="name">The path as the pin writes it.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=DDEA52
+    // Broiler-Human:        PENDING
     public UnicodePinEntry Entry(string name) =>
         Entries.SingleOrDefault(entry => string.Equals(entry.Name, name, StringComparison.Ordinal))
-        ?? throw new InvalidDataException($"unicode.pin names no file `{name}`");
+        ?? throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"unicode.pin names no file `{name}`"));
 
     /// <summary>The ECMAScript property table the pin names whose file name is <paramref name="fileName"/>, wherever its repository keeps it.</summary>
     /// <param name="fileName">The table's file name, e.g. <c>table-binary-unicode-properties.html</c>.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=043AD6
+    // Broiler-Human:        PENDING
     public UnicodePinEntry SpecTable(string fileName) =>
         Entries.SingleOrDefault(entry => entry.Kind == "spec-table" && string.Equals(entry.FileName, fileName, StringComparison.Ordinal))
-        ?? throw new InvalidDataException($"unicode.pin names no ECMAScript table `{fileName}`");
+        ?? throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"unicode.pin names no ECMAScript table `{fileName}`"));
 
     /// <summary>
     /// Every way <paramref name="archive"/> differs from what the pin records: a missing file, a length, a
     /// hash, or a header that does not name the pinned version. Empty when the archive is the pinned one.
     /// </summary>
     /// <param name="archive">Each file's bytes, by the name the pin writes it under.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=2; Fingerprint=719779
+    // Broiler-Falsified-If: a file whose length, hash or version header differs from the pin yields no violation
+    // Broiler-Human:        PENDING
     public IEnumerable<string> Violations(IReadOnlyDictionary<string, byte[]> archive)
     {
         ArgumentNullException.ThrowIfNull(archive);
 
         if (!string.Equals(Version, PinnedVersion, StringComparison.Ordinal))
         {
-            yield return $"unicode.pin names version `{Version}`, and the tables are generated from {PinnedVersion} only";
+            yield return string.Create(NumberFormatInfo.InvariantInfo, $"unicode.pin names version `{Version}`, and the tables are generated from {PinnedVersion} only");
         }
 
         if (!Values.TryGetValue("archived", out var archived) || archived != "yes")
@@ -138,25 +178,25 @@ public sealed class UnicodePin
         {
             if (!archive.TryGetValue(entry.Name, out var bytes))
             {
-                yield return $"{entry.Name} is pinned and no file is there";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{entry.Name} is pinned and no file is there");
                 continue;
             }
 
             if (bytes.LongLength != entry.Bytes)
             {
-                yield return $"{entry.Name} is {bytes.LongLength} bytes, and the pin records {entry.Bytes}";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{entry.Name} is {bytes.LongLength} bytes, and the pin records {entry.Bytes}");
             }
 
             var digest = Convert.ToHexStringLower(SHA256.HashData(bytes));
 
             if (!string.Equals(digest, entry.Sha256, StringComparison.Ordinal))
             {
-                yield return $"{entry.Name} hashes to {digest}, and the pin records {entry.Sha256}";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{entry.Name} hashes to {digest}, and the pin records {entry.Sha256}");
             }
 
             if (HeaderViolation(entry.Name, bytes, PinnedVersion) is { } header)
             {
-                yield return $"{entry.Name}: {header}";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{entry.Name}: {header}");
             }
         }
     }
@@ -164,6 +204,9 @@ public sealed class UnicodePin
     /// <summary>The archive, verified, or an exception naming every way it is not the pinned one.</summary>
     /// <param name="archive">Each file's bytes, by the name the pin writes it under.</param>
     /// <exception cref="InvalidDataException">The archive is not the one the pin describes.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=2; Fingerprint=94612F
+    // Broiler-Falsified-If: an archive with a violation is returned instead of refused
+    // Broiler-Human:        PENDING
     public IReadOnlyDictionary<string, byte[]> Verified(IReadOnlyDictionary<string, byte[]> archive)
     {
         var violations = Violations(archive).ToArray();
@@ -184,13 +227,15 @@ public sealed class UnicodePin
     /// two pin the same files by the same hashes, whatever their comments and paths.
     /// </summary>
     /// <param name="other">Another repository's pin, e.g. Broiler.VM's.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=59C739
+    // Broiler-Human:        PENDING
     public IEnumerable<string> Differences(UnicodePin other)
     {
         ArgumentNullException.ThrowIfNull(other);
 
         if (!string.Equals(Version, other.Version, StringComparison.Ordinal))
         {
-            yield return $"one pin names version `{Version}` and the other `{other.Version}`";
+            yield return string.Create(NumberFormatInfo.InvariantInfo, $"one pin names version `{Version}` and the other `{other.Version}`");
         }
 
         static string Key(UnicodePinEntry entry) => entry.Kind == "spec-table" ? "spec-table:" + entry.FileName : entry.Name;
@@ -202,17 +247,17 @@ public sealed class UnicodePin
         {
             if (!theirs.TryGetValue(key, out var match))
             {
-                yield return $"{key} is pinned here and not there";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{key} is pinned here and not there");
             }
             else if (entry.Bytes != match.Bytes || !string.Equals(entry.Sha256, match.Sha256, StringComparison.Ordinal))
             {
-                yield return $"{key} is {entry.Bytes} bytes hashing to {entry.Sha256} here and {match.Bytes} bytes hashing to {match.Sha256} there";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"{key} is {entry.Bytes} bytes hashing to {entry.Sha256} here and {match.Bytes} bytes hashing to {match.Sha256} there");
             }
         }
 
         foreach (var key in theirs.Keys.Where(key => !mine.ContainsKey(key)).Order(StringComparer.Ordinal))
         {
-            yield return $"{key} is pinned there and not here";
+            yield return string.Create(NumberFormatInfo.InvariantInfo, $"{key} is pinned there and not here");
         }
     }
 
@@ -225,6 +270,8 @@ public sealed class UnicodePin
     /// <param name="name">The path as the pin writes it.</param>
     /// <param name="bytes">The file's bytes.</param>
     /// <param name="version">The version, e.g. <c>17.0.0</c>.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=190900
+    // Broiler-Human:        PENDING
     public static string? HeaderViolation(string name, byte[] bytes, string version)
     {
         ArgumentNullException.ThrowIfNull(name);
@@ -245,20 +292,35 @@ public sealed class UnicodePin
         {
             var shortVersion = version[..version.LastIndexOf('.')];
 
-            return lines.Take(11).Any(line => string.Equals(line, $"# Version: {shortVersion}", StringComparison.Ordinal))
+            return lines.Take(11).Any(line => string.Equals(line, string.Create(NumberFormatInfo.InvariantInfo, $"# Version: {shortVersion}"), StringComparison.Ordinal))
                 ? null
-                : $"the header does not state `# Version: {shortVersion}`";
+                : string.Create(NumberFormatInfo.InvariantInfo, $"the header does not state `# Version: {shortVersion}`");
         }
 
-        var expected = $"# {Path.GetFileNameWithoutExtension(fileName)}-{version}.txt";
+        var expected = string.Create(NumberFormatInfo.InvariantInfo, $"# {Path.GetFileNameWithoutExtension(fileName)}-{version}.txt");
 
         return string.Equals(lines[0], expected, StringComparison.Ordinal)
             ? null
-            : $"the first line is `{lines[0]}`, and a {version} file opens `{expected}`";
+            : string.Create(NumberFormatInfo.InvariantInfo, $"the first line is `{lines[0]}`, and a {version} file opens `{expected}`");
     }
+
+    /// <summary>A hexadecimal digest in lower case, letter by ASCII letter: no culture's or Unicode's case mapping is read.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0031 s5 pin checks; IP=Low; Security=Medium; Resources=2; Fingerprint=0C4AAC
+    // Broiler-Human:        PENDING
+    private static string AsciiLower(string text) =>
+        string.Create(text.Length, text, static (span, source) =>
+        {
+            for (var i = 0; i < source.Length; i++)
+            {
+                var c = source[i];
+                span[i] = c is >= 'A' and <= 'Z' ? (char)(c + ('a' - 'A')) : c;
+            }
+        });
 
     /// <summary>Strict UTF-8: a byte sequence that is not UTF-8 is a refusal, not a replacement character.</summary>
     /// <param name="bytes">The bytes.</param>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0031 s5 pin checks via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=294CFD
+    // Broiler-Human:        PENDING
     public static string Decode(byte[] bytes) =>
         new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true).GetString(bytes);
 }

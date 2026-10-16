@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Broiler.Unicode.Tables;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Broiler.Unicode.Algorithms.Tests;
 
@@ -12,7 +13,7 @@ namespace Broiler.Unicode.Algorithms.Tests;
 /// <c>PropertyValueAliases.txt</c> admit resolves, to the property it names, and every name of the refused
 /// set is refused (ECMA-262 section 22.2.2.9, UnicodeMatchProperty and UnicodeMatchPropertyValue).
 /// </summary>
-public sealed class EcmaScriptTableTests
+public sealed class EcmaScriptTableTests(ITestOutputHelper output)
 {
     private static readonly UnicodeProperties Properties = new(UnicodeTables.Instance);
 
@@ -32,6 +33,8 @@ public sealed class EcmaScriptTableTests
             Assert.True(SameSet(set, expected), $"`{name}` does not resolve to `{canonical}`");
             Assert.False(Properties.TryResolve(name, "Y", out _), $"`{name}=Y` is admitted");
         }
+
+        output.WriteLine($"A5 binary properties: {rows.Count} names run, 0 failed");
     }
 
     [Fact]
@@ -59,6 +62,8 @@ public sealed class EcmaScriptTableTests
                 Assert.True(SameSet(first.Value, lone), $"the aliases of gc `{aliases[0]}` differ");
             }
         }
+
+        output.WriteLine($"A5 General_Category: {ValueAliases("gc").Sum(static aliases => aliases.Length)} value names run alone and under {properties.Length} property names, 0 failed");
     }
 
     [Fact]
@@ -83,6 +88,7 @@ public sealed class EcmaScriptTableTests
             }
         }
 
+        output.WriteLine($"A5 Script and Script_Extensions: {values.Sum(static aliases => aliases.Length)} value names run under {script.Length + extensions.Length} property names, 0 failed");
         Assert.True(Properties.TryResolve("Script", "Katakana_Or_Hiragana", out var hrkt));
         Assert.True(hrkt.IsEmpty);
         Assert.True(Properties.TryResolve("scx", "Hrkt", out var hrktExtensions));
@@ -102,6 +108,8 @@ public sealed class EcmaScriptTableTests
             Assert.True(Strings.TryResolve(name, out _), $"`{name}` is not admitted");
             Assert.False(Properties.TryResolve(name, out _), $"`{name}` is admitted as a code point property");
         }
+
+        output.WriteLine($"A5 properties of strings: {rows.Count} names run, 0 failed");
     }
 
     [Fact]
@@ -137,6 +145,7 @@ public sealed class EcmaScriptTableTests
             Assert.False(Properties.TryResolve(property, value, out _), $"`{property}={value}` is admitted");
         }
 
+        output.WriteLine($"A5 refused set: {refused.Count(name => !admitted.Contains(name))} lone names and {Refused(stringNames).Count(name => !stringNames.Contains(name))} string-property names refused, 0 failed");
         Assert.False(Properties.TryResolve(new string('L', 1000), out _));
         Assert.False(Properties.TryResolve("Lı", out _));
     }

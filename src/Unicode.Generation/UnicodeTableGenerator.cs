@@ -1,3 +1,20 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   18
+// Annotated:        18/18
+// Exempt:           2
+// Human-reviewed:   0/18
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         1/1
+// Resource impact:  5/10 max
+// Unverified:       18
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,9 +46,13 @@ namespace Broiler.Unicode.Generation;
 /// property it reads from two places.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=1; Fingerprint=CB3100
+// Broiler-Human:        PENDING
 public static class UnicodeTableGenerator
 {
     /// <summary>The first sequence byte that opens a two-byte dictionary index.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=0; Fingerprint=1872B9
+    // Broiler-Human:        PENDING
     private const int ShortLimit = 0xF0;
 
     /// <summary>
@@ -42,6 +63,9 @@ public static class UnicodeTableGenerator
     /// <param name="archive">Each pinned file's bytes, by the name the pin writes it under.</param>
     /// <returns>Each table's bytes, in <see cref="UnicodeTable"/> order.</returns>
     /// <exception cref="InvalidDataException">The archive is not the pinned one, or a cross-check fails.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=5; Fingerprint=D8215B
+    // Broiler-Falsified-If: a table is written from a file the pin does not name or that failed verification
+    // Broiler-Human:        PENDING
     public static IReadOnlyList<KeyValuePair<UnicodeTable, byte[]>> Generate(UnicodePin pin, IReadOnlyDictionary<string, byte[]> archive)
     {
         ArgumentNullException.ThrowIfNull(pin);
@@ -60,6 +84,8 @@ public static class UnicodeTableGenerator
         return tables.ToList();
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=88B363
+    // Broiler-Human:        PENDING
     private static void Properties(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var sets = new List<List<UnicodeRange>>();
@@ -128,6 +154,8 @@ public static class UnicodeTableGenerator
     /// and its sequences, spelt through a dictionary of code points, most frequent first, so that almost
     /// every code point of a sequence is one byte.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=8B244B
+    // Broiler-Human:        PENDING
     private static void StringProperties(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var ranges = new ByteWriter();
@@ -149,7 +177,7 @@ public static class UnicodeTableGenerator
 
         if (frequency.Length > (0x100 - ShortLimit) * 0x100)
         {
-            throw new InvalidDataException($"{frequency.Length} distinct code points do not fit the sequence dictionary's two-byte indices");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{frequency.Length} distinct code points do not fit the sequence dictionary's two-byte indices"));
         }
 
         foreach (var codePoint in frequency)
@@ -206,17 +234,21 @@ public static class UnicodeTableGenerator
     }
 
     /// <summary>The set id of a binary property by canonical name; a name the table lacks is a stop.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=124551
+    // Broiler-Human:        PENDING
     private static int BinarySet(UnicodeDatabase database, int binaryBase, string name)
     {
         var index = database.BinaryProperties.FindIndex(value => value.ShortName == name);
 
-        return index < 0 ? throw new InvalidDataException($"the binary property table has no `{name}`") : binaryBase + index;
+        return index < 0 ? throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the binary property table has no `{name}`")) : binaryBase + index;
     }
 
     /// <summary>
     /// The non-<c>u</c> Canonicalize of every code unit it moves: the full upper-case mapping, kept only
     /// where it is one code unit and does not move a code unit outside ASCII into it.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=12490E
+    // Broiler-Human:        PENDING
     private static SortedDictionary<int, int> NonUnicodeCanonical(UnicodeDatabase database)
     {
         var canonical = new SortedDictionary<int, int>();
@@ -239,12 +271,14 @@ public static class UnicodeTableGenerator
         // An orbit is closed by the reverse relation, which assumes one step reaches the canonical form.
         foreach (var target in canonical.Values.Where(canonical.ContainsKey))
         {
-            throw new InvalidDataException($"U+{target:X4} is a non-u canonical form and is moved again");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"U+{target:X4} is a non-u canonical form and is moved again"));
         }
 
         return canonical;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=7B525D
+    // Broiler-Human:        PENDING
     private static void CaseFolding(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var folds = database.SimpleFolding.ToArray();
@@ -288,6 +322,8 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.UpperOrbitIndex] = upperOrbit.ToArray();
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=B4720F
+    // Broiler-Human:        PENDING
     private static void Normalization(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var combining = new ByteWriter();
@@ -364,6 +400,8 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.QuickCheckIndex] = quickIndex.ToArray();
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=368C9E
+    // Broiler-Human:        PENDING
     private static void Casing(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var pool = new ByteWriter();
@@ -419,7 +457,9 @@ public static class UnicodeTableGenerator
     /// code point the file does not list has. The orders are <c>Broiler.Unicode.Segmentation</c>'s
     /// enumerations', and Broiler.VM's <c>SegmentBreakValues</c>.
     /// </summary>
-    private static readonly (string Name, string[] Values)[] SegmentBreakValues =
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=0DB322
+    // Broiler-Human:        PENDING
+    private static (string Name, string[] Values)[] SegmentBreakValues() =>
     [
         ("gcb", ["Other", "CR", "LF", "Control", "Extend", "ZWJ", "Regional_Indicator", "Prepend", "SpacingMark", "L", "V", "T", "LV", "LVT"]),
         ("wb", ["Other", "CR", "LF", "Newline", "Extend", "ZWJ", "Regional_Indicator", "Format", "Katakana", "Hebrew_Letter", "ALetter", "Single_Quote", "Double_Quote", "MidNumLet", "MidLetter", "MidNum", "Numeric", "ExtendNumLet", "WSegSpace"]),
@@ -435,6 +475,8 @@ public static class UnicodeTableGenerator
     /// combination as six value codes, a four-byte little-endian run count, and each run as its first code
     /// point (three bytes, little-endian) and the index of its combination.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=667DF8
+    // Broiler-Human:        PENDING
     private static byte[] SegmentBreaks(IReadOnlyDictionary<string, byte[]> ucd)
     {
         var properties = new byte[6][];
@@ -444,9 +486,11 @@ public static class UnicodeTableGenerator
             properties[p] = new byte[0x110000];
         }
 
+        var breakValues = SegmentBreakValues();
+
         void Read(int property, string file, Func<string[], string?> value)
         {
-            var codes = SegmentBreakValues[property].Values;
+            var codes = breakValues[property].Values;
 
             foreach (var raw in UnicodePin.Decode(ucd[file]).Split('\n'))
             {
@@ -468,12 +512,12 @@ public static class UnicodeTableGenerator
 
                 if (code <= 0)
                 {
-                    throw new InvalidDataException($"{file} names a value the table does not code: {name}");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{file} names a value the table does not code: {name}"));
                 }
 
                 var range = fields[0].Split("..");
-                var first = int.Parse(range[0], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
-                var last = range.Length == 1 ? first : int.Parse(range[1], NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                var first = int.Parse(range[0], NumberStyles.HexNumber, NumberFormatInfo.InvariantInfo);
+                var last = range.Length == 1 ? first : int.Parse(range[1], NumberStyles.HexNumber, NumberFormatInfo.InvariantInfo);
 
                 for (var c = first; c <= last; c++)
                 {
@@ -518,7 +562,7 @@ public static class UnicodeTableGenerator
 
         if (combinations.Count > 255)
         {
-            throw new InvalidDataException($"{combinations.Count} combinations do not fit in a byte");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{combinations.Count} combinations do not fit in a byte"));
         }
 
         var data = new List<byte> { (byte)combinations.Count };
@@ -545,6 +589,8 @@ public static class UnicodeTableGenerator
     }
 
     /// <summary>A name table in ordinal order: a length byte, the ASCII name and a two-byte value, plus two-byte offsets.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=2; Fingerprint=7E3046
+    // Broiler-Human:        PENDING
     private static (ByteWriter Names, ByteWriter Index) NameTable(IEnumerable<(string Name, int Value)> entries)
     {
         var names = new ByteWriter();
@@ -556,14 +602,14 @@ public static class UnicodeTableGenerator
 
         foreach (var duplicate in ordered.GroupBy(static entry => entry.Name, StringComparer.Ordinal).Where(static group => group.Count() > 1))
         {
-            throw new InvalidDataException($"the name `{duplicate.Key}` selects more than one table entry");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the name `{duplicate.Key}` selects more than one table entry"));
         }
 
         foreach (var (name, value) in ordered)
         {
             if (name.Length is 0 or > 255 || name.Any(static character => character is < '!' or > '~'))
             {
-                throw new InvalidDataException($"the name `{name}` is not 1 to 255 printable ASCII characters");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the name `{name}` is not 1 to 255 printable ASCII characters"));
             }
 
             index.UInt16(names.Count);
@@ -581,28 +627,34 @@ public static class UnicodeTableGenerator
     }
 
     /// <summary>Little-endian bytes, bounds-checked as they are written.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Low; Resources=1; Fingerprint=792CCE
+    // Broiler-Human:        PENDING
     private sealed class ByteWriter
     {
         private readonly List<byte> bytes = [];
 
         internal int Count => bytes.Count;
 
+        // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=F2E6F9
+        // Broiler-Human:        PENDING
         internal ByteWriter Byte(int value)
         {
             if (value is < 0 or > 0xFF)
             {
-                throw new InvalidDataException($"{value} does not fit in a byte");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{value} does not fit in a byte"));
             }
 
             bytes.Add((byte)value);
             return this;
         }
 
+        // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=27E9D9
+        // Broiler-Human:        PENDING
         internal ByteWriter UInt16(int value)
         {
             if (value is < 0 or > 0xFFFF)
             {
-                throw new InvalidDataException($"{value} does not fit in two bytes");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{value} does not fit in two bytes"));
             }
 
             bytes.Add((byte)value);
@@ -610,11 +662,13 @@ public static class UnicodeTableGenerator
             return this;
         }
 
+        // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=0AF069
+        // Broiler-Human:        PENDING
         internal ByteWriter Int24(int value)
         {
             if (value is < 0 or > 0xFFFFFF)
             {
-                throw new InvalidDataException($"{value} does not fit in three bytes");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{value} does not fit in three bytes"));
             }
 
             bytes.Add((byte)value);
@@ -623,6 +677,8 @@ public static class UnicodeTableGenerator
             return this;
         }
 
+        // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=60CCA2
+        // Broiler-Human:        PENDING
         internal byte[] ToArray() => bytes.ToArray();
     }
 }

@@ -1,4 +1,22 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   27
+// Annotated:        27/27
+// Exempt:           47
+// Human-reviewed:   0/27
+// IP risk:          Low
+// Security risk:    Medium
+// Criteria:         0/0
+// Resource impact:  1/10 max
+// Unverified:       27
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
+using System.Globalization;
 
 namespace Broiler.Unicode.Algorithms;
 
@@ -11,12 +29,16 @@ namespace Broiler.Unicode.Algorithms;
 /// a membership test is a binary search over the generated range list (ECMA-262 CharSet, read as a
 /// list of ranges). The default value is the empty set.
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=1; Fingerprint=A9252C
+// Broiler-Human:        PENDING
 public readonly struct CodePointSet
 {
     private readonly UnicodeProperties? owner;
 
     private readonly int first;
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=650BF2
+    // Broiler-Human:        PENDING
     internal CodePointSet(UnicodeProperties owner, int first, int count)
     {
         this.owner = owner;
@@ -28,29 +50,43 @@ public readonly struct CodePointSet
     public int RangeCount { get; }
 
     /// <summary>Whether the set has no code point.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=6C4DE1
+    // Broiler-Human:        PENDING
     public bool IsEmpty => RangeCount == 0;
 
     /// <summary>The first code point of range <paramref name="index"/>.</summary>
     /// <param name="index">A range of the set, from zero to <see cref="RangeCount"/> less one.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=F424FA
+    // Broiler-Human:        PENDING
     public int First(int index) => TableReader.Int24(Ranges, Checked(index) * 6);
 
     /// <summary>The last code point of range <paramref name="index"/>, inclusive.</summary>
     /// <param name="index">A range of the set, from zero to <see cref="RangeCount"/> less one.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=7DC5A1
+    // Broiler-Human:        PENDING
     public int Last(int index) => TableReader.Int24(Ranges, (Checked(index) * 6) + 3);
 
     /// <summary>Whether <paramref name="codePoint"/> is in the set: a binary search, no allocation.</summary>
     /// <param name="codePoint">A code point; a value outside U+0000 to U+10FFFF is in no set.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=017C70
+    // Broiler-Human:        PENDING
     public bool Contains(int codePoint) =>
         RangeCount != 0 && TableReader.InRanges(Ranges, first, RangeCount, codePoint);
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=511034
+    // Broiler-Human:        PENDING
     private ReadOnlySpan<byte> Ranges => owner is null ? default : owner.Ranges;
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=ED18DF
+    // Broiler-Human:        PENDING
     private int Checked(int index) =>
         (uint)index < (uint)RangeCount ? first + index : throw new ArgumentOutOfRangeException(nameof(index));
 }
 
 /// <summary>The thirty single General_Category values, in the ordinal order of their short names.</summary>
 /// <remarks>The order is the tables' set-id order (Unicode Standard section 4.5, <c>PropertyValueAliases.txt</c>).</remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=0; Fingerprint=885BE9
+// Broiler-Human:        PENDING
 public enum GeneralCategory
 {
     /// <summary>Cc, Control.</summary>
@@ -174,11 +210,17 @@ public enum GeneralCategory
 /// name longer than the longest the tables hold is refused before it is compared.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=1; Fingerprint=62B18C
+// Broiler-Human:        PENDING
 public sealed class UnicodeProperties
 {
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=0; Fingerprint=05AEBB
+    // Broiler-Human:        PENDING
     private const int LayoutLength = 11;
 
     /// <summary>The two-letter short names of <see cref="GeneralCategory"/>'s values, in its order.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=0; Fingerprint=37AC41
+    // Broiler-Human:        PENDING
     private const string CategoryShortNames = "CcCfCnCoCsLlLmLoLtLuMcMeMnNdNlNoPcPdPePfPiPoPsScSkSmSoZlZpZs";
 
     private readonly IUnicodeTables tables;
@@ -199,6 +241,8 @@ public sealed class UnicodeProperties
     /// tables, <see cref="UnicodeTable.PropertyLayout"/> to <see cref="UnicodeTable.ScriptNameIndex"/>.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=56957A
+    // Broiler-Human:        PENDING
     public UnicodeProperties(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
@@ -217,7 +261,7 @@ public sealed class UnicodeProperties
 
         if (layout.Length != LayoutLength * 3)
         {
-            throw new ArgumentException($"PropertyLayout holds {layout.Length / 3} values, not {LayoutLength}.", nameof(tables));
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"PropertyLayout holds {layout.Length / 3} values, not {LayoutLength}."), nameof(tables));
         }
 
         generalCategorySetCount = TableReader.Layout(layout, 0);
@@ -236,7 +280,7 @@ public sealed class UnicodeProperties
 
             if (TableReader.Find(tables.Table(UnicodeTable.PropertyLoneNames), tables.Table(UnicodeTable.PropertyLoneNameIndex), shortName) != category)
             {
-                throw new ArgumentException($"PropertyLoneNames does not give General_Category {shortName} set {category}.", nameof(tables));
+                throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"PropertyLoneNames does not give General_Category {shortName} set {category}."), nameof(tables));
             }
         }
 
@@ -265,9 +309,13 @@ public sealed class UnicodeProperties
     public CodePointSet SoftDotted { get; }
 
     /// <summary>The number of sets the tables hold.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=669363
+    // Broiler-Human:        PENDING
     internal int SetCount => tables.Table(UnicodeTable.PropertySets).Length / 6;
 
     /// <summary>The range list every set reads.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=1DF51F
+    // Broiler-Human:        PENDING
     internal ReadOnlySpan<byte> Ranges => tables.Table(UnicodeTable.PropertyRanges);
 
     /// <summary>
@@ -278,6 +326,8 @@ public sealed class UnicodeProperties
     /// <param name="name">The name, exactly as written.</param>
     /// <param name="set">The set, or the empty set when the name is not admitted.</param>
     /// <returns>Whether the name is admitted.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=7105E1
+    // Broiler-Human:        PENDING
     public bool TryResolve(ReadOnlySpan<char> name, out CodePointSet set)
     {
         var id = name.Length > longestName
@@ -297,6 +347,8 @@ public sealed class UnicodeProperties
     /// <param name="value">The value's name, exactly as written.</param>
     /// <param name="set">The set, or the empty set when the pair is not admitted.</param>
     /// <returns>Whether the pair is admitted.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=AEA1A5
+    // Broiler-Human:        PENDING
     public bool TryResolve(ReadOnlySpan<char> property, ReadOnlySpan<char> value, out CodePointSet set)
     {
         set = default;
@@ -329,6 +381,8 @@ public sealed class UnicodeProperties
 
     /// <summary>The set of one single General_Category value.</summary>
     /// <param name="category">The value.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=5EC5B3
+    // Broiler-Human:        PENDING
     public CodePointSet Category(GeneralCategory category) =>
         (uint)category < 30 ? Set((int)category) : throw new ArgumentOutOfRangeException(nameof(category));
 
@@ -337,6 +391,8 @@ public sealed class UnicodeProperties
     /// point the tables list in no category, and a value outside the code space, is Unassigned.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=2FF96C
+    // Broiler-Human:        PENDING
     public GeneralCategory GeneralCategoryOf(int codePoint)
     {
         for (var category = 0; category < 30; category++)
@@ -351,18 +407,22 @@ public sealed class UnicodeProperties
     }
 
     /// <summary>The set with generated id <paramref name="id"/>.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=F4B126
+    // Broiler-Human:        PENDING
     internal CodePointSet Set(int id)
     {
         var sets = tables.Table(UnicodeTable.PropertySets);
 
         if ((uint)id >= (uint)(sets.Length / 6))
         {
-            throw new ArgumentException($"PropertyLayout names set {id}, and PropertySets holds {sets.Length / 6}.");
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"PropertyLayout names set {id}, and PropertySets holds {sets.Length / 6}."));
         }
 
         return new CodePointSet(this, TableReader.Int24(sets, id * 6), TableReader.Int24(sets, (id * 6) + 3));
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=F34FD9
+    // Broiler-Human:        PENDING
     private int Longest(UnicodeTable names, UnicodeTable index)
     {
         var data = tables.Table(names);
@@ -392,6 +452,8 @@ public sealed class UnicodeProperties
 /// </para>
 /// <para>ASCII is answered by comparison; anything else is one binary search. Nothing allocates.</para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Low; Resources=1; Fingerprint=1D1E80
+// Broiler-Human:        PENDING
 public sealed class EcmaScriptLexical
 {
     private readonly CodePointSet idStart;
@@ -402,6 +464,8 @@ public sealed class EcmaScriptLexical
 
     /// <summary>The lexical classes over <paramref name="properties"/>.</summary>
     /// <param name="properties">The property lookups.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=5B3A1D
+    // Broiler-Human:        PENDING
     public EcmaScriptLexical(UnicodeProperties properties)
     {
         ArgumentNullException.ThrowIfNull(properties);
@@ -415,6 +479,8 @@ public sealed class EcmaScriptLexical
     /// (ECMA-262 section 12.7, "Names and Keywords"). A surrogate code point is not one.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=F820E7
+    // Broiler-Human:        PENDING
     public bool IsIdentifierStart(int codePoint) =>
         codePoint < 0x80
             ? (uint)((codePoint | 0x20) - 'a') <= 'z' - 'a' || codePoint is '$' or '_'
@@ -425,6 +491,8 @@ public sealed class EcmaScriptLexical
     /// (ECMA-262 section 12.7). <c>_</c> and the decimal digits are in ID_Continue itself.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=05ADE8
+    // Broiler-Human:        PENDING
     public bool IsIdentifierPart(int codePoint) =>
         codePoint < 0x80
             ? (uint)((codePoint | 0x20) - 'a') <= 'z' - 'a' || (uint)(codePoint - '0') <= 9 || codePoint is '$' or '_'
@@ -435,6 +503,8 @@ public sealed class EcmaScriptLexical
     /// Space_Separator (ECMA-262 section 12.2, "White Space"). Line terminators and U+0085 are not.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=0103D9
+    // Broiler-Human:        PENDING
     public bool IsWhiteSpace(int codePoint) =>
         codePoint is 0x09 or 0x0B or 0x0C or 0x20 or 0xA0 or 0xFEFF ||
         (codePoint > 0xFF && spaceSeparator.Contains(codePoint));
@@ -444,5 +514,7 @@ public sealed class EcmaScriptLexical
     /// section 12.3, "Line Terminators").
     /// </summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=3081D2
+    // Broiler-Human:        PENDING
     public static bool IsLineTerminator(int codePoint) => codePoint is 0x0A or 0x0D or 0x2028 or 0x2029;
 }

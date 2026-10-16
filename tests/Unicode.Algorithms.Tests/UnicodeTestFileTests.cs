@@ -7,6 +7,7 @@ using Broiler.Unicode.Algorithms;
 using Broiler.Unicode.Segmentation;
 using Broiler.Unicode.Tables;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Broiler.Unicode.Algorithms.Tests;
 
@@ -14,7 +15,7 @@ namespace Broiler.Unicode.Algorithms.Tests;
 /// Bundle sjl-7-001's part A (exit clause 3; the programme's layer L4): every case of Unicode's own test
 /// files, read from the pinned archive, with no case excluded.
 /// </summary>
-public sealed class UnicodeTestFileTests
+public sealed class UnicodeTestFileTests(ITestOutputHelper output)
 {
     private static readonly UnicodeNormalization Normalization = new(UnicodeTables.Instance);
 
@@ -70,6 +71,7 @@ public sealed class UnicodeTestFileTests
             }
         }
 
+        output.WriteLine($"A1 NormalizationTest.txt: {lines} lines run, {lines * 20} comparisons, {failures.Count} failed");
         Assert.True(lines > 19000, $"read {lines} lines");
         Assert.True(failures.Count == 0, string.Join("\n", failures.Take(20)));
     }
@@ -119,6 +121,7 @@ public sealed class UnicodeTestFileTests
             }
         }
 
+        output.WriteLine($"A1 part 1's closing claim: {UnicodeAlgorithms.MaxCodePoint + 1 - listed.Count} code points run in four forms, {failures.Count} failed");
         Assert.True(failures.Count == 0, string.Join("\n", failures.Take(20)));
     }
 
@@ -167,6 +170,7 @@ public sealed class UnicodeTestFileTests
             }
         }
 
+        output.WriteLine($"A2 {file}: {lines} lines run, {failures.Count} failed");
         Assert.True(lines > 400, $"read {lines} lines");
         Assert.True(failures.Count == 0, string.Join("\n", failures.Take(20)));
     }
@@ -227,6 +231,7 @@ public sealed class UnicodeTestFileTests
             }
         }
 
+        output.WriteLine($"A3 CaseFolding.txt: {folding.Count} C and S lines, {UnicodeAlgorithms.MaxCodePoint + 1} code points folded and orbited, {failures.Count} failed");
         Assert.True(failures.Count == 0, string.Join("\n", failures.Take(20)));
     }
 
@@ -290,6 +295,7 @@ public sealed class UnicodeTestFileTests
             }
         }
 
+        output.WriteLine($"A4 every code point alone: {UnicodeAlgorithms.MaxCodePoint + 1} code points upper- and lower-cased, {failures.Count} failed");
         Assert.True(failures.Count == 0, string.Join("\n", failures.Take(20)));
     }
 
@@ -361,6 +367,8 @@ public sealed class UnicodeTestFileTests
             Assert.Equal(UnicodeStatus.Success, status);
             Assert.True(string.Equals(actual, expected, StringComparison.Ordinal), $"{line}: `{Hex(input)}` gave {Hex(actual!)}, not {Hex(expected)}");
         }
+
+        output.WriteLine($"A4 SpecialCasing.txt's conditional lines: {lines.Count} lines, {cases.Length} cases run, 0 failed");
     }
 
     internal static IEnumerable<(string[] Fields, string Comment)> Records(string file)

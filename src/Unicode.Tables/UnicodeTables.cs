@@ -1,3 +1,20 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   4
+// Annotated:        4/4
+// Exempt:           2
+// Human-reviewed:   0/4
+// IP risk:          Low
+// Security risk:    Medium
+// Criteria:         0/0
+// Resource impact:  1/10 max
+// Unverified:       4
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 using Broiler.Unicode.Algorithms;
 
@@ -24,6 +41,8 @@ namespace Broiler.Unicode.Tables;
 /// <c>Unicode-3.0</c>), whose text <c>THIRD_PARTY_NOTICES.md</c> carries.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=1; Fingerprint=7BAF35
+// Broiler-Human:        PENDING
 public sealed class UnicodeTables : IUnicodeTables
 {
     private UnicodeTables()
@@ -31,14 +50,20 @@ public sealed class UnicodeTables : IUnicodeTables
     }
 
     /// <summary>The Unicode version of the tables, <c>17.0.0</c>: the pin's.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=0; Fingerprint=4D7A09
+    // Broiler-Human:        PENDING
     public const string Version = UnicodeAlgorithms.UnicodeVersion;
 
     /// <summary>The one instance; it holds nothing, and every table it answers is constant data.</summary>
     public static UnicodeTables Instance { get; } = new();
 
     /// <inheritdoc/>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Medium; Resources=1; Fingerprint=7DF785
+    // Broiler-Human:        PENDING
     public string UnicodeVersion => Version;
 
     /// <inheritdoc/>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Medium; Resources=1; Fingerprint=C09689
+    // Broiler-Human:        PENDING
     public ReadOnlySpan<byte> Table(UnicodeTable table) => UnicodeTableData.Get(table);
 }

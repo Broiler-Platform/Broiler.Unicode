@@ -1,9 +1,25 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   47
+// Annotated:        47/47
+// Exempt:           17
+// Human-reviewed:   0/47
+// IP risk:          Low
+// Security risk:    Medium
+// Criteria:         0/0
+// Resource impact:  4/10 max
+// Unverified:       47
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Broiler.Unicode.Generation;
 
@@ -15,18 +31,26 @@ namespace Broiler.Unicode.Generation;
 // language-sensitive casing it now serves are read here too (UnicodeTableGenerator).
 
 /// <summary>An inclusive range of code points.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=635743
+// Broiler-Human:        PENDING
 internal readonly record struct UnicodeRange(int First, int Last);
 
 /// <summary>Reading the UCD's semicolon-separated files.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=A3FDC9
+// Broiler-Human:        PENDING
 internal static class UnicodeDataFile
 {
     /// <summary>The highest code point.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=79D97A
+    // Broiler-Human:        PENDING
     internal const int MaxCodePoint = 0x10FFFF;
 
     /// <summary>
     /// Every data line of a UCD file as trimmed fields, with the <c>#</c> comment removed and
     /// blank lines skipped.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=FD0D7D
+    // Broiler-Human:        PENDING
     internal static IEnumerable<string[]> Records(string text)
     {
         foreach (var raw in text.Split('\n'))
@@ -42,6 +66,8 @@ internal static class UnicodeDataFile
     }
 
     /// <summary>The comment of a data line, or the empty string.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=E5685A
+    // Broiler-Human:        PENDING
     internal static IEnumerable<(string[] Fields, string Comment)> RecordsWithComments(string text)
     {
         foreach (var raw in text.Split('\n'))
@@ -59,6 +85,8 @@ internal static class UnicodeDataFile
     }
 
     /// <summary><c>0041</c> or <c>0041..005A</c>.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=57D8AF
+    // Broiler-Human:        PENDING
     internal static UnicodeRange Range(string field)
     {
         var dots = field.IndexOf("..", StringComparison.Ordinal);
@@ -68,19 +96,23 @@ internal static class UnicodeDataFile
             : new UnicodeRange(Hex(field[..dots]), Hex(field[(dots + 2)..]));
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=4C62DE
+    // Broiler-Human:        PENDING
     internal static int Hex(string text)
     {
-        var value = int.Parse(text, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture);
+        var value = int.Parse(text, NumberStyles.AllowHexSpecifier, NumberFormatInfo.InvariantInfo);
 
         if (value is < 0 or > MaxCodePoint)
         {
-            throw new InvalidDataException($"{text} is not a code point");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"{text} is not a code point"));
         }
 
         return value;
     }
 
     /// <summary>Sorted, merged: ascending, disjoint and never adjacent.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=2125F4
+    // Broiler-Human:        PENDING
     internal static List<UnicodeRange> Normalize(IEnumerable<UnicodeRange> ranges)
     {
         var merged = new List<UnicodeRange>();
@@ -101,6 +133,8 @@ internal static class UnicodeDataFile
     }
 
     /// <summary>Every code point not in the (normalized) ranges.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=C6CC1E
+    // Broiler-Human:        PENDING
     internal static List<UnicodeRange> Complement(IReadOnlyList<UnicodeRange> ranges)
     {
         var complement = new List<UnicodeRange>();
@@ -125,6 +159,8 @@ internal static class UnicodeDataFile
     }
 
     /// <summary>The maximal runs of one value in a per-code-point array, for each value.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=A0B2A6
+    // Broiler-Human:        PENDING
     internal static Dictionary<int, List<UnicodeRange>> Runs(IReadOnlyList<int> valueOf)
     {
         var runs = new Dictionary<int, List<UnicodeRange>>();
@@ -151,6 +187,8 @@ internal static class UnicodeDataFile
 }
 
 /// <summary>A property value: the set it resolves to, and every name the UCD gives it.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=36FBD4
+// Broiler-Human:        PENDING
 internal sealed record UnicodeValue(string ShortName, string LongName, IReadOnlyList<string> Names, List<UnicodeRange> Ranges);
 
 /// <summary>
@@ -164,19 +202,41 @@ internal sealed record UnicodeValue(string ShortName, string LongName, IReadOnly
 /// checks of <c>DerivedNormalizationProps.txt</c> against the decompositions this computes. A parser
 /// that dropped a line would pass neither.
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=DFF330
+// Broiler-Human:        PENDING
 internal sealed class UnicodeDatabase
 {
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=EF39E2
+    // Broiler-Human:        PENDING
     internal const int HangulSBase = 0xAC00;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=EBB1C6
+    // Broiler-Human:        PENDING
     internal const int HangulLBase = 0x1100;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=5BE10C
+    // Broiler-Human:        PENDING
     internal const int HangulVBase = 0x1161;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=8D8D7F
+    // Broiler-Human:        PENDING
     internal const int HangulTBase = 0x11A7;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=4EB942
+    // Broiler-Human:        PENDING
     internal const int HangulVCount = 21;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=C33BAF
+    // Broiler-Human:        PENDING
     internal const int HangulTCount = 28;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=652812
+    // Broiler-Human:        PENDING
     internal const int HangulNCount = HangulVCount * HangulTCount;
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=866976
+    // Broiler-Human:        PENDING
     internal const int HangulSCount = 19 * HangulNCount;
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=35425A
+    // Broiler-Human:        PENDING
     private const string Ucd = "ucd-17.0.0/";
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=6C6262
+    // Broiler-Human:        PENDING
     private const string Emoji = "emoji-17.0.0/";
 
     /// <summary>General_Category values (the 30) and groups (the 8), in set-id order.</summary>
@@ -243,6 +303,8 @@ internal sealed class UnicodeDatabase
     internal SortedDictionary<int, int[]> FullLowercase { get; } = [];
 
     /// <summary>Parses and cross-checks the verified archive.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=4E070F
+    // Broiler-Human:        PENDING
     internal static UnicodeDatabase Read(UnicodePin pin, IReadOnlyDictionary<string, byte[]> archive)
     {
         var database = new UnicodeDatabase();
@@ -287,6 +349,8 @@ internal sealed class UnicodeDatabase
     /// single code points is admitted only for <c>Basic_Emoji</c>, and a sequence is two or more code
     /// points listed once.
     /// </remarks>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=6CF2BB
+    // Broiler-Human:        PENDING
     private void ReadStringProperties(IReadOnlyList<UnicodeSpecName> table, string sequences, string zwj)
     {
         const string Union = "RGI_Emoji";
@@ -294,7 +358,7 @@ internal sealed class UnicodeDatabase
 
         if (names.Length == 0 || names[^1] != Union || table.Any(static row => row.Name != row.Canonical))
         {
-            throw new InvalidDataException($"the properties-of-strings table does not end with `{Union}`, or gives a property an alias");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the properties-of-strings table does not end with `{Union}`, or gives a property an alias"));
         }
 
         var byName = new Dictionary<string, (List<UnicodeRange> CodePoints, List<int[]> Sequences)>(StringComparer.Ordinal);
@@ -310,7 +374,7 @@ internal sealed class UnicodeDatabase
         {
             if (fields.Length < 2 || !byName.TryGetValue(fields[1], out var property))
             {
-                throw new InvalidDataException($"an emoji sequence line names the type `{(fields.Length < 2 ? string.Empty : fields[1])}`, which the table does not admit");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"an emoji sequence line names the type `{(fields.Length < 2 ? string.Empty : fields[1])}`, which the table does not admit"));
             }
 
             var codePoints = fields[0].Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -319,7 +383,7 @@ internal sealed class UnicodeDatabase
             {
                 if (fields[1] != "Basic_Emoji")
                 {
-                    throw new InvalidDataException($"`{fields[0]}` is a single code point of `{fields[1]}`, and only Basic_Emoji lists any");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"`{fields[0]}` is a single code point of `{fields[1]}`, and only Basic_Emoji lists any"));
                 }
 
                 property.CodePoints.Add(UnicodeDataFile.Range(codePoints[0]));
@@ -330,7 +394,7 @@ internal sealed class UnicodeDatabase
 
             if (sequence.Any(static codePoint => codePoint > UnicodeDataFile.MaxCodePoint) || !seen.Add(fields[1] + ":" + fields[0]))
             {
-                throw new InvalidDataException($"`{fields[0]}` of `{fields[1]}` is out of range or listed twice");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"`{fields[0]}` of `{fields[1]}` is out of range or listed twice"));
             }
 
             property.Sequences.Add(sequence);
@@ -342,7 +406,7 @@ internal sealed class UnicodeDatabase
 
             if (codePoints.Count == 0 && sequenceList.Count == 0)
             {
-                throw new InvalidDataException($"the emoji sequence files list nothing for `{name}`");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the emoji sequence files list nothing for `{name}`"));
             }
 
             StringProperties.Add((name, Merge(codePoints), sequenceList.OrderBy(static sequence => sequence, SequenceOrder.Instance).ToList()));
@@ -371,10 +435,16 @@ internal sealed class UnicodeDatabase
     }
 
     /// <summary>Code point sequences ordered code point by code point, a prefix first.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=56C266
+    // Broiler-Human:        PENDING
     private sealed class SequenceOrder : IComparer<int[]>
     {
+        // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=C8074E
+        // Broiler-Human:        PENDING
         internal static readonly SequenceOrder Instance = new();
 
+        // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=0B4FD4
+        // Broiler-Human:        PENDING
         public int Compare(int[]? left, int[]? right)
         {
             for (var at = 0; at < Math.Min(left!.Length, right!.Length); at++)
@@ -389,6 +459,8 @@ internal sealed class UnicodeDatabase
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=C50883
+    // Broiler-Human:        PENDING
     private void ReadGeneralCategories(string valueAliases, string derived, string unicodeData)
     {
         var values = new List<(string[] Fields, string Comment)>();
@@ -410,7 +482,7 @@ internal sealed class UnicodeDatabase
 
         if (singles.Length + groups.Length != values.Count || singles.Length != 30 || groups.Length != 8)
         {
-            throw new InvalidDataException($"PropertyValueAliases.txt gives {singles.Length} single General_Category values and {groups.Length} groups, not 30 and 8");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"PropertyValueAliases.txt gives {singles.Length} single General_Category values and {groups.Length} groups, not 30 and 8"));
         }
 
         var index = singles.Select(static (value, id) => (value.Fields[1], id)).ToDictionary(static pair => pair.Item1, static pair => pair.id, StringComparer.Ordinal);
@@ -447,7 +519,7 @@ internal sealed class UnicodeDatabase
 
         if (differing >= 0)
         {
-            throw new InvalidDataException($"U+{differing:X4} has General_Category {singles[valueOf[differing]].Fields[1]} in DerivedGeneralCategory.txt and {singles[fromUnicodeData[differing]].Fields[1]} in UnicodeData.txt");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"U+{differing:X4} has General_Category {singles[valueOf[differing]].Fields[1]} in DerivedGeneralCategory.txt and {singles[fromUnicodeData[differing]].Fields[1]} in UnicodeData.txt"));
         }
 
         var runs = UnicodeDataFile.Runs(valueOf);
@@ -468,7 +540,7 @@ internal sealed class UnicodeDatabase
             if (fields[1].Length == 1 && !members.Order(StringComparer.Ordinal).SequenceEqual(
                     index.Keys.Where(key => key[0] == fields[1][0]).Order(StringComparer.Ordinal), StringComparer.Ordinal))
             {
-                throw new InvalidDataException($"General_Category group {fields[1]} lists {comment}, which is not every value starting {fields[1]}");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"General_Category group {fields[1]} lists {comment}, which is not every value starting {fields[1]}"));
             }
 
             GeneralCategories.Add(new UnicodeValue(
@@ -479,6 +551,8 @@ internal sealed class UnicodeDatabase
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=1CFA5D
+    // Broiler-Human:        PENDING
     private void ReadNonBinaryNames(IReadOnlyList<UnicodeSpecName> nonBinary)
     {
         string[] canonical = ["General_Category", "Script", "Script_Extensions"];
@@ -489,7 +563,7 @@ internal sealed class UnicodeDatabase
 
             if (kind < 0)
             {
-                throw new InvalidDataException($"the non-binary property table names `{row.Canonical}`, which no table here is generated for");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the non-binary property table names `{row.Canonical}`, which no table here is generated for"));
             }
 
             NonBinaryNames.Add((row.Name, kind));
@@ -501,6 +575,8 @@ internal sealed class UnicodeDatabase
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=F1EEDB
+    // Broiler-Human:        PENDING
     private void ReadBinaryProperties(IReadOnlyList<UnicodeSpecName> binary, IReadOnlyDictionary<string, byte[]> archive)
     {
         string[] sources =
@@ -526,7 +602,7 @@ internal sealed class UnicodeDatabase
 
                 if (stated.TryGetValue(fields[1], out var found) && found.File != source)
                 {
-                    throw new InvalidDataException($"`{fields[1]}` is stated by both {found.File} and {source}");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"`{fields[1]}` is stated by both {found.File} and {source}"));
                 }
 
                 if (found.Ranges is null)
@@ -549,7 +625,7 @@ internal sealed class UnicodeDatabase
                 "Assigned" => UnicodeDataFile.Complement(unassigned),
                 _ => stated.TryGetValue(group.Key, out var found)
                     ? UnicodeDataFile.Normalize(found.Ranges)
-                    : throw new InvalidDataException($"the language admits `{group.Key}`, and none of the pinned property files states it"),
+                    : throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the language admits `{group.Key}`, and none of the pinned property files states it")),
             };
 
             var names = group.Select(static row => row.Name).ToArray();
@@ -561,7 +637,7 @@ internal sealed class UnicodeDatabase
 
         if (BinaryProperties.Count != 53)
         {
-            throw new InvalidDataException($"the binary property table admits {BinaryProperties.Count} properties, and JSD-0031 section 7 names 53");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the binary property table admits {BinaryProperties.Count} properties, and JSD-0031 section 7 names 53"));
         }
     }
 
@@ -575,12 +651,14 @@ internal sealed class UnicodeDatabase
     /// <c>Mc</c>, <c>Nd</c>, <c>Pc</c> and <c>Other_ID_Continue</c> under the same subtraction. A
     /// misread line in any of the three files would make the two computations part.
     /// </remarks>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=69F699
+    // Broiler-Human:        PENDING
     private void CheckIdentifierProperties(Dictionary<string, (string File, List<UnicodeRange> Ranges)> stated)
     {
         var category = GeneralCategories.Take(GeneralCategoryValueCount).ToDictionary(static value => value.ShortName, static value => value.Ranges, StringComparer.Ordinal);
 
         List<UnicodeRange> Stated(string name) =>
-            stated.TryGetValue(name, out var found) ? found.Ranges : throw new InvalidDataException($"no pinned file states `{name}`");
+            stated.TryGetValue(name, out var found) ? found.Ranges : throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"no pinned file states `{name}`"));
 
         List<UnicodeRange> Derive(IEnumerable<List<UnicodeRange>> parts)
         {
@@ -618,6 +696,8 @@ internal sealed class UnicodeDatabase
     /// and holds it to <c>Changes_When_Uppercased</c>: every code point with a simple upper case
     /// other than itself must be one that upper-casing changes.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=3E5D16
+    // Broiler-Human:        PENDING
     private void ReadSimpleUppercase(string unicodeData)
     {
         foreach (var (first, last, fields) in UnicodeDataEntries(unicodeData))
@@ -629,14 +709,14 @@ internal sealed class UnicodeDatabase
 
             if (first != last)
             {
-                throw new InvalidDataException($"UnicodeData.txt gives the range {fields[0]} a simple upper case");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"UnicodeData.txt gives the range {fields[0]} a simple upper case"));
             }
 
             var upper = UnicodeDataFile.Hex(fields[12]);
 
             if (upper == first || !SimpleUppercase.TryAdd(first, upper))
             {
-                throw new InvalidDataException($"UnicodeData.txt gives {fields[0]} a simple upper case that is itself, or two of them");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"UnicodeData.txt gives {fields[0]} a simple upper case that is itself, or two of them"));
             }
         }
 
@@ -644,7 +724,7 @@ internal sealed class UnicodeDatabase
 
         foreach (var source in SimpleUppercase.Keys.Where(source => !changes.Any(range => range.First <= source && source <= range.Last)))
         {
-            throw new InvalidDataException($"U+{source:X4} has a simple upper case in UnicodeData.txt and is not Changes_When_Uppercased");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"U+{source:X4} has a simple upper case in UnicodeData.txt and is not Changes_When_Uppercased"));
         }
     }
 
@@ -660,6 +740,8 @@ internal sealed class UnicodeDatabase
     /// only <c>Final_Sigma</c> is read among them, and only to check that it is the one line the
     /// run-time rule for GREEK CAPITAL LETTER SIGMA stands for.
     /// </remarks>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=26AD4D
+    // Broiler-Human:        PENDING
     private void ReadFullCaseMappings(string unicodeData, string specialCasing)
     {
         foreach (var (first, last, fields) in UnicodeDataEntries(unicodeData))
@@ -671,14 +753,14 @@ internal sealed class UnicodeDatabase
 
             if (first != last)
             {
-                throw new InvalidDataException($"UnicodeData.txt gives the range {fields[0]} a simple lower case");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"UnicodeData.txt gives the range {fields[0]} a simple lower case"));
             }
 
             var lower = UnicodeDataFile.Hex(fields[13]);
 
             if (lower == first || !SimpleLowercase.TryAdd(first, lower))
             {
-                throw new InvalidDataException($"UnicodeData.txt gives {fields[0]} a simple lower case that is itself, or two of them");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"UnicodeData.txt gives {fields[0]} a simple lower case that is itself, or two of them"));
             }
         }
 
@@ -709,14 +791,14 @@ internal sealed class UnicodeDatabase
                 {
                     if (source != 0x03A3 || !Mapping(fields[1]).SequenceEqual([0x03C2]))
                     {
-                        throw new InvalidDataException($"Final_Sigma is given to U+{source:X4}, and the run-time rule is written for U+03A3 to U+03C2 alone");
+                        throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"Final_Sigma is given to U+{source:X4}, and the run-time rule is written for U+03A3 to U+03C2 alone"));
                     }
 
                     finalSigma++;
                 }
-                else if (!condition.Split(' ')[0].All(char.IsLower))
+                else if (!condition.Split(' ')[0].All(static c => c is >= 'a' and <= 'z'))
                 {
-                    throw new InvalidDataException($"U+{source:X4} carries the condition `{condition}`, which names no language and is not Final_Sigma");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"U+{source:X4} carries the condition `{condition}`, which names no language and is not Final_Sigma"));
                 }
 
                 continue;
@@ -737,7 +819,7 @@ internal sealed class UnicodeDatabase
 
         if (finalSigma != 1)
         {
-            throw new InvalidDataException($"SpecialCasing.txt gives Final_Sigma {finalSigma} times, and the run-time rule expects it once");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"SpecialCasing.txt gives Final_Sigma {finalSigma} times, and the run-time rule expects it once"));
         }
 
         foreach (var (name, full) in new[] { ("Changes_When_Uppercased", FullUppercase), ("Changes_When_Lowercased", FullLowercase) })
@@ -747,11 +829,13 @@ internal sealed class UnicodeDatabase
 
             if (!listed.SequenceEqual(changes))
             {
-                throw new InvalidDataException($"the code points the full mapping changes are not exactly {name}");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the code points the full mapping changes are not exactly {name}"));
             }
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=A47B14
+    // Broiler-Human:        PENDING
     private void ReadScripts(string valueAliases, string scripts, string extensions)
     {
         var values = UnicodeDataFile.Records(valueAliases)
@@ -803,7 +887,7 @@ internal sealed class UnicodeDatabase
             {
                 if (listed[codePoint])
                 {
-                    throw new InvalidDataException($"ScriptExtensions.txt lists U+{codePoint:X4} twice");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"ScriptExtensions.txt lists U+{codePoint:X4} twice"));
                 }
 
                 listed[codePoint] = true;
@@ -841,6 +925,8 @@ internal sealed class UnicodeDatabase
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=C6A95D
+    // Broiler-Human:        PENDING
     private void ReadNormalization(string unicodeData, string derived)
     {
         var canonical = new Dictionary<int, int[]>();
@@ -848,7 +934,7 @@ internal sealed class UnicodeDatabase
 
         foreach (var (first, last, fields) in UnicodeDataEntries(unicodeData))
         {
-            var combining = int.Parse(fields[3], CultureInfo.InvariantCulture);
+            var combining = int.Parse(fields[3], NumberFormatInfo.InvariantInfo);
 
             for (var codePoint = first; codePoint <= last; codePoint++)
             {
@@ -862,7 +948,7 @@ internal sealed class UnicodeDatabase
 
             if (first != last)
             {
-                throw new InvalidDataException($"the UnicodeData.txt range at U+{first:X4} carries a decomposition");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"the UnicodeData.txt range at U+{first:X4} carries a decomposition"));
             }
 
             var parts = fields[5].Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -888,7 +974,7 @@ internal sealed class UnicodeDatabase
             }
             else if (fields.Length == 3 && fields[1].EndsWith("_QC", StringComparison.Ordinal))
             {
-                var key = $"{fields[1]}={fields[2]}";
+                var key = string.Create(NumberFormatInfo.InvariantInfo, $"{fields[1]}={fields[2]}");
 
                 if (!quickChecks.TryGetValue(key, out var list))
                 {
@@ -948,18 +1034,20 @@ internal sealed class UnicodeDatabase
 
         foreach (var key in new[] { "NFC_QC=N", "NFC_QC=M", "NFKC_QC=N", "NFKC_QC=M" })
         {
-            QuickChecks.Add(UnicodeDataFile.Normalize(quickChecks.TryGetValue(key, out var list) ? list : throw new InvalidDataException($"DerivedNormalizationProps.txt states no {key}")));
+            QuickChecks.Add(UnicodeDataFile.Normalize(quickChecks.TryGetValue(key, out var list) ? list : throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"DerivedNormalizationProps.txt states no {key}"))));
         }
 
         void Compare(string key, List<UnicodeRange> computed)
         {
             if (!UnicodeDataFile.Normalize(quickChecks[key]).SequenceEqual(computed))
             {
-                throw new InvalidDataException($"DerivedNormalizationProps.txt's {key} is not the set of code points the UnicodeData.txt decompositions change");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"DerivedNormalizationProps.txt's {key} is not the set of code points the UnicodeData.txt decompositions change"));
             }
         }
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=A89D82
+    // Broiler-Human:        PENDING
     private void ReadCaseFolding(string text)
     {
         foreach (var fields in UnicodeDataFile.Records(text))
@@ -973,18 +1061,20 @@ internal sealed class UnicodeDatabase
 
             if (target.Length != 1 || !SimpleFolding.TryAdd(UnicodeDataFile.Hex(fields[0]), UnicodeDataFile.Hex(target[0])))
             {
-                throw new InvalidDataException($"CaseFolding.txt gives {fields[0]} a C or S mapping that is not one code point, or two of them");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"CaseFolding.txt gives {fields[0]} a C or S mapping that is not one code point, or two of them"));
             }
         }
 
         // Folding is idempotent: nothing a code point folds to folds again.
         foreach (var target in SimpleFolding.Values.Where(SimpleFolding.ContainsKey))
         {
-            throw new InvalidDataException($"U+{target:X4} is a simple folding target and has a folding of its own");
+            throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"U+{target:X4} is a simple folding target and has a folding of its own"));
         }
     }
 
     /// <summary>The full Hangul syllable decomposition, LV or LVT.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=3F88E4
+    // Broiler-Human:        PENDING
     internal static int[] Hangul(int syllable)
     {
         var index = syllable - HangulSBase;
@@ -999,6 +1089,8 @@ internal sealed class UnicodeDatabase
     /// <c>UnicodeData.txt</c>'s records, with each <c>&lt;..., First&gt;</c>/<c>&lt;..., Last&gt;</c>
     /// pair joined into one range.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=14E42D
+    // Broiler-Human:        PENDING
     internal static IEnumerable<(int First, int Last, string[] Fields)> UnicodeDataEntries(string text)
     {
         string[]? opened = null;
@@ -1014,7 +1106,7 @@ internal sealed class UnicodeDatabase
 
             if (fields.Length != 15)
             {
-                throw new InvalidDataException($"a UnicodeData.txt line has {fields.Length} fields, not 15: {raw}");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"a UnicodeData.txt line has {fields.Length} fields, not 15: {raw}"));
             }
 
             if (fields[1].EndsWith(", First>", StringComparison.Ordinal))
@@ -1027,7 +1119,7 @@ internal sealed class UnicodeDatabase
             {
                 if (opened is null)
                 {
-                    throw new InvalidDataException($"UnicodeData.txt closes a range it did not open: {raw}");
+                    throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"UnicodeData.txt closes a range it did not open: {raw}"));
                 }
 
                 yield return (UnicodeDataFile.Hex(opened[0]), UnicodeDataFile.Hex(fields[0]), opened);
@@ -1041,16 +1133,26 @@ internal sealed class UnicodeDatabase
 }
 
 /// <summary>One row of an ECMAScript property table: a name the language admits and its canonical name.</summary>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=C02C36
+// Broiler-Human:        PENDING
 internal sealed record UnicodeSpecName(string Name, string Canonical);
 
 /// <summary>
 /// The three ECMAScript property tables, read out of the archived HTML, and the cross-check
 /// against <c>PropertyAliases.txt</c> that JSD-0031 section 5 asks for.
 /// </summary>
+// Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=1; Fingerprint=B604BD
+// Broiler-Human:        PENDING
 internal static class UnicodeSpecTables
 {
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=28AAAC
+    // Broiler-Human:        PENDING
     internal const string NonBinary = "table-nonbinary-unicode-properties.html";
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=C5F2D9
+    // Broiler-Human:        PENDING
     internal const string Binary = "table-binary-unicode-properties.html";
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Low; Resources=0; Fingerprint=0A9EB6
+    // Broiler-Human:        PENDING
     internal const string Strings = "table-binary-unicode-properties-of-strings.html";
 
     /// <summary>
@@ -1058,22 +1160,27 @@ internal static class UnicodeSpecTables
     /// links each of them to UTS #18's General_Category section and <c>PropertyAliases.txt</c>
     /// lists none of them, so they are the one place the cross-check has nothing to compare.
     /// </summary>
-    internal static readonly string[] Uts18Names = ["ASCII", "Any", "Assigned"];
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=6C5ADB
+    // Broiler-Human:        PENDING
+    internal static bool IsUts18Name(string name) => name is "ASCII" or "Any" or "Assigned";
 
     /// <summary>
     /// Every row of one table: the first cell is the name, and a row that opens a group also names
-    /// the canonical name, which the rows below it inherit through <c>rowspan</c>.
+    /// the canonical name, which the rows below it inherit through <c>rowspan</c>. The tables are read
+    /// by plain ordinal search, with no regular expression (convention 9): a row runs from <c>&lt;tr&gt;</c>
+    /// to the next <c>&lt;/tr&gt;</c>, and a cell from the end of a <c>&lt;td</c> tag to the next
+    /// <c>&lt;/td&gt;</c>.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=05AED0
+    // Broiler-Human:        PENDING
     internal static IReadOnlyList<UnicodeSpecName> Rows(string html)
     {
         var rows = new List<UnicodeSpecName>();
         string? canonical = null;
 
-        foreach (Match row in Regex.Matches(html, "<tr>(.*?)</tr>", RegexOptions.Singleline))
+        foreach (var row in Between(html, "<tr>", "</tr>"))
         {
-            var cells = Regex.Matches(row.Groups[1].Value, "<td[^>]*>(.*?)</td>", RegexOptions.Singleline)
-                .Select(static cell => Cell(cell.Groups[1].Value))
-                .ToArray();
+            var cells = Cells(row).Select(Cell).ToArray();
 
             if (cells.Length == 0)
             {
@@ -1092,13 +1199,75 @@ internal static class UnicodeSpecTables
 
         return rows;
 
+        static IEnumerable<string> Between(string text, string open, string close)
+        {
+            var at = 0;
+
+            while (true)
+            {
+                var start = text.IndexOf(open, at, StringComparison.Ordinal);
+                var end = start < 0 ? -1 : text.IndexOf(close, start + open.Length, StringComparison.Ordinal);
+
+                if (end < 0)
+                {
+                    yield break;
+                }
+
+                yield return text[(start + open.Length)..end];
+                at = end + close.Length;
+            }
+        }
+
+        static IEnumerable<string> Cells(string row)
+        {
+            var at = 0;
+
+            while (true)
+            {
+                var tag = row.IndexOf("<td", at, StringComparison.Ordinal);
+                var open = tag < 0 ? -1 : row.IndexOf('>', tag);
+                var end = open < 0 ? -1 : row.IndexOf("</td>", open + 1, StringComparison.Ordinal);
+
+                if (end < 0)
+                {
+                    yield break;
+                }
+
+                yield return row[(open + 1)..end];
+                at = end + "</td>".Length;
+            }
+        }
+
+        // Every tag removed: a '<', at least one character that is not '>', and the '>' that closes it.
+        static string WithoutTags(string html)
+        {
+            var text = new System.Text.StringBuilder(html.Length);
+            var at = 0;
+
+            while (at < html.Length)
+            {
+                var close = html[at] == '<' ? html.IndexOf('>', at + 1) : -1;
+
+                if (close > at + 1)
+                {
+                    at = close + 1;
+                    continue;
+                }
+
+                text.Append(html[at]);
+                at++;
+            }
+
+            return text.ToString();
+        }
+
         static string Cell(string html)
         {
-            var text = Regex.Replace(html, "<[^>]+>", string.Empty).Trim();
+            var text = WithoutTags(html).Trim();
 
             if (text.Length < 2 || text[0] != '`' || text[^1] != '`')
             {
-                throw new InvalidDataException($"a property table cell reads `{text}`, not a `name`");
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"a property table cell reads `{text}`, not a `name`"));
             }
 
             return text[1..^1];
@@ -1125,6 +1294,8 @@ internal static class UnicodeSpecTables
     /// them to the two emoji sequence files (phase F2).
     /// </para>
     /// </remarks>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=4; Fingerprint=E35DB1
+    // Broiler-Human:        PENDING
     internal static IEnumerable<string> Disagreements(
         IReadOnlyList<UnicodeSpecName> nonBinary,
         IReadOnlyList<UnicodeSpecName> binary,
@@ -1135,11 +1306,11 @@ internal static class UnicodeSpecTables
 
         foreach (var row in nonBinary.Concat(binary))
         {
-            if (Uts18Names.Contains(row.Canonical, StringComparer.Ordinal))
+            if (IsUts18Name(row.Canonical))
             {
                 if (!string.Equals(row.Name, row.Canonical, StringComparison.Ordinal))
                 {
-                    yield return $"the table gives `{row.Canonical}` an alias `{row.Name}`, and UTS #18 names it alone";
+                    yield return string.Create(NumberFormatInfo.InvariantInfo, $"the table gives `{row.Canonical}` an alias `{row.Name}`, and UTS #18 names it alone");
                 }
 
                 continue;
@@ -1147,14 +1318,14 @@ internal static class UnicodeSpecTables
 
             if (!aliases.TryGetValue(row.Canonical, out var names))
             {
-                yield return $"the table's canonical name `{row.Canonical}` is not a long name in PropertyAliases.txt";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"the table's canonical name `{row.Canonical}` is not a long name in PropertyAliases.txt");
                 continue;
             }
 
             if (!names.Contains(row.Name))
             {
-                yield return $"the table admits `{row.Name}` for `{row.Canonical}`, and PropertyAliases.txt gives that property " +
-                    $"only {string.Join(", ", names.Order(StringComparer.Ordinal).Select(static name => $"`{name}`"))}";
+                yield return string.Create(NumberFormatInfo.InvariantInfo, $"the table admits `{row.Name}` for `{row.Canonical}`, and PropertyAliases.txt gives that property ") +
+                    string.Create(NumberFormatInfo.InvariantInfo, $"only {string.Join(", ", names.Order(StringComparer.Ordinal).Select(static name => $"`{name}`"))}");
             }
         }
 
@@ -1162,16 +1333,18 @@ internal static class UnicodeSpecTables
 
         foreach (var row in strings.Where(row => admitted.Contains(row.Name)))
         {
-            yield return $"`{row.Name}` is a property of strings, and the code point tables also admit it";
+            yield return string.Create(NumberFormatInfo.InvariantInfo, $"`{row.Name}` is a property of strings, and the code point tables also admit it");
         }
 
         foreach (var duplicate in nonBinary.Concat(binary).GroupBy(static row => row.Name, StringComparer.Ordinal).Where(static group => group.Count() > 1))
         {
-            yield return $"the tables admit `{duplicate.Key}` more than once";
+            yield return string.Create(NumberFormatInfo.InvariantInfo, $"the tables admit `{duplicate.Key}` more than once");
         }
     }
 
     /// <summary><c>PropertyAliases.txt</c>: each long name, with every name the file gives that property.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UCD 17.0.0 via Broiler.VM UnicodeDatabase; IP=Low; Security=Medium; Resources=2; Fingerprint=F67EE3
+    // Broiler-Human:        PENDING
     internal static IReadOnlyDictionary<string, HashSet<string>> PropertyAliases(string text)
     {
         var byLongName = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);

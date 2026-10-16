@@ -1,3 +1,20 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   3
+// Annotated:        3/3
+// Exempt:           39
+// Human-reviewed:   0/3
+// IP risk:          Low
+// Security risk:    Medium
+// Criteria:         0/0
+// Resource impact:  1/10 max
+// Unverified:       3
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 
 namespace Broiler.Unicode.Algorithms;
@@ -22,6 +39,8 @@ namespace Broiler.Unicode.Algorithms;
 /// <see cref="UnicodeTable"/>; every multi-byte number in a table is little-endian.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=0; Fingerprint=008E90
+// Broiler-Human:        PENDING
 public interface IUnicodeTables
 {
     /// <summary>The Unicode version the tables were generated from, e.g. <c>17.0.0</c>.</summary>
@@ -29,6 +48,8 @@ public interface IUnicodeTables
 
     /// <summary>One table's bytes; empty for a table this provider does not carry.</summary>
     /// <param name="table">The table.</param>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Medium; Resources=1; Fingerprint=17A14C
+    // Broiler-Human:        PENDING
     ReadOnlySpan<byte> Table(UnicodeTable table);
 }
 
@@ -43,6 +64,8 @@ public interface IUnicodeTables
 /// characters and a two-byte value; its index table holds each entry's two-byte offset, in the same
 /// order. The numbering is part of this package's contract: a member is never renumbered.
 /// </remarks>
+// Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=0; Fingerprint=24D55A
+// Broiler-Human:        PENDING
 public enum UnicodeTable
 {
     /// <summary>Nothing.</summary>

@@ -19,6 +19,9 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Convention 12 (rule SL5): the analyzers report everything, and the packaging props' NoWarn does not reach here. -->
+    <NoWarn>1701;1702</NoWarn>
+    <IsAotCompatible>true</IsAotCompatible>
     <PublishAot>true</PublishAot>
     <TrimMode>full</TrimMode>
     <InvariantGlobalization>true</InvariantGlobalization>

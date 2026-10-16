@@ -1,8 +1,27 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   29
+// Annotated:        29/29
+// Exempt:           15
+// Human-reviewed:   0/29
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         2/2
+// Resource impact:  5/10 max
+// Unverified:       29
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 
 namespace Broiler.Unicode.Algorithms;
 
 /// <summary>The four Unicode normalization forms (UAX #15, section 1.2).</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=44AD15
+// Broiler-Human:        PENDING
 public enum NormalForm
 {
     /// <summary>NFC: canonical decomposition, then canonical composition.</summary>
@@ -19,6 +38,8 @@ public enum NormalForm
 }
 
 /// <summary>A normalization quick-check value, <c>NFC_QC</c> or <c>NFKC_QC</c> (UAX #15, section 9).</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=89AED9
+// Broiler-Human:        PENDING
 public enum NormalizationQuickCheck
 {
     /// <summary>The code point can stand in the normalized form wherever it occurs.</summary>
@@ -61,15 +82,33 @@ public enum NormalizationQuickCheck
 /// (convention 14), which Broiler.VM's rule N23 refuses as the platform's.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=8F642B
+// Broiler-Human:        PENDING
 public sealed class UnicodeNormalization
 {
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=DB3C88
+    // Broiler-Human:        PENDING
     private const int HangulSyllableBase = 0xAC00;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=AE3AB8
+    // Broiler-Human:        PENDING
     private const int HangulLeadingBase = 0x1100;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=AE6447
+    // Broiler-Human:        PENDING
     private const int HangulVowelBase = 0x1161;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=9AB0F3
+    // Broiler-Human:        PENDING
     private const int HangulTrailingBase = 0x11A7;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=1E175F
+    // Broiler-Human:        PENDING
     private const int HangulLeadingCount = 19;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=97F5FE
+    // Broiler-Human:        PENDING
     private const int HangulVowelCount = 21;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=481DBD
+    // Broiler-Human:        PENDING
     private const int HangulTrailingCount = 28;
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=9C7B2B
+    // Broiler-Human:        PENDING
     private const int HangulSyllableCount = HangulLeadingCount * HangulVowelCount * HangulTrailingCount;
 
     private readonly IUnicodeTables tables;
@@ -80,6 +119,8 @@ public sealed class UnicodeNormalization
     /// <see cref="UnicodeTable.NormalizationLayout"/> to <see cref="UnicodeTable.QuickCheckIndex"/>.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=4587DC
+    // Broiler-Human:        PENDING
     public UnicodeNormalization(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
@@ -108,6 +149,8 @@ public sealed class UnicodeNormalization
 
     /// <summary>The Canonical_Combining_Class of <paramref name="codePoint"/> (<c>UnicodeData.txt</c>); 0 for a starter.</summary>
     /// <param name="codePoint">A code point.</param>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=F14293
+    // Broiler-Human:        PENDING
     public int CombiningClass(int codePoint)
     {
         var data = tables.Table(UnicodeTable.CombiningClassData);
@@ -141,6 +184,8 @@ public sealed class UnicodeNormalization
     /// </summary>
     /// <param name="codePoint">A code point.</param>
     /// <param name="compatibility">Whether to answer <c>NFKC_QC</c>.</param>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=7CD4BD
+    // Broiler-Human:        PENDING
     public NormalizationQuickCheck QuickCheck(int codePoint, bool compatibility)
     {
         var set = compatibility ? 2 : 0;
@@ -164,6 +209,9 @@ public sealed class UnicodeNormalization
     /// <param name="result">The normalized text, or null when the status is not <see cref="UnicodeStatus.Success"/>.</param>
     /// <returns><see cref="UnicodeStatus.Success"/>, or <see cref="UnicodeStatus.LimitExceeded"/> when the result is longer than <paramref name="maxLength"/>.</returns>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="form"/> is not a form, or <paramref name="maxLength"/> is negative.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=DBFB2E
+    // Broiler-Falsified-If: a result longer than maxLength is answered as Success, or a charge differs from Broiler.VM row N7
+    // Broiler-Human:        PENDING
     public UnicodeStatus Transform(string text, NormalForm form, int maxLength, UnicodeWorkCharge? charge, out string? result)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -229,6 +277,8 @@ public sealed class UnicodeNormalization
     /// <paramref name="compatibility"/> its full compatibility decomposition, when it has one; a Hangul
     /// syllable's is computed. The mapping is applied recursively and is not reordered.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=8D8E9C
+    // Broiler-Human:        PENDING
     internal bool TryGetDecomposition(int codePoint, bool compatibility, out CodePoints mapping)
     {
         var syllable = codePoint - HangulSyllableBase;
@@ -261,6 +311,8 @@ public sealed class UnicodeNormalization
     /// is one: a canonical pair not excluded by Full_Composition_Exclusion, or a Hangul leading consonant
     /// and vowel, or a two-jamo syllable and a trailing consonant. Blocking is the caller's.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=8645E4
+    // Broiler-Human:        PENDING
     internal bool TryCompose(int first, int second, out int composite)
     {
         var leading = first - HangulLeadingBase;
@@ -316,6 +368,8 @@ public sealed class UnicodeNormalization
         return false;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=100C46
+    // Broiler-Human:        PENDING
     private static void Charge(UnicodeWorkCharge? charge, long units) =>
         charge?.Invoke(units <= 0 ? 1UL : (ulong)units);
 
@@ -324,6 +378,8 @@ public sealed class UnicodeNormalization
     /// unchanged. A code point breaks it when it is out of canonical order, when it decomposes (the
     /// decomposed forms), or when its quick-check value is not Yes (the composed forms).
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=1FCE60
+    // Broiler-Human:        PENDING
     private bool IsInFormAlready(string text, bool compose, bool compatibility)
     {
         var lastClass = 0;
@@ -365,11 +421,16 @@ public sealed class UnicodeNormalization
     /// point nothing before it can combine with (its quick check, and its decomposition's first code
     /// point's, is Yes). A boundary placed only where both hold is safe; one missed makes a segment longer.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=450CA3
+    // Broiler-Human:        PENDING
     private bool StartsSegment(int codePoint, int first, bool compose, bool compatibility) =>
         codePoint < 0x80 ||
         (CombiningClass(first) == 0 && (!compose ||
             (QuickCheck(codePoint, compatibility) == NormalizationQuickCheck.Yes && QuickCheck(first, compatibility) == NormalizationQuickCheck.Yes)));
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=F5D030
+    // Broiler-Falsified-If: a buffer grows past the longest segment times the longest decomposition, or a refused result is returned
+    // Broiler-Human:        PENDING
     private UnicodeStatus Produce(string text, bool compose, bool compatibility, int capacity, int maxLength, out string? result)
     {
         var output = new char[capacity];
@@ -451,6 +512,8 @@ public sealed class UnicodeNormalization
         return UnicodeStatus.Success;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=9E9FF3
+    // Broiler-Human:        PENDING
     private static void Reserve(ref int[] buffer, int needed)
     {
         if (needed > buffer.Length)
@@ -463,6 +526,8 @@ public sealed class UnicodeNormalization
     /// The canonical ordering algorithm: each run of non-starters is sorted by combining class, stably,
     /// by a counting sort, so a long run is linear work rather than an exchange sort's quadratic.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=1103C1
+    // Broiler-Human:        PENDING
     private void OrderCanonically(int[] buffer, int length)
     {
         int[]? scratch = null;
@@ -533,6 +598,8 @@ public sealed class UnicodeNormalization
     /// the composed length. A code point is blocked from the last starter when something kept between
     /// them is a starter or has a class at least its own.
     /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=A876D5
+    // Broiler-Human:        PENDING
     private int ComposeCanonically(int[] buffer, int length)
     {
         var starter = -1;
@@ -570,6 +637,8 @@ public sealed class UnicodeNormalization
         return written;
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=682A15
+    // Broiler-Human:        PENDING
     private bool InQuickCheckSet(int set, int codePoint)
     {
         var index = tables.Table(UnicodeTable.QuickCheckIndex);
@@ -579,6 +648,8 @@ public sealed class UnicodeNormalization
         return TableReader.InRanges(tables.Table(UnicodeTable.QuickCheckData), first, count, codePoint);
     }
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=45A4E0
+    // Broiler-Human:        PENDING
     private bool Lookup(ReadOnlySpan<byte> index, int codePoint, out CodePoints mapping)
     {
         var low = 0;
@@ -616,6 +687,8 @@ public sealed class UnicodeNormalization
 /// The code points of one mapping, read from a pool of three-byte code points or computed for a Hangul
 /// syllable. A view: it allocates nothing.
 /// </summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=B9D679
+// Broiler-Human:        PENDING
 internal readonly ref struct CodePoints
 {
     private readonly ReadOnlySpan<byte> pool;
@@ -626,6 +699,8 @@ internal readonly ref struct CodePoints
 
     private readonly int third;
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=3FB556
+    // Broiler-Human:        PENDING
     internal CodePoints(ReadOnlySpan<byte> pool)
     {
         this.pool = pool;
@@ -642,6 +717,8 @@ internal readonly ref struct CodePoints
 
     internal int Length { get; }
 
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=6E3970
+    // Broiler-Human:        PENDING
     internal int this[int index]
     {
         get

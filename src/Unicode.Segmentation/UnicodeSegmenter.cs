@@ -1,20 +1,44 @@
+// SPDX-FileCopyrightText: 2026 Broiler Platform contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// Broiler Code Assurance
+// ----------------------
+// Relevant units:   23
+// Annotated:        23/23
+// Exempt:           13
+// Human-reviewed:   0/23
+// IP risk:          Low
+// Security risk:    High
+// Criteria:         1/1
+// Resource impact:  5/10 max
+// Unverified:       23
+//
+// GENERATED - DO NOT EDIT MANUALLY
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Broiler.Unicode.Algorithms;
 
 namespace Broiler.Unicode.Segmentation;
 
 /// <summary>The data version this package's segmentation is written for.</summary>
+// Broiler-AI:           Origin=AI; Spec=UAX #29 data version; IP=Low; Security=Low; Resources=1; Fingerprint=1A9F3D
+// Broiler-Human:        PENDING
 public static class UnicodeSegmentation
 {
     /// <summary>
     /// The Unicode version of the break table <see cref="UnicodeSegmenter"/> reads: <c>17.0.0</c>, the
     /// version of <see cref="UnicodeAlgorithms.UnicodeVersion"/>. A table of another version is refused.
     /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=UAX #29 data version; IP=Low; Security=Low; Resources=0; Fingerprint=738F0C
+    // Broiler-Human:        PENDING
     public const string UnicodeVersion = UnicodeAlgorithms.UnicodeVersion;
 }
 
 /// <summary>The three segmentations of UAX #29 that ECMA-402's <c>Intl.Segmenter</c> offers (ECMA-402 section 18).</summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=03AF2B
+// Broiler-Human:        PENDING
 public enum SegmentGranularity
 {
     /// <summary>Extended grapheme clusters (UAX #29 section 3).</summary>
@@ -31,6 +55,8 @@ public enum SegmentGranularity
 /// A word segment's status, numbered as ICU's word break rule statuses are (<c>UBRK_WORD_*</c>), which
 /// ECMA-402's <c>isWordLike</c> reads: a segment is word-like when its status is not <see cref="None"/>.
 /// </summary>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=0; Fingerprint=48C64A
+// Broiler-Human:        PENDING
 public enum WordStatus
 {
     /// <summary>Spaces, punctuation, symbols or connectors alone.</summary>
@@ -76,6 +102,8 @@ public enum WordStatus
 /// instance decodes the break table once, holds nothing else, and is safe to share between threads.
 /// </para>
 /// </remarks>
+// Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=1; Fingerprint=8CEAF9
+// Broiler-Human:        PENDING
 public sealed class UnicodeSegmenter
 {
     private readonly int[] firsts;
@@ -87,6 +115,8 @@ public sealed class UnicodeSegmenter
     /// <summary>Segmentation over <paramref name="tables"/>.</summary>
     /// <param name="tables">A provider of Unicode <see cref="UnicodeAlgorithms.UnicodeVersion"/> carrying <see cref="UnicodeTable.SegmentBreaks"/>.</param>
     /// <exception cref="ArgumentException">The provider is of another version, lacks the table, or the table does not decode.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=84C9DC
+    // Broiler-Human:        PENDING
     public UnicodeSegmenter(IUnicodeTables tables)
     {
         ArgumentNullException.ThrowIfNull(tables);
@@ -94,7 +124,7 @@ public sealed class UnicodeSegmenter
         if (!string.Equals(tables.UnicodeVersion, UnicodeAlgorithms.UnicodeVersion, StringComparison.Ordinal))
         {
             throw new ArgumentException(
-                $"The tables are Unicode {tables.UnicodeVersion}, and this segmenter reads {UnicodeAlgorithms.UnicodeVersion}.", nameof(tables));
+                string.Create(NumberFormatInfo.InvariantInfo, $"The tables are Unicode {tables.UnicodeVersion}, and this segmenter reads {UnicodeAlgorithms.UnicodeVersion}."), nameof(tables));
         }
 
         var table = tables.Table(UnicodeTable.SegmentBreaks);
@@ -122,7 +152,7 @@ public sealed class UnicodeSegmenter
                 table[at + 2] > (byte)SentenceBreak.Close || table[at + 3] > 1 || table[at + 4] > (byte)ConjunctBreak.Extend ||
                 table[at + 5] > 1)
             {
-                throw new ArgumentException($"SegmentBreaks' combination {i} holds a code no enumeration here names.", nameof(tables));
+                throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"SegmentBreaks' combination {i} holds a code no enumeration here names."), nameof(tables));
             }
 
             combinations[i] = new BreakProperties(
@@ -152,7 +182,7 @@ public sealed class UnicodeSegmenter
 
             if (runCombinations[i] >= count || (i > 0 && firsts[i] <= firsts[i - 1]) || (i == 0 && firsts[i] != 0))
             {
-                throw new ArgumentException($"SegmentBreaks' run {i} does not ascend from U+0000 or names no combination.", nameof(tables));
+                throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"SegmentBreaks' run {i} does not ascend from U+0000 or names no combination."), nameof(tables));
             }
         }
     }
@@ -166,6 +196,9 @@ public sealed class UnicodeSegmenter
     /// <param name="granularity">The segmentation.</param>
     /// <param name="charge">The caller's meter, or null; units as this type states.</param>
     /// <returns>The boundaries, ascending.</returns>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=High; Resources=5; Fingerprint=22E7CF
+    // Broiler-Falsified-If: a boundary outside 0 to the text length is answered, or a code point is scanned before its unit is charged
+    // Broiler-Human:        PENDING
     public int[] Boundaries(ReadOnlySpan<char> text, SegmentGranularity granularity, UnicodeWorkCharge? charge)
     {
         if ((uint)granularity > (uint)SegmentGranularity.Sentence)
@@ -240,6 +273,8 @@ public sealed class UnicodeSegmenter
     /// </summary>
     /// <param name="segment">The segment's text.</param>
     /// <param name="charge">The caller's meter, or null: one unit per code point read.</param>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=E58E36
+    // Broiler-Human:        PENDING
     public WordStatus GetWordStatus(ReadOnlySpan<char> segment, UnicodeWorkCharge? charge)
     {
         var status = WordStatus.None;
@@ -295,6 +330,8 @@ public sealed class UnicodeSegmenter
 
     /// <summary>The break properties of <paramref name="codePoint"/> (UAX #29's property files): a binary search over the runs.</summary>
     /// <param name="codePoint">A code point; a value outside the code space reads as the last run's.</param>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=BC086B
+    // Broiler-Human:        PENDING
     public BreakProperties PropertiesOf(int codePoint)
     {
         var low = 0;
@@ -318,12 +355,16 @@ public sealed class UnicodeSegmenter
     }
 
     /// <summary>One pass of a granularity's rules over a text's break properties, charging what it scans.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Low; Resources=1; Fingerprint=2C5316
+    // Broiler-Human:        PENDING
     private readonly ref struct Scan
     {
         private readonly BreakProperties[] p;
 
         private readonly UnicodeWorkCharge? charge;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=19D44C
+        // Broiler-Human:        PENDING
         internal Scan(BreakProperties[] properties, UnicodeWorkCharge? charge)
         {
             p = properties;
@@ -331,6 +372,8 @@ public sealed class UnicodeSegmenter
         }
 
         /// <summary>Whether UAX #29's grapheme cluster rules break between code points <paramref name="i"/> - 1 and <paramref name="i"/>.</summary>
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=CD58F4
+        // Broiler-Human:        PENDING
         internal bool GraphemeBreak(int i)
         {
             var previous = p[i - 1].Grapheme;
@@ -418,6 +461,8 @@ public sealed class UnicodeSegmenter
         }
 
         /// <summary>Whether UAX #29's word rules break between code points <paramref name="i"/> - 1 and <paramref name="i"/>.</summary>
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=2C944B
+        // Broiler-Human:        PENDING
         internal bool WordBreak(int i)
         {
             var previous = p[i - 1].Word;
@@ -515,6 +560,8 @@ public sealed class UnicodeSegmenter
         }
 
         /// <summary>Whether UAX #29's sentence rules break between code points <paramref name="i"/> - 1 and <paramref name="i"/>.</summary>
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=F48E45
+        // Broiler-Human:        PENDING
         internal bool SentenceBreak(int i)
         {
             var previous = p[i - 1].Sentence;
@@ -612,23 +659,39 @@ public sealed class UnicodeSegmenter
             return true;
         }
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=D767EF
+        // Broiler-Human:        PENDING
         private static bool WordIgnored(WordBreak value) =>
             value is Segmentation.WordBreak.Extend or Segmentation.WordBreak.Format or Segmentation.WordBreak.ZWJ;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=B15A64
+        // Broiler-Human:        PENDING
         private static bool AHLetter(WordBreak value) => value is Segmentation.WordBreak.ALetter or Segmentation.WordBreak.Hebrew_Letter;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=0E3EBA
+        // Broiler-Human:        PENDING
         private static bool MidNumLetQ(WordBreak value) => value is Segmentation.WordBreak.MidNumLet or Segmentation.WordBreak.Single_Quote;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=B1D69C
+        // Broiler-Human:        PENDING
         private static bool SentenceIgnored(SentenceBreak value) => value is Segmentation.SentenceBreak.Extend or Segmentation.SentenceBreak.Format;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=727982
+        // Broiler-Human:        PENDING
         private static bool ParaSep(SentenceBreak value) =>
             value is Segmentation.SentenceBreak.Sep or Segmentation.SentenceBreak.CR or Segmentation.SentenceBreak.LF;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=29DCE9
+        // Broiler-Human:        PENDING
         private static bool SATerm(SentenceBreak value) => value is Segmentation.SentenceBreak.STerm or Segmentation.SentenceBreak.ATerm;
 
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=B0F233
+        // Broiler-Human:        PENDING
         private void Charge() => charge?.Invoke(1);
 
         /// <summary>The index of the last code point before <paramref name="i"/> that WB4 does not absorb, or -1.</summary>
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=5D7B36
+        // Broiler-Human:        PENDING
         private int WordBefore(int i)
         {
             var j = i - 1;
@@ -643,6 +706,8 @@ public sealed class UnicodeSegmenter
         }
 
         /// <summary>The index of the last code point before <paramref name="i"/> that SB5 does not absorb, or -1.</summary>
+        // Broiler-AI:           Origin=Ported; Spec=UAX #29 via Broiler.VM JsSegmentation; IP=Low; Security=Medium; Resources=1; Fingerprint=6B884E
+        // Broiler-Human:        PENDING
         private int SentenceBefore(int i)
         {
             var j = i - 1;
