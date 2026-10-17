@@ -1,0 +1,8 @@
+commit 6ee63386a98941c389f67161123f5448062bddef
+taken 2026-10-17T12:50:34Z
+DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1: the current culture is the invariant culture
+kernel Linux 6.18.44-fc-v139 x86_64
+sdk 10.0.401
+Microsoft.AspNetCore.App 10.0.12 [/root/.dotnet/shared/Microsoft.AspNetCore.App]
+Microsoft.NETCore.App 10.0.12 [/root/.dotnet/shared/Microsoft.NETCore.App]
+Broiler.Code afd4ffb23842207ca13237c2c9e10a3ddbbd58b5

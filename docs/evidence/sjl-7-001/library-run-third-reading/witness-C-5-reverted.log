@@ -1,0 +1,16 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C5_ witness-C-5-reverted
+Test run for /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.08]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.20]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.21]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.34]   Finished:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through [53 ms]
+
+Test Run Successful.
+Total tests: 1
+     Passed: 1
+ Total time: 1.0419 Seconds
+Results File: /home/user/broiler.unicode/docs/evidence/sjl-7-001/library-run-third-reading/trx/witness-C-5-reverted.trx

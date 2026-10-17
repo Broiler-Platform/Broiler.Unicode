@@ -1,0 +1,102 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C4_normalization_charges witness-C-4-caught   # must fail
+Test run for /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.15]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.16]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.29]     Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "가", form: Nfd, expected: [1, 7]) [FAIL]
+[xUnit.net 00:00:00.29]       Assert.Equal() Failure: Collections differ
+[xUnit.net 00:00:00.29]                                 ↓ (pos 1)
+[xUnit.net 00:00:00.29]       Expected: ulong[]     [1, 7]
+[xUnit.net 00:00:00.29]       Actual:   List<ulong> [1, 5]
+[xUnit.net 00:00:00.29]                                 ↑ (pos 1)
+[xUnit.net 00:00:00.29]       Stack Trace:
+[xUnit.net 00:00:00.29]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(137,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected)
+[xUnit.net 00:00:00.29]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.29]            at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.30]     Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "ﷺ", form: Nfkd, expected: [1, 55]) [FAIL]
+[xUnit.net 00:00:00.30]       Assert.Equal() Failure: Collections differ
+[xUnit.net 00:00:00.30]                                 ↓ (pos 1)
+[xUnit.net 00:00:00.30]       Expected: ulong[]     [1, 55]
+[xUnit.net 00:00:00.30]       Actual:   List<ulong> [1, 37]
+[xUnit.net 00:00:00.30]                                 ↑ (pos 1)
+[xUnit.net 00:00:00.30]       Stack Trace:
+[xUnit.net 00:00:00.30]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(137,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected)
+[xUnit.net 00:00:00.30]            at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+[xUnit.net 00:00:00.30]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.30]     Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfc, expected: [2, 8]) [FAIL]
+[xUnit.net 00:00:00.30]       Assert.Equal() Failure: Collections differ
+[xUnit.net 00:00:00.30]                                 ↓ (pos 1)
+[xUnit.net 00:00:00.30]       Expected: ulong[]     [2, 8]
+[xUnit.net 00:00:00.30]       Actual:   List<ulong> [2, 6]
+[xUnit.net 00:00:00.30]                                 ↑ (pos 1)
+[xUnit.net 00:00:00.30]       Stack Trace:
+[xUnit.net 00:00:00.30]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(137,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected)
+[xUnit.net 00:00:00.30]            at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+[xUnit.net 00:00:00.30]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.30]     Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfd, expected: [1, 7]) [FAIL]
+[xUnit.net 00:00:00.30]       Assert.Equal() Failure: Collections differ
+[xUnit.net 00:00:00.30]                                 ↓ (pos 1)
+[xUnit.net 00:00:00.30]       Expected: ulong[]     [1, 7]
+[xUnit.net 00:00:00.30]       Actual:   List<ulong> [1, 5]
+[xUnit.net 00:00:00.30]                                 ↑ (pos 1)
+[xUnit.net 00:00:00.30]       Stack Trace:
+[xUnit.net 00:00:00.30]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(137,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected)
+[xUnit.net 00:00:00.30]            at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+[xUnit.net 00:00:00.30]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:00.31]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "가", form: Nfd, expected: [1, 7]) [55 ms]
+  Error Message:
+   Assert.Equal() Failure: Collections differ
+                          ↓ (pos 1)
+Expected: ulong[]     [1, 7]
+Actual:   List<ulong> [1, 5]
+                          ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected) in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 137
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "ﷺ", form: Nfkd, expected: [1, 55]) [1 ms]
+  Error Message:
+   Assert.Equal() Failure: Collections differ
+                          ↓ (pos 1)
+Expected: ulong[]     [1, 55]
+Actual:   List<ulong> [1, 37]
+                          ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected) in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 137
+   at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "", form: Nfd, expected: [1]) [1 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "abc", form: Nfc, expected: [3]) [< 1 ms]
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfc, expected: [2, 8]) [1 ms]
+  Error Message:
+   Assert.Equal() Failure: Collections differ
+                          ↓ (pos 1)
+Expected: ulong[]     [2, 8]
+Actual:   List<ulong> [2, 6]
+                          ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected) in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 137
+   at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(text: "é", form: Nfd, expected: [1, 7]) [< 1 ms]
+  Error Message:
+   Assert.Equal() Failure: Collections differ
+                          ↓ (pos 1)
+Expected: ulong[]     [1, 7]
+Actual:   List<ulong> [1, 5]
+                          ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C4_normalization_charges_Broiler_VM_s_units(String text, NormalForm form, UInt64[] expected) in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 137
+   at InvokeStub_ContractTests.C4_normalization_charges_Broiler_VM_s_units(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+
+Test Run Failed.
+Total tests: 6
+     Passed: 2
+     Failed: 4
+ Total time: 0.8871 Seconds
+Results File: /home/user/broiler.unicode/docs/evidence/sjl-7-001/library-run-third-reading/trx/witness-C-4-caught.trx

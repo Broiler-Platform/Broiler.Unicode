@@ -174,6 +174,15 @@ writes from a pin held equal to this one. Bundle `sjl-7-001` took part D's secon
 step of the library run ending as at the first reading, and **D-2 holds only when this branch reaches the default
 branch**, which still carries the roadmap as merged at `0faa1f9`. Until it does, the owner's clause 1 is not met.
 
+*Added 2026-10-17, after SJL-7.6, by the Broiler.Unicode maintainer.* **This branch reached the default branch at
+`eab5e64`, so D-2 holds, and part D and the owner's clause 1 are met** as both readings framed D-2
+([section 5](evidence/sjl-7-001/README.md#the-merge-and-part-ds-third-reading-on-010-preview5)). The owner then
+had normalization, case mapping and the lexical classes made faster, with constant-time tables the generator writes,
+and published them as `0.1.0-preview.5` from `b802014`; both engines moved to it the same day. A third reading of
+parts A to D at `6ee6338`, which the rule does not ask for, ended every step as the second did, with the probe's
+answers byte for byte the same, so the owner's clauses 2 to 4 and the four conditions also hold on the code the
+engines now run.
+
 ## 1. Items
 
 *(2026-10-16: each item's state at the end of SJL-7.2 is in the record above. The table is kept as SJL-0
