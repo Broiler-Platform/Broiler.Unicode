@@ -137,6 +137,24 @@ public sealed class DifferentialTests
     }
 
     [Fact]
+    public void D7_texts_of_i_the_Turkic_upper_case_dots_are_answered_as_preview_4_answered_them_at_every_limit()
+    {
+        foreach (var text in new[]
+        {
+            "i", "ii", "iI", "Ii", "i\u0307", "ai", "ia", "iii\u1F80", "\u1F80iii", "i\u00DFi", "\u0130i", "xyz", "abci",
+            "i\uD801\uDC28i", "Mi\u0B3Ei\u1F80i", new string('i', 300) + "\u1F80", "\u1F80" + new string('i', 300),
+        })
+        {
+            for (var limit = 0; limit <= (text.Length * 3) + 1; limit++)
+            {
+                Compare(text, limit);
+            }
+
+            Compare(text, int.MaxValue);
+        }
+    }
+
+    [Fact]
     public void D5_every_code_point_s_trie_answers_are_the_range_and_index_tables_answers()
     {
         var properties = new UnicodeProperties(UnicodeTables.Instance);

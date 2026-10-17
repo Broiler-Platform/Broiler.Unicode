@@ -3,15 +3,15 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   25
-// Annotated:        25/25
+// Relevant units:   27
+// Annotated:        27/27
 // Exempt:           2
-// Human-reviewed:   0/25
+// Human-reviewed:   0/27
 // IP risk:          Low
 // Security risk:    High
 // Criteria:         6/6
 // Resource impact:  2/10 max
-// Unverified:       25
+// Unverified:       27
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
@@ -184,6 +184,17 @@ internal static class TableReader
     // Broiler-Human:        PENDING
     internal static int Trie(ReadOnlySpan<ushort> trie, int codePoint) =>
         Word(trie, (TrieIndexBytes / 2) + ((Word(trie, codePoint >> 6) << 6) | (codePoint & 63)));
+
+    /// <summary>A table of four-byte elements as its elements, which <see cref="Element"/> reads.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=E5D23F
+    // Broiler-Human:        PENDING
+    internal static ReadOnlySpan<int> Elements(ReadOnlySpan<byte> table) => MemoryMarshal.Cast<byte, int>(table);
+
+    /// <summary>A little-endian four-byte element of a table read as elements.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=864497
+    // Broiler-Human:        PENDING
+    internal static int Element(ReadOnlySpan<int> elements, int index) =>
+        BitConverter.IsLittleEndian ? elements[index] : BinaryPrimitives.ReverseEndianness(elements[index]);
 
     /// <summary>A little-endian two-byte word of a table read as words.</summary>
     // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=DDBF10

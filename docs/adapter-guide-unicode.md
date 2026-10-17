@@ -35,13 +35,13 @@ Filed 2026-10-16, at work package SJL-7.2.
   - **Which tables each type reads**, from the release that adds the constant-time tables (the changelog's
     entry; *added 2026-10-17*).
     A constructor refuses a provider that lacks one, or holds a malformed trie:
-    - `UnicodeNormalization`: `NormalizationLayout`, `DecompositionPool`, `NormalizationTrie`,
-      `NormalizationRecords` and `CompositionLists`.
-    - `UnicodeCaseMapping`: `CasingLayout`, `MappingPool`, `CasingTrie` and `CasingRecords`, and
-      `UnicodeNormalization`'s tables.
+    - `UnicodeNormalization`: `NormalizationLayout`, `NormalizationTrie`, `NormalizationRecords`,
+      `DecompositionElements` and `CompositionLists`.
+    - `UnicodeCaseMapping`: `CasingLayout`, `MappingPool`, `CasingTrie`, `CasingRecords`,
+      `UpperDeltaTrie` and `LowerDeltaTrie`, and `UnicodeNormalization`'s tables.
     - `EcmaScriptLexical`: `LexicalTrie`, beside the property tables `UnicodeProperties` reads.
 
-    `CombiningClassData`, `CanonicalIndex`, `CompatibilityIndex`, `CompositionData`, `QuickCheckData`,
+    `CombiningClassData`, `CanonicalIndex`, `CompatibilityIndex`, `DecompositionPool`, `CompositionData`, `QuickCheckData`,
     `QuickCheckIndex`, `UpperIndex`, `LowerIndex`, `CasedRanges`, `CaseIgnorableRanges` and
     `SoftDottedRanges` are still generated, with their numbers, but no type reads them any more. An
     engine may stop embedding them.

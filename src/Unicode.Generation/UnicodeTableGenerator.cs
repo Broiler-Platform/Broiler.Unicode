@@ -323,7 +323,7 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.UpperOrbitIndex] = upperOrbit.ToArray();
     }
 
-    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=DE2489
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=7EC96B
     // Broiler-Human:        PENDING
     private static void Normalization(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
@@ -346,14 +346,13 @@ public static class UnicodeTableGenerator
         var pool = new ByteWriter();
         var poolLength = 0;
 
-        ByteWriter Index(SortedDictionary<int, int[]> decompositions, Dictionary<int, (int Offset, int Length)> offsets)
+        ByteWriter Index(SortedDictionary<int, int[]> decompositions)
         {
             var index = new ByteWriter();
 
             foreach (var (codePoint, mapping) in decompositions)
             {
                 index.Int24(codePoint).UInt16(poolLength).Byte(mapping.Length);
-                offsets[codePoint] = (poolLength, mapping.Length);
 
                 foreach (var part in mapping)
                 {
@@ -366,10 +365,8 @@ public static class UnicodeTableGenerator
             return index;
         }
 
-        var canonicalOffsets = new Dictionary<int, (int Offset, int Length)>();
-        var compatibilityOffsets = new Dictionary<int, (int Offset, int Length)>();
-        var canonical = Index(database.CanonicalDecomposition, canonicalOffsets);
-        var compatibility = Index(database.CompatibilityDecomposition, compatibilityOffsets);
+        var canonical = Index(database.CanonicalDecomposition);
+        var compatibility = Index(database.CompatibilityDecomposition);
         var compositions = new ByteWriter();
 
         foreach (var ((first, second), composite) in database.Compositions)
@@ -437,30 +434,67 @@ public static class UnicodeTableGenerator
             entries += count;
         }
 
-        var records = new Records(11);
+        // Each decomposition again, as four-byte elements carrying their combining class in the top byte,
+        // so the work copies them as they are; and per record, each decomposition's UTF-16 length and
+        // whether its first code point passes the form's quick check.
+        var elements = new ByteWriter();
+        var elementCount = 0;
+        var elementStarts = new Dictionary<int[], int>(ReferenceEqualityComparer.Instance);
+
+        int Elements(int[]? mapping)
+        {
+            if (mapping is null)
+            {
+                return 0;
+            }
+
+            if (!elementStarts.TryGetValue(mapping, out var start))
+            {
+                start = elementCount;
+                elementStarts[mapping] = start;
+
+                foreach (var part in mapping)
+                {
+                    elements.UInt16(part & 0xFFFF).Byte(part >> 16).Byte(database.CombiningClass[part]);
+                    elementCount++;
+                }
+            }
+
+            return start;
+        }
+
+        static int Units(int[]? mapping) => mapping is null ? 0 : mapping.Sum(static part => part > 0xFFFF ? 2 : 1);
+
+        var records = new Records(13);
         var values = new int[database.CombiningClass.Length];
 
         for (var codePoint = 0; codePoint < values.Length; codePoint++)
         {
             var hangul = (uint)(codePoint - 0xAC00) < 11172;
-            canonicalOffsets.TryGetValue(codePoint, out var canonicalMapping);
-            compatibilityOffsets.TryGetValue(codePoint, out var compatibilityMapping);
+            database.CanonicalDecomposition.TryGetValue(codePoint, out var canonicalMapping);
+            database.CompatibilityDecomposition.TryGetValue(codePoint, out var compatibilityMapping);
             listStarts.TryGetValue(codePoint, out var list);
 
-            if (hangul && (canonicalMapping.Length != 0 || compatibilityMapping.Length != 0 || list.Count != 0))
+            if (hangul && (canonicalMapping is not null || compatibilityMapping is not null || list.Count != 0))
             {
                 throw new InvalidDataException("a Hangul syllable has a decomposition or composition in the tables");
             }
 
+            var nfkcMapping = compatibilityMapping ?? canonicalMapping;
+            var flags = quickChecks[codePoint]
+                | (canonicalMapping is not null && (quickChecks[canonicalMapping[0]] & 3) == 0 ? 0x10 : 0)
+                | (nfkcMapping is not null && (quickChecks[nfkcMapping[0]] & 0xC) == 0 ? 0x20 : 0);
+
             values[codePoint] = records.Number(new ByteWriter()
                 .Byte(database.CombiningClass[codePoint])
-                .Byte(quickChecks[codePoint])
-                .UInt16(canonicalMapping.Offset).Byte(canonicalMapping.Length)
-                .UInt16(compatibilityMapping.Offset).Byte(compatibilityMapping.Length)
+                .Byte(flags)
+                .UInt16(Elements(canonicalMapping)).Byte(canonicalMapping?.Length ?? 0).Byte(Units(canonicalMapping))
+                .UInt16(Elements(compatibilityMapping)).Byte(compatibilityMapping?.Length ?? 0).Byte(Units(compatibilityMapping))
                 .UInt16(list.Start).Byte(list.Count)
                 .ToArray());
         }
 
+        tables[UnicodeTable.DecompositionElements] = elements.ToArray();
         tables[UnicodeTable.NormalizationTrie] = Trie(values);
         tables[UnicodeTable.NormalizationRecords] = records.ToArray();
         tables[UnicodeTable.CompositionLists] = lists.ToArray();
@@ -505,7 +539,7 @@ public static class UnicodeTableGenerator
         return [.. index.ToArray(), .. data.ToArray()];
     }
 
-    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=BA33C1
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=14FE97
     // Broiler-Human:        PENDING
     private static void Casing(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
@@ -586,6 +620,24 @@ public static class UnicodeTableGenerator
 
         tables[UnicodeTable.CasingTrie] = Trie(values);
         tables[UnicodeTable.CasingRecords] = records.ToArray();
+
+        // Per direction, a single-code-point mapping as its difference from the code point, when that
+        // fits fifteen signed bits; 0x8000 sends any other mapping to the record.
+        int[] Deltas(SortedDictionary<int, int[]> mappings)
+        {
+            var deltas = new int[0x110000];
+
+            foreach (var (codePoint, mapping) in mappings)
+            {
+                var delta = mapping.Length == 1 ? mapping[0] - codePoint : int.MaxValue;
+                deltas[codePoint] = delta is >= -0x3FFF and <= 0x3FFF and not 0 ? delta & 0x7FFF : 0x8000;
+            }
+
+            return deltas;
+        }
+
+        tables[UnicodeTable.UpperDeltaTrie] = Trie(Deltas(database.FullUppercase));
+        tables[UnicodeTable.LowerDeltaTrie] = Trie(Deltas(database.FullLowercase));
     }
 
     /// <summary>The ECMAScript lexical classes' trie: ID_Start, ID_Continue and Space_Separator, as bits.</summary>

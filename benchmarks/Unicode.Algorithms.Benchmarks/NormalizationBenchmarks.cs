@@ -5,8 +5,9 @@ using Broiler.Unicode.Tables;
 namespace Broiler.Unicode.Algorithms.Benchmarks;
 
 /// <summary>
-/// All ten normalization samples in all four forms, forty calls per operation: the owner, metered as the
-/// engines meter it, against the runtime's <see cref="string.Normalize(NormalizationForm)"/>.
+/// All ten normalization samples in all four forms, forty calls per operation: the owner, metered as
+/// Broiler.VM meters it and without a meter as Broiler.JS calls it, against the runtime's
+/// <see cref="string.Normalize(NormalizationForm)"/>.
 /// </summary>
 [MemoryDiagnoser]
 public class NormalizationBenchmarks
@@ -31,6 +32,24 @@ public class NormalizationBenchmarks
             foreach (var form in Forms)
             {
                 normalization.Transform(sample, form, int.MaxValue, charge, out var result);
+                total += result!.Length;
+            }
+        }
+
+        return total;
+    }
+
+    /// <summary>The owner over every sample and form without a meter, as Broiler.JS calls it.</summary>
+    [Benchmark]
+    public int OwnerUnmetered()
+    {
+        var total = 0;
+
+        foreach (var sample in Samples.Normalize)
+        {
+            foreach (var form in Forms)
+            {
+                normalization.Transform(sample, form, int.MaxValue, null, out var result);
                 total += result!.Length;
             }
         }

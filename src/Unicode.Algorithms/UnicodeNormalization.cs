@@ -3,15 +3,15 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   46
-// Annotated:        46/46
-// Exempt:           20
-// Human-reviewed:   0/46
+// Relevant units:   49
+// Annotated:        49/49
+// Exempt:           23
+// Human-reviewed:   0/49
 // IP risk:          Low
 // Security risk:    High
 // Criteria:         2/2
 // Resource impact:  5/10 max
-// Unverified:       46
+// Unverified:       49
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
@@ -119,32 +119,32 @@ public sealed class UnicodeNormalization
     // Broiler-Human:        PENDING
     private const int CodePointMask = 0xFFFFFF;
 
-    // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=0C8644
+    // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=0; Fingerprint=D10118
     // Broiler-Human:        PENDING
-    private const int RecordSize = 11;
+    internal const int RecordSize = 13;
 
     private readonly IUnicodeTables tables;
 
     /// <summary>Normalization over <paramref name="tables"/>.</summary>
     /// <param name="tables">
     /// A provider of Unicode <see cref="UnicodeAlgorithms.UnicodeVersion"/> carrying
-    /// <see cref="UnicodeTable.NormalizationLayout"/>, <see cref="UnicodeTable.DecompositionPool"/>,
-    /// <see cref="UnicodeTable.NormalizationTrie"/>, <see cref="UnicodeTable.NormalizationRecords"/> and
-    /// <see cref="UnicodeTable.CompositionLists"/>.
+    /// <see cref="UnicodeTable.NormalizationLayout"/>, <see cref="UnicodeTable.NormalizationTrie"/>,
+    /// <see cref="UnicodeTable.NormalizationRecords"/>, <see cref="UnicodeTable.DecompositionElements"/>
+    /// and <see cref="UnicodeTable.CompositionLists"/>.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version, lacks a table, or holds a malformed one.</exception>
     /// <remarks>
     /// Every per-code-point answer is one trie lookup and one record read; the binary-searched tables of
     /// 0.1.0-preview.4 are no longer read.
     /// </remarks>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=D1A19C
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=096E39
     // Broiler-Human:        PENDING
     public UnicodeNormalization(IUnicodeTables tables)
     {
         this.tables = TableReader.Checked(tables);
 
         TableReader.Require(tables, UnicodeTable.NormalizationLayout, 3);
-        TableReader.Require(tables, UnicodeTable.DecompositionPool, 3);
+        TableReader.Require(tables, UnicodeTable.DecompositionElements, 4);
         TableReader.Require(tables, UnicodeTable.CompositionLists, 6);
         TableReader.RequireTrie(tables, UnicodeTable.NormalizationTrie);
         TableReader.RequireRecords(tables, UnicodeTable.NormalizationTrie, UnicodeTable.NormalizationRecords, RecordSize);
@@ -195,7 +195,7 @@ public sealed class UnicodeNormalization
     /// The work starts at the first code point the quick check does not pass: the text before the
     /// segment holding it is in the form already and is copied as it is.
     /// </remarks>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=B7CECC
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=B2DDFE
     // Broiler-Falsified-If: a result longer than maxLength is answered as Success, or a charge differs from Broiler.VM row N7
     // Broiler-Human:        PENDING
     public UnicodeStatus Transform(string text, NormalForm form, int maxLength, UnicodeWorkCharge? charge, out string? result)
@@ -233,24 +233,24 @@ public sealed class UnicodeNormalization
         {
             var codePoint = Utf16Reader.Next(text, at, out var width);
             at += width;
-            Count(compose && codePoint >= 0x80 ? lookup.DecompositionHandle(codePoint) : 0, codePoint, width, lookup, ref points, ref units);
+            Count(codePoint, width, compose && codePoint >= 0x80 ? lookup.Record(codePoint) : 0, lookup, ref points, ref units);
         }
 
-        // From it on, each code point's decomposition is kept for the work when the text is short, so
-        // it is looked up once; a long text's is looked up again, so no buffer outgrows the limit.
-        Span<int> handles = text.Length - start <= StackLimit ? stackalloc int[text.Length - start] : default;
+        // From it on, each code point's record is kept for the work when the text is short, so it is
+        // looked up once; a long text's is looked up again, so no buffer outgrows the limit.
+        Span<int> records = text.Length - start <= StackLimit ? stackalloc int[text.Length - start] : default;
         var count = 0;
 
         for (var at = start; at < text.Length; count++)
         {
             var codePoint = Utf16Reader.Next(text, at, out var width);
             at += width;
-            var handle = codePoint >= 0x80 ? lookup.DecompositionHandle(codePoint) : 0;
-            Count(handle, codePoint, width, lookup, ref points, ref units);
+            var record = codePoint >= 0x80 ? lookup.Record(codePoint) : 0;
+            Count(codePoint, width, record, lookup, ref points, ref units);
 
-            if (!handles.IsEmpty)
+            if (!records.IsEmpty)
             {
-                handles[count] = handle;
+                records[count] = record;
             }
         }
 
@@ -267,19 +267,9 @@ public sealed class UnicodeNormalization
         Charge(charge, text.Length + (points * 3));
 
         return Produce(
-            text, start, handles.IsEmpty ? handles : handles[..count], compose, lookup,
+            text, start, records.IsEmpty ? records : records[..count], compose, lookup,
             (int)Math.Min(units, (long)maxLength + 1), maxLength, out result);
     }
-
-    /// <summary>
-    /// The full canonical decomposition of <paramref name="codePoint"/>, or with
-    /// <paramref name="compatibility"/> its full compatibility decomposition, when it has one; a Hangul
-    /// syllable's is computed. The mapping is applied recursively and is not reordered.
-    /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=FE7C0D
-    // Broiler-Human:        PENDING
-    internal bool TryGetDecomposition(int codePoint, bool compatibility, out CodePoints mapping) =>
-        new FormTables(this, compatibility).TryGetDecomposition(codePoint, out mapping);
 
     /// <summary>
     /// The primary composite of <paramref name="first"/> followed by <paramref name="second"/>, when there
@@ -291,30 +281,46 @@ public sealed class UnicodeNormalization
     internal bool TryCompose(int first, int second, out int composite) =>
         new FormTables(this, compatibility: false).TryCompose(first, second, out composite);
 
+    /// <summary>The combining classes, for a caller that reads many: the tables fetched once.</summary>
+    // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=89D7D1
+    // Broiler-Human:        PENDING
+    internal CombiningClasses Classes() =>
+        new(TableReader.Words(tables.Table(UnicodeTable.NormalizationTrie)), tables.Table(UnicodeTable.NormalizationRecords));
+
     // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=100C46
     // Broiler-Human:        PENDING
     private static void Charge(UnicodeWorkCharge? charge, long units) =>
         charge?.Invoke(units <= 0 ? 1UL : (ulong)units);
 
-    /// <summary>Adds one code point's full decomposition, by its handle, to the code points and code units counted.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=6D1E94
+    /// <summary>
+    /// Adds one code point's full decomposition to the code points and code units counted, from its
+    /// record: a Hangul syllable's is two or three jamo, and one without a decomposition is itself.
+    /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=78490E
     // Broiler-Human:        PENDING
-    private static void Count(int handle, int codePoint, int width, in FormTables lookup, ref long points, ref long units)
+    private static void Count(int codePoint, int width, int record, in FormTables lookup, ref long points, ref long units)
     {
-        if (handle == 0)
+        var syllable = codePoint - HangulSyllableBase;
+
+        if ((uint)syllable < HangulSyllableCount)
+        {
+            var jamo = syllable % HangulTrailingCount == 0 ? 2 : 3;
+            points += jamo;
+            units += jamo;
+            return;
+        }
+
+        var length = lookup.DecompositionLength(record);
+
+        if (length == 0)
         {
             points++;
             units += width;
             return;
         }
 
-        var mapping = lookup.Decomposition(codePoint, handle);
-        points += mapping.Length;
-
-        for (var index = 0; index < mapping.Length; index++)
-        {
-            units += Utf16Reader.Width(mapping[index]);
-        }
+        points += length;
+        units += lookup.DecompositionUnits(record);
     }
 
     /// <summary>
@@ -324,7 +330,7 @@ public sealed class UnicodeNormalization
     /// breaks it when it is out of canonical order, when it decomposes (the decomposed forms), or when
     /// its quick-check value is not Yes (the composed forms).
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=8D909E
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=7EF82C
     // Broiler-Human:        PENDING
     private static int FirstOutOfForm(string text, int from, bool compose, in FormTables lookup)
     {
@@ -344,7 +350,7 @@ public sealed class UnicodeNormalization
             var combiningClass = lookup.ClassAt(record);
 
             if ((combiningClass != 0 && lastClass > combiningClass) ||
-                (compose ? !lookup.IsQuickCheckYesAt(record) : lookup.DecompositionHandle(codePoint, record) != 0))
+                (compose ? !lookup.IsQuickCheckYesAt(record) : IsHangulSyllable(codePoint) || lookup.DecompositionLength(record) != 0))
             {
                 return at;
             }
@@ -362,16 +368,15 @@ public sealed class UnicodeNormalization
     /// segments before it are in the form already, so they are their own normalization. ASCII starts a
     /// segment, so the walk back is as long as the run of non-ASCII code points before the position.
     /// </summary>
-    // Broiler-AI:           Origin=AI; Spec=UAX #15 section 9 quick check; IP=Low; Security=Medium; Resources=1; Fingerprint=DC68AB
+    // Broiler-AI:           Origin=AI; Spec=UAX #15 section 9 quick check; IP=Low; Security=Medium; Resources=1; Fingerprint=A0F7ED
     // Broiler-Human:        PENDING
     private static int SegmentStart(string text, int outOfForm, bool compose, in FormTables lookup)
     {
         for (var at = outOfForm; ;)
         {
             var codePoint = Utf16Reader.Next(text, at, out _);
-            var first = lookup.TryGetDecomposition(codePoint, out var mapping) ? mapping[0] : codePoint;
 
-            if (at == 0 || StartsSegment(codePoint, first, lookup.CombiningClass(first), compose, lookup))
+            if (at == 0 || StartsSegment(codePoint, codePoint < 0x80 ? 0 : lookup.Record(codePoint), compose, lookup))
             {
                 return at;
             }
@@ -382,31 +387,44 @@ public sealed class UnicodeNormalization
     }
 
     /// <summary>
-    /// Whether a segment may begin at <paramref name="codePoint"/>, whose decomposition begins with
-    /// <paramref name="first"/>, of class <paramref name="firstClass"/>: a starter, so no reordering
-    /// crosses it, and in the composed forms a code point nothing before it can combine with (its quick
-    /// check, and its decomposition's first code point's, is Yes). A boundary placed only where both
-    /// hold is safe; one missed makes a segment longer.
+    /// Whether a segment may begin at <paramref name="codePoint"/>, of record <paramref name="record"/>:
+    /// the first code point of its decomposition is a starter, so no reordering crosses it, and in the
+    /// composed forms nothing before it can combine with it (its quick check, and its decomposition's
+    /// first code point's, is Yes). ASCII and Hangul syllables always may. A boundary placed only where
+    /// both hold is safe; one missed makes a segment longer.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=BD37C6
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=2A09A6
     // Broiler-Human:        PENDING
-    private static bool StartsSegment(int codePoint, int first, int firstClass, bool compose, in FormTables lookup) =>
-        codePoint < 0x80 ||
-        (firstClass == 0 && (!compose ||
-            (lookup.IsQuickCheckYes(codePoint) && (first == codePoint || lookup.IsQuickCheckYes(first)))));
+    private static bool StartsSegment(int codePoint, int record, bool compose, in FormTables lookup)
+    {
+        if (codePoint < 0x80 || IsHangulSyllable(codePoint))
+        {
+            return true;
+        }
+
+        var decomposes = lookup.DecompositionLength(record) != 0;
+        var firstClass = decomposes ? lookup.Element(record, 0) >>> 24 : lookup.ClassAt(record);
+
+        return firstClass == 0 &&
+            (!compose || (lookup.IsQuickCheckYesAt(record) && (!decomposes || lookup.IsFirstQuickCheckYesAt(record))));
+    }
+
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=A56E47
+    // Broiler-Human:        PENDING
+    private static bool IsHangulSyllable(int codePoint) => (uint)(codePoint - HangulSyllableBase) < HangulSyllableCount;
 
     /// <summary>
     /// The normalization of <paramref name="text"/> from <paramref name="start"/>, a segment boundary,
-    /// after the text before it copied as it is. Each code point is looked up once: its decomposition,
-    /// which <paramref name="handles"/> holds for each code point from the start when the sizing pass
-    /// kept them, and the combining class of every code point of it, which the buffer carries above the
-    /// code point's 24 bits through the ordering and the composition.
+    /// after the text before it copied as it is. Each code point is looked up once, to its record, which
+    /// <paramref name="records"/> holds for each code point from the start when the sizing pass kept
+    /// them. Its decomposition's elements carry their combining classes above the code point's 24 bits,
+    /// and the buffer keeps them there through the ordering and the composition.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=61AC48
+    // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=High; Resources=5; Fingerprint=FAFFDA
     // Broiler-Falsified-If: a buffer grows past the longest segment times the longest decomposition, or a refused result is returned
     // Broiler-Human:        PENDING
     private static UnicodeStatus Produce(
-        string text, int start, ReadOnlySpan<int> handles, bool compose, in FormTables lookup, int capacity, int maxLength, out string? result)
+        string text, int start, ReadOnlySpan<int> records, bool compose, in FormTables lookup, int capacity, int maxLength, out string? result)
     {
         if (start > maxLength)
         {
@@ -426,10 +444,8 @@ public sealed class UnicodeNormalization
             var end = at == text.Length;
             var codePoint = 0;
             var width = 0;
-            var firstClass = 0;
-            var decomposes = false;
+            var record = 0;
             var boundary = true;
-            CodePoints mapping = default;
 
             if (!end)
             {
@@ -437,14 +453,8 @@ public sealed class UnicodeNormalization
 
                 if (codePoint >= 0x80)
                 {
-                    // One record read for a code point that does not decompose, two for one that does.
-                    var record = lookup.Record(codePoint);
-                    var handle = handles.IsEmpty ? lookup.DecompositionHandle(codePoint, record) : handles[index];
-                    decomposes = handle != 0;
-                    mapping = decomposes ? lookup.Decomposition(codePoint, handle) : default;
-                    var firstRecord = decomposes ? lookup.Record(mapping[0]) : record;
-                    firstClass = lookup.ClassAt(firstRecord);
-                    boundary = firstClass == 0 && (!compose || (lookup.IsQuickCheckYesAt(record) && lookup.IsQuickCheckYesAt(firstRecord)));
+                    record = records.IsEmpty ? lookup.Record(codePoint) : records[index];
+                    boundary = StartsSegment(codePoint, record, compose, lookup);
                 }
             }
 
@@ -487,7 +497,12 @@ public sealed class UnicodeNormalization
             }
 
             at += width;
-            var needed = length + (decomposes ? mapping.Length : 1);
+
+            // Each code point enters the buffer with its class: a decomposition's elements carry theirs,
+            // and a Hangul syllable's jamo are all of class 0.
+            var syllable = codePoint - HangulSyllableBase;
+            var decomposition = codePoint < 0x80 || (uint)syllable < HangulSyllableCount ? 0 : lookup.DecompositionLength(record);
+            var needed = length + Math.Max(decomposition, 3);
 
             if (needed > buffer.Length)
             {
@@ -496,19 +511,28 @@ public sealed class UnicodeNormalization
                 buffer = larger;
             }
 
-            if (decomposes)
+            if ((uint)syllable < HangulSyllableCount)
             {
-                buffer[length++] = mapping[0] | (firstClass << 24);
+                var trailing = syllable % HangulTrailingCount;
 
-                for (var position = 1; position < mapping.Length; position++)
+                buffer[length++] = HangulLeadingBase + (syllable / (HangulVowelCount * HangulTrailingCount));
+                buffer[length++] = HangulVowelBase + (syllable % (HangulVowelCount * HangulTrailingCount) / HangulTrailingCount);
+
+                if (trailing != 0)
                 {
-                    var point = mapping[position];
-                    buffer[length++] = point | (lookup.CombiningClass(point) << 24);
+                    buffer[length++] = HangulTrailingBase + trailing;
+                }
+            }
+            else if (decomposition != 0)
+            {
+                for (var position = 0; position < decomposition; position++)
+                {
+                    buffer[length++] = lookup.Element(record, position);
                 }
             }
             else
             {
-                buffer[length++] = codePoint | (firstClass << 24);
+                buffer[length++] = codePoint | (codePoint < 0x80 ? 0 : lookup.ClassAt(record) << 24);
             }
         }
 
@@ -657,7 +681,8 @@ public sealed class UnicodeNormalization
 
     /// <summary>
     /// The tables one transform reads, fetched from the provider once per call. Each code point is one
-    /// trie lookup to its record, whose bytes hold its class, quick checks, decompositions and compositions.
+    /// trie lookup to its record, whose bytes hold its class, quick checks, decompositions and
+    /// compositions; a decomposition's elements carry their own classes.
     /// </summary>
     // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=13C69A
     // Broiler-Human:        PENDING
@@ -667,13 +692,13 @@ public sealed class UnicodeNormalization
 
         private readonly ReadOnlySpan<byte> records;
 
-        private readonly ReadOnlySpan<byte> pool;
+        private readonly ReadOnlySpan<int> elements;
 
         private readonly ReadOnlySpan<byte> compositions;
 
         private readonly bool compatibility;
 
-        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=515EBE
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=741992
         // Broiler-Human:        PENDING
         internal FormTables(UnicodeNormalization owner, bool compatibility)
         {
@@ -681,7 +706,7 @@ public sealed class UnicodeNormalization
 
             trie = TableReader.Words(tables.Table(UnicodeTable.NormalizationTrie));
             records = tables.Table(UnicodeTable.NormalizationRecords);
-            pool = tables.Table(UnicodeTable.DecompositionPool);
+            elements = TableReader.Elements(tables.Table(UnicodeTable.DecompositionElements));
             compositions = tables.Table(UnicodeTable.CompositionLists);
             this.compatibility = compatibility;
         }
@@ -705,75 +730,36 @@ public sealed class UnicodeNormalization
         // Broiler-Human:        PENDING
         internal bool IsQuickCheckYesAt(int record) => QuickCheckBits(record) == 0;
 
-        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=0BA0EB
+        /// <summary>Whether the first code point of a record's decomposition in this form has the quick check Yes.</summary>
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=A93F9E
         // Broiler-Human:        PENDING
-        internal bool IsQuickCheckYes(int codePoint) => QuickCheckBits(Record(codePoint)) == 0;
+        internal bool IsFirstQuickCheckYesAt(int record) => (records[record + 1] & (compatibility ? 0x20 : 0x10)) != 0;
 
         // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=6A300E
         // Broiler-Human:        PENDING
         internal NormalizationQuickCheck QuickCheck(int codePoint) => (NormalizationQuickCheck)QuickCheckBits(Record(codePoint));
 
-        // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=0D0169
+        /// <summary>The length in code points of a record's full decomposition in this form; 0 when it has none.</summary>
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=050764
         // Broiler-Human:        PENDING
-        internal bool TryGetDecomposition(int codePoint, out CodePoints mapping)
-        {
-            var handle = DecompositionHandle(codePoint);
+        internal int DecompositionLength(int record) => records[Decomposition(record) + 2];
 
-            mapping = handle == 0 ? default : Decomposition(codePoint, handle);
-            return handle != 0;
-        }
-
-        /// <summary>
-        /// A handle on the full decomposition of <paramref name="codePoint"/> in this form: 0 when it has
-        /// none, -1 for a Hangul syllable, and otherwise its offset in the pool above its length's eight bits.
-        /// </summary>
-        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=DEE8AE
+        /// <summary>The length in UTF-16 code units of a record's full decomposition in this form.</summary>
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=E56A41
         // Broiler-Human:        PENDING
-        internal int DecompositionHandle(int codePoint) => DecompositionHandle(codePoint, Record(codePoint));
+        internal int DecompositionUnits(int record) => records[Decomposition(record) + 3];
 
-        /// <summary><see cref="DecompositionHandle(int)"/> from the code point's record, already read.</summary>
-        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=A19237
+        /// <summary>Element <paramref name="position"/> of a record's decomposition in this form: the code point with its class in the top byte.</summary>
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=E8BD26
         // Broiler-Human:        PENDING
-        internal int DecompositionHandle(int codePoint, int record)
-        {
-            if ((uint)(codePoint - HangulSyllableBase) < HangulSyllableCount)
-            {
-                return -1;
-            }
-
-            if (compatibility && records[record + 7] != 0)
-            {
-                return (TableReader.UInt16(records, record + 5) << 8) | records[record + 7];
-            }
-
-            return records[record + 4] == 0 ? 0 : (TableReader.UInt16(records, record + 2) << 8) | records[record + 4];
-        }
-
-        /// <summary>The decomposition of <paramref name="codePoint"/> its non-zero <paramref name="handle"/> names.</summary>
-        // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=BE1117
-        // Broiler-Human:        PENDING
-        internal CodePoints Decomposition(int codePoint, int handle)
-        {
-            if (handle > 0)
-            {
-                return new CodePoints(pool.Slice((handle >> 8) * 3, (handle & 0xFF) * 3));
-            }
-
-            var syllable = codePoint - HangulSyllableBase;
-            var trailing = syllable % HangulTrailingCount;
-
-            return new CodePoints(
-                HangulLeadingBase + (syllable / (HangulVowelCount * HangulTrailingCount)),
-                HangulVowelBase + (syllable % (HangulVowelCount * HangulTrailingCount) / HangulTrailingCount),
-                HangulTrailingBase + trailing,
-                trailing == 0 ? 2 : 3);
-        }
+        internal int Element(int record, int position) =>
+            TableReader.Element(elements, TableReader.UInt16(records, Decomposition(record)) + position);
 
         /// <summary>
         /// The primary composite of <paramref name="first"/> followed by <paramref name="second"/>: the
         /// Hangul arithmetic, or a scan of the first code point's own list of compositions.
         /// </summary>
-        // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=48F5B6
+        // Broiler-AI:           Origin=Ported; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=F2111E
         // Broiler-Human:        PENDING
         internal bool TryCompose(int first, int second, out int composite)
         {
@@ -797,8 +783,8 @@ public sealed class UnicodeNormalization
             }
 
             var record = Record(first);
-            var start = TableReader.UInt16(records, record + 8) * 6;
-            var end = start + (records[record + 10] * 6);
+            var start = TableReader.UInt16(records, record + 10) * 6;
+            var end = start + (records[record + 12] * 6);
 
             for (var at = start; at < end; at += 6)
             {
@@ -813,10 +799,40 @@ public sealed class UnicodeNormalization
             return false;
         }
 
+        /// <summary>
+        /// Where in a record the decomposition this form reads starts: the compatibility one's fields when
+        /// the form is a compatibility form and the record has one, and otherwise the canonical one's.
+        /// </summary>
+        // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=1614A3
+        // Broiler-Human:        PENDING
+        private int Decomposition(int record) => compatibility && records[record + 8] != 0 ? record + 6 : record + 2;
+
         // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=9F4887
         // Broiler-Human:        PENDING
         private int QuickCheckBits(int record) => (records[record + 1] >> (compatibility ? 2 : 0)) & 3;
     }
+}
+
+/// <summary>The Canonical_Combining_Class of code points U+0000 to U+10FFFF, read from tables fetched once.</summary>
+// Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Low; Resources=1; Fingerprint=DFFC87
+// Broiler-Human:        PENDING
+internal readonly ref struct CombiningClasses
+{
+    private readonly ReadOnlySpan<ushort> trie;
+
+    private readonly ReadOnlySpan<byte> records;
+
+    // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=559462
+    // Broiler-Human:        PENDING
+    internal CombiningClasses(ReadOnlySpan<ushort> trie, ReadOnlySpan<byte> records)
+    {
+        this.trie = trie;
+        this.records = records;
+    }
+
+    // Broiler-AI:           Origin=AI; Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization; IP=Low; Security=Medium; Resources=1; Fingerprint=1787FA
+    // Broiler-Human:        PENDING
+    internal int Of(int codePoint) => records[TableReader.Trie(trie, codePoint) * UnicodeNormalization.RecordSize];
 }
 
 /// <summary>
