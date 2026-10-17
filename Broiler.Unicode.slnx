@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Unicode.Algorithms.Benchmarks/Unicode.Algorithms.Benchmarks.csproj" />
     <Project Path="benchmarks/UnicodeEmoji.StringProperties.Benchmarks/UnicodeEmoji.StringProperties.Benchmarks.csproj" />
   </Folder>
   <Folder Name="/probes/">

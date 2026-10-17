@@ -3,21 +3,20 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   23
-// Annotated:        23/23
-// Exempt:           6
-// Human-reviewed:   0/23
+// Relevant units:   28
+// Annotated:        28/28
+// Exempt:           8
+// Human-reviewed:   0/28
 // IP risk:          Low
 // Security risk:    High
-// Criteria:         4/4
+// Criteria:         6/6
 // Resource impact:  5/10 max
-// Unverified:       23
+// Unverified:       28
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
 using System;
 using System.Globalization;
-using System.Text;
 
 namespace Broiler.Unicode.Algorithms;
 
@@ -84,9 +83,21 @@ public sealed class UnicodeCaseMapping
     // Broiler-Human:        PENDING
     private const int CombiningDotAbove = 0x0307;
 
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=79C10D
+    // Broiler-Human:        PENDING
+    private const int StackLimit = 256;
+
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Low; Resources=0; Fingerprint=508689
+    // Broiler-Human:        PENDING
+    private const int Longer = -1;
+
     private readonly IUnicodeTables tables;
 
     private readonly UnicodeNormalization normalization;
+
+    private readonly int[] upperLatin1;
+
+    private readonly int[] lowerLatin1;
 
     /// <summary>Case mapping over <paramref name="tables"/>.</summary>
     /// <param name="tables">
@@ -95,7 +106,12 @@ public sealed class UnicodeCaseMapping
     /// normalization tables, whose combining classes the language conditions read.
     /// </param>
     /// <exception cref="ArgumentException">The provider is of another version or lacks a table.</exception>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=68A6CB
+    /// <remarks>
+    /// The default mappings of U+0000 to U+00FF are read from the tables once here, so the commonest code
+    /// points are mapped without a search; a convention 10 value derived from the provider at
+    /// construction, 2 KB, which never grows.
+    /// </remarks>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=ED6F58
     // Broiler-Human:        PENDING
     public UnicodeCaseMapping(IUnicodeTables tables)
     {
@@ -118,6 +134,8 @@ public sealed class UnicodeCaseMapping
         }
 
         MaxMappingLength = TableReader.Layout(layout, 0);
+        upperLatin1 = Latin1(tables.Table(UnicodeTable.UpperIndex), tables.Table(UnicodeTable.MappingPool));
+        lowerLatin1 = Latin1(tables.Table(UnicodeTable.LowerIndex), tables.Table(UnicodeTable.MappingPool));
     }
 
     /// <summary>The longest full case mapping of one code point, in code points.</summary>
@@ -179,20 +197,99 @@ public sealed class UnicodeCaseMapping
     private static void Charge(UnicodeWorkCharge? charge, int units) =>
         charge?.Invoke(units <= 0 ? 1UL : (ulong)units);
 
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=09B074
+    /// <summary>
+    /// The default mapping of each of U+0000 to U+00FF: the code point it maps to, itself when casing
+    /// leaves it, or <see cref="Longer"/> when its mapping is longer than one code point.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=C8FD14
     // Broiler-Human:        PENDING
-    private static void AppendCodePoint(StringBuilder built, int codePoint)
+    private static int[] Latin1(ReadOnlySpan<byte> index, ReadOnlySpan<byte> pool)
     {
+        var mapped = new int[0x100];
+
+        for (var codePoint = 0; codePoint < mapped.Length; codePoint++)
+        {
+            mapped[codePoint] = !TryGetMapping(index, pool, codePoint, out var mapping) ? codePoint
+                : mapping.Length == 1 ? mapping[0]
+                : Longer;
+        }
+
+        return mapped;
+    }
+
+    /// <summary>
+    /// Appends <paramref name="codePoint"/> to <paramref name="output"/> at <paramref name="written"/>,
+    /// moving the output to a larger buffer, of at most <paramref name="bound"/> code units, when it is full.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=C1D398
+    // Broiler-Human:        PENDING
+    private static void AppendCodePoint(ref Span<char> output, ref int written, int codePoint, long bound)
+    {
+        if (written + 2 > output.Length)
+        {
+            var larger = new char[Math.Min(Math.Max(written + 2L, output.Length * 2L), Math.Max(bound, written + 2L))];
+            output[..written].CopyTo(larger);
+            output = larger;
+        }
+
         if (codePoint <= 0xFFFF)
         {
-            built.Append((char)codePoint);
+            output[written++] = (char)codePoint;
             return;
         }
 
-        built.Append((char)(0xD7C0 + (codePoint >> 10))).Append((char)(0xDC00 | (codePoint & 0x3FF)));
+        output[written++] = (char)(0xD7C0 + (codePoint >> 10));
+        output[written++] = (char)(0xDC00 | (codePoint & 0x3FF));
     }
 
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=9F0A22
+    /// <summary>The full mapping of <paramref name="codePoint"/> in the default language, when casing changes it.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=067812
+    // Broiler-Human:        PENDING
+    private static bool TryGetMapping(ReadOnlySpan<byte> index, ReadOnlySpan<byte> pool, int codePoint, out CodePoints mapping)
+    {
+        var low = 0;
+        var high = (index.Length / 6) - 1;
+
+        while (low <= high)
+        {
+            var middle = (low + high) >>> 1;
+            var key = TableReader.Int24(index, middle * 6);
+
+            if (key == codePoint)
+            {
+                var offset = TableReader.UInt16(index, (middle * 6) + 3);
+
+                mapping = new CodePoints(pool.Slice(offset * 3, index[(middle * 6) + 5] * 3));
+                return true;
+            }
+
+            if (key < codePoint)
+            {
+                low = middle + 1;
+            }
+            else
+            {
+                high = middle - 1;
+            }
+        }
+
+        mapping = default;
+        return false;
+    }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> holds a code point one of <paramref name="language"/>'s conditional
+    /// lines in this direction can change. Without one the language pass would copy the text as it is.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=1; Fingerprint=86262E
+    // Broiler-Falsified-If: a text holding a code point a conditional line of the language changes is answered false
+    // Broiler-Human:        PENDING
+    private static bool NeedsLanguagePass(string text, bool upper, CaseLanguage language) =>
+        language == CaseLanguage.Turkic
+            ? upper ? text.Contains('i', StringComparison.Ordinal) : text.AsSpan().IndexOfAny('I', 'İ') >= 0
+            : upper ? text.Contains('̇', StringComparison.Ordinal) : text.AsSpan().IndexOfAny("IJĮÌÍĨ") >= 0;
+
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=5ED48B
     // Broiler-Falsified-If: a result longer than maxLength is answered as Success, or a language pass is applied for the default language
     // Broiler-Human:        PENDING
     private UnicodeStatus Map(string text, bool upper, CaseLanguage language, int maxLength, UnicodeWorkCharge? charge, out string? result)
@@ -205,158 +302,235 @@ public sealed class UnicodeCaseMapping
             throw new ArgumentOutOfRangeException(nameof(language));
         }
 
-        var source = language == CaseLanguage.Default ? text : LanguagePass(text, upper, language);
+        if (language == CaseLanguage.Default || !NeedsLanguagePass(text, upper, language))
+        {
+            return DefaultPass(text, text, upper, maxLength, charge, out result);
+        }
 
-        return DefaultPass(source, upper, maxLength, charge, out result);
+        // A Lithuanian line writes at most three code units for one; a Turkic line one for one.
+        var capacity = language == CaseLanguage.Lithuanian ? text.Length * 3L : text.Length;
+        Span<char> staged = capacity <= StackLimit ? stackalloc char[StackLimit] : new char[capacity];
+        var length = LanguagePass(text, upper, language, staged);
+
+        return DefaultPass(staged[..length], null, upper, maxLength, charge, out result);
     }
 
     /// <summary>
-    /// The Default Case Conversion over <paramref name="text"/>. The text is copied only from the first
-    /// code point casing changes, so an unchanged text costs one pass and no allocation.
+    /// The Default Case Conversion over <paramref name="source"/>, which is <paramref name="text"/> when
+    /// no language pass ran. Nothing is written before the first code point casing changes, so an
+    /// unchanged text costs one pass, allocates nothing and is answered as itself.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=B8867F
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=BA89C3
     // Broiler-Falsified-If: work is done before the meter is charged for it, or a charge differs from Broiler.VM row C13
     // Broiler-Human:        PENDING
-    private UnicodeStatus DefaultPass(string text, bool upper, int maxLength, UnicodeWorkCharge? charge, out string? result)
+    private UnicodeStatus DefaultPass(ReadOnlySpan<char> source, string? text, bool upper, int maxLength, UnicodeWorkCharge? charge, out string? result)
     {
-        Charge(charge, text.Length);
+        Charge(charge, source.Length);
 
-        StringBuilder? built = null;
+        var latin1 = upper ? upperLatin1 : lowerLatin1;
+        var index = tables.Table(upper ? UnicodeTable.UpperIndex : UnicodeTable.LowerIndex);
+        var pool = tables.Table(UnicodeTable.MappingPool);
+        var first = 0;
 
-        for (var at = 0; at < text.Length;)
+        while (first < source.Length)
         {
-            var codePoint = Utf16Reader.Next(text, at, out var width);
-            var start = at;
-            at += width;
+            var unit = source[first];
 
-            if (!upper && codePoint == CapitalSigma)
+            if (unit < 0x100)
             {
-                var final = IsFinalSigma(text, start, width, out var scanned);
-                Charge(charge, scanned);
-                built ??= new StringBuilder(text, 0, start, (int)Math.Min(text.Length + 8L, maxLength + 1L));
-                built.Append((char)(final ? FinalSigma : SmallSigma));
-            }
-            else if (TryGetMapping(codePoint, upper, out var mapping))
-            {
-                Charge(charge, mapping.Length);
-                built ??= new StringBuilder(text, 0, start, (int)Math.Min(text.Length + 8L, maxLength + 1L));
-
-                for (var index = 0; index < mapping.Length; index++)
+                if (latin1[unit] != unit)
                 {
-                    AppendCodePoint(built, mapping[index]);
+                    break;
                 }
+
+                first++;
+                continue;
+            }
+
+            var codePoint = Utf16Reader.Next(source, first, out var width);
+
+            if ((!upper && codePoint == CapitalSigma) || TryGetMapping(index, pool, codePoint, out _))
+            {
+                break;
+            }
+
+            first += width;
+        }
+
+        if (first == source.Length)
+        {
+            result = source.Length > maxLength ? null : text ?? new string(source);
+            return result is null ? UnicodeStatus.LimitExceeded : UnicodeStatus.Success;
+        }
+
+        return MapFrom(source, first, upper, latin1, index, pool, maxLength, charge, out result);
+    }
+
+    /// <summary>
+    /// The Default Case Conversion from <paramref name="first"/>, the first code point casing changes,
+    /// after the text before it copied as it is. U+0000 to U+00FF are mapped through the values read at
+    /// construction; the result is refused as soon as it is longer than <paramref name="maxLength"/>.
+    /// </summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=D77A84
+    // Broiler-Falsified-If: work is done before the meter is charged for it, a charge differs from Broiler.VM row C13, or a result longer than maxLength is answered as Success
+    // Broiler-Human:        PENDING
+    private UnicodeStatus MapFrom(
+        ReadOnlySpan<char> source, int first, bool upper, int[] latin1, ReadOnlySpan<byte> index, ReadOnlySpan<byte> pool,
+        int maxLength, UnicodeWorkCharge? charge, out string? result)
+    {
+        // The result is refused once it passes the limit, and one mapping writes at most six code
+        // units, so past the unchanged text it copies first the output never needs more than the limit
+        // and eight.
+        var bound = Math.Max(maxLength, first) + 8L;
+        var capacity = Math.Min(source.Length + 8L, bound);
+        Span<char> output = capacity <= StackLimit ? stackalloc char[StackLimit] : new char[capacity];
+        var written = first;
+
+        source[..first].CopyTo(output);
+
+        for (var at = first; at < source.Length;)
+        {
+            var start = at;
+            var unit = source[at];
+            var mapped = unit < 0x100 ? latin1[unit] : Longer;
+
+            if (mapped == unit)
+            {
+                at++;
+                AppendCodePoint(ref output, ref written, unit, bound);
+            }
+            else if (mapped != Longer)
+            {
+                at++;
+                Charge(charge, 1);
+                AppendCodePoint(ref output, ref written, mapped, bound);
             }
             else
             {
-                built?.Append(text, start, width);
+                var codePoint = Utf16Reader.Next(source, at, out var width);
+                at += width;
+
+                if (!upper && codePoint == CapitalSigma)
+                {
+                    var final = IsFinalSigma(source, start, width, out var scanned);
+                    Charge(charge, scanned);
+                    AppendCodePoint(ref output, ref written, final ? FinalSigma : SmallSigma, bound);
+                }
+                else if (TryGetMapping(index, pool, codePoint, out var mapping))
+                {
+                    Charge(charge, mapping.Length);
+
+                    for (var position = 0; position < mapping.Length; position++)
+                    {
+                        AppendCodePoint(ref output, ref written, mapping[position], bound);
+                    }
+                }
+                else
+                {
+                    AppendCodePoint(ref output, ref written, codePoint, bound);
+                }
             }
 
-            if (built is not null && built.Length > maxLength)
+            if (written > maxLength)
             {
                 result = null;
                 return UnicodeStatus.LimitExceeded;
             }
         }
 
-        result = built?.ToString() ?? text;
-
-        if (result.Length > maxLength)
-        {
-            result = null;
-            return UnicodeStatus.LimitExceeded;
-        }
-
+        result = new string(output[..written]);
         return UnicodeStatus.Success;
     }
 
     /// <summary>
     /// <c>SpecialCasing.txt</c>'s conditional lines for one language, applied before the Default Case
-    /// Conversion. Each condition reads the string as it was, and each scan stops at the first code point
-    /// of combining class 0 or 230, so the passes over the string are linear in all.
+    /// Conversion, written into <paramref name="output"/>; answers the length written. Each condition
+    /// reads the string as it was, and each scan stops at the first code point of combining class 0 or
+    /// 230, so the passes over the string are linear in all.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=E67FCC
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=D46111
     // Broiler-Human:        PENDING
-    private string LanguagePass(string text, bool upper, CaseLanguage language)
+    private int LanguagePass(string text, bool upper, CaseLanguage language, Span<char> output)
     {
-        var points = new int[text.Length];
-        var count = 0;
+        var written = 0;
 
         for (var at = 0; at < text.Length;)
         {
-            points[count++] = Utf16Reader.Next(text, at, out var width);
+            var start = at;
+            var point = Utf16Reader.Next(text, at, out var width);
             at += width;
-        }
-
-        var built = new StringBuilder(text.Length + 4);
-
-        for (var index = 0; index < count; index++)
-        {
-            var point = points[index];
 
             if (language == CaseLanguage.Turkic)
             {
                 if (!upper && point == 0x0130)
                 {
-                    built.Append('i');
+                    output[written++] = 'i';
                     continue;
                 }
 
-                if (!upper && point == CombiningDotAbove && AfterCapitalI(points, index))
+                if (!upper && point == CombiningDotAbove && AfterCapitalI(text, start))
                 {
                     continue;
                 }
 
                 if (!upper && point == 'I')
                 {
-                    built.Append(BeforeDot(points, count, index) ? 'i' : 'ı');
+                    output[written++] = BeforeDot(text, at) ? 'i' : 'ı';
                     continue;
                 }
 
                 if (upper && point == 'i')
                 {
-                    built.Append('İ');
+                    output[written++] = 'İ';
                     continue;
                 }
             }
             else
             {
-                if (!upper && point is 'I' or 'J' or 0x012E && MoreAbove(points, count, index))
+                if (!upper && point is 'I' or 'J' or 0x012E && MoreAbove(text, at))
                 {
-                    built.Append(point == 0x012E ? 'į' : (char)(point + 0x20)).Append('̇');
+                    output[written++] = point == 0x012E ? 'į' : (char)(point + 0x20);
+                    output[written++] = '̇';
                     continue;
                 }
 
                 if (!upper && point is 0x00CC or 0x00CD or 0x0128)
                 {
-                    built.Append("i̇").Append(point switch { 0x00CC => '̀', 0x00CD => '́', _ => '̃' });
+                    output[written++] = 'i';
+                    output[written++] = '̇';
+                    output[written++] = point switch { 0x00CC => '̀', 0x00CD => '́', _ => '̃' };
                     continue;
                 }
 
-                if (upper && point == CombiningDotAbove && AfterSoftDotted(points, index))
+                if (upper && point == CombiningDotAbove && AfterSoftDotted(text, start))
                 {
                     continue;
                 }
             }
 
-            AppendCodePoint(built, point);
+            text.AsSpan(start, width).CopyTo(output[written..]);
+            written += width;
         }
 
-        return built.ToString();
+        return written;
     }
 
-    /// <summary>After_I: an upper-case I before, with no combining class 0 or 230 between.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=294C3B
+    /// <summary>After_I: an upper-case I before <paramref name="end"/>, with no combining class 0 or 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=85D79D
     // Broiler-Human:        PENDING
-    private bool AfterCapitalI(int[] points, int index)
+    private bool AfterCapitalI(string text, int end)
     {
-        for (var at = index - 1; at >= 0; at--)
+        for (var at = end; at > 0;)
         {
-            if (points[at] == 'I')
+            var point = Utf16Reader.Previous(text, at, out var width);
+            at -= width;
+
+            if (point == 'I')
             {
                 return true;
             }
 
-            if (normalization.CombiningClass(points[at]) is 0 or 230)
+            if (normalization.CombiningClass(point) is 0 or 230)
             {
                 return false;
             }
@@ -365,19 +539,22 @@ public sealed class UnicodeCaseMapping
         return false;
     }
 
-    /// <summary>After_Soft_Dotted: a Soft_Dotted code point before, with no combining class 0 or 230 between.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=E5D22D
+    /// <summary>After_Soft_Dotted: a Soft_Dotted code point before <paramref name="end"/>, with no combining class 0 or 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=A2D110
     // Broiler-Human:        PENDING
-    private bool AfterSoftDotted(int[] points, int index)
+    private bool AfterSoftDotted(string text, int end)
     {
-        for (var at = index - 1; at >= 0; at--)
+        for (var at = end; at > 0;)
         {
-            if (IsSoftDotted(points[at]))
+            var point = Utf16Reader.Previous(text, at, out var width);
+            at -= width;
+
+            if (IsSoftDotted(point))
             {
                 return true;
             }
 
-            if (normalization.CombiningClass(points[at]) is 0 or 230)
+            if (normalization.CombiningClass(point) is 0 or 230)
             {
                 return false;
             }
@@ -386,19 +563,22 @@ public sealed class UnicodeCaseMapping
         return false;
     }
 
-    /// <summary>Before_Dot: U+0307 after, with only combining classes other than 0 and 230 between.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=2FD338
+    /// <summary>Before_Dot: U+0307 from <paramref name="start"/> on, with only combining classes other than 0 and 230 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=EFADCB
     // Broiler-Human:        PENDING
-    private bool BeforeDot(int[] points, int count, int index)
+    private bool BeforeDot(string text, int start)
     {
-        for (var at = index + 1; at < count; at++)
+        for (var at = start; at < text.Length;)
         {
-            if (points[at] == CombiningDotAbove)
+            var point = Utf16Reader.Next(text, at, out var width);
+            at += width;
+
+            if (point == CombiningDotAbove)
             {
                 return true;
             }
 
-            if (normalization.CombiningClass(points[at]) is 0 or 230)
+            if (normalization.CombiningClass(point) is 0 or 230)
             {
                 return false;
             }
@@ -407,14 +587,15 @@ public sealed class UnicodeCaseMapping
         return false;
     }
 
-    /// <summary>More_Above: a combining class 230 after, with no combining class 0 between.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=171304
+    /// <summary>More_Above: a combining class 230 from <paramref name="start"/> on, with no combining class 0 between.</summary>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=898E58
     // Broiler-Human:        PENDING
-    private bool MoreAbove(int[] points, int count, int index)
+    private bool MoreAbove(string text, int start)
     {
-        for (var at = index + 1; at < count; at++)
+        for (var at = start; at < text.Length;)
         {
-            var combining = normalization.CombiningClass(points[at]);
+            var combining = normalization.CombiningClass(Utf16Reader.Next(text, at, out var width));
+            at += width;
 
             if (combining == 230)
             {
@@ -435,10 +616,12 @@ public sealed class UnicodeCaseMapping
     /// Final_Sigma (Unicode Standard section 3.13, table 3-17), and how many code units the test read.
     /// A code point both Cased and Case_Ignorable is skipped, as the definition's sequences read it.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=5D45FD
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=65582A
     // Broiler-Human:        PENDING
-    private bool IsFinalSigma(string text, int at, int width, out int scanned)
+    private bool IsFinalSigma(ReadOnlySpan<char> text, int at, int width, out int scanned)
     {
+        var cased = tables.Table(UnicodeTable.CasedRanges);
+        var ignorable = tables.Table(UnicodeTable.CaseIgnorableRanges);
         scanned = 0;
         var before = false;
 
@@ -448,12 +631,12 @@ public sealed class UnicodeCaseMapping
             position -= size;
             scanned += size;
 
-            if (IsCaseIgnorable(codePoint))
+            if (TableReader.InRanges(ignorable, codePoint))
             {
                 continue;
             }
 
-            before = IsCased(codePoint);
+            before = TableReader.InRanges(cased, codePoint);
             break;
         }
 
@@ -468,50 +651,14 @@ public sealed class UnicodeCaseMapping
             position += size;
             scanned += size;
 
-            if (IsCaseIgnorable(codePoint))
+            if (TableReader.InRanges(ignorable, codePoint))
             {
                 continue;
             }
 
-            return !IsCased(codePoint);
+            return !TableReader.InRanges(cased, codePoint);
         }
 
         return true;
-    }
-
-    /// <summary>The full mapping of <paramref name="codePoint"/> in the default language, when casing changes it.</summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=Medium; Resources=1; Fingerprint=10EBD1
-    // Broiler-Human:        PENDING
-    private bool TryGetMapping(int codePoint, bool upper, out CodePoints mapping)
-    {
-        var index = tables.Table(upper ? UnicodeTable.UpperIndex : UnicodeTable.LowerIndex);
-        var low = 0;
-        var high = (index.Length / 6) - 1;
-
-        while (low <= high)
-        {
-            var middle = (low + high) >>> 1;
-            var key = TableReader.Int24(index, middle * 6);
-
-            if (key == codePoint)
-            {
-                var offset = TableReader.UInt16(index, (middle * 6) + 3);
-
-                mapping = new CodePoints(tables.Table(UnicodeTable.MappingPool).Slice(offset * 3, index[(middle * 6) + 5] * 3));
-                return true;
-            }
-
-            if (key < codePoint)
-            {
-                low = middle + 1;
-            }
-            else
-            {
-                high = middle - 1;
-            }
-        }
-
-        mapping = default;
-        return false;
     }
 }

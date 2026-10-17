@@ -265,6 +265,17 @@ The trie matches in time proportional to the input length (independent of the ~3
 allocates nothing on the hot path, and avoids the large startup and memory cost of compiling a
 giant alternation regex.
 
+`benchmarks/Unicode.Algorithms.Benchmarks` times the shared libraries' normalization and case mapping
+(`Broiler.Unicode.Algorithms` over `Broiler.Unicode.Tables`, metered as the engines meter them) against
+the runtime's `string.Normalize` and casing, on the sample strings of the engines' SJL-7 Unicode
+workloads:
+
+```sh
+dotnet run -c Release --project benchmarks/Unicode.Algorithms.Benchmarks -- --filter '*'
+```
+
+Its figures are for the owner's own performance work; neither engine's decision rules read them.
+
 ## Limitations
 
 - **RGI only.** This library implements the *recommended-for-general-interchange* set. It does **not**
@@ -299,6 +310,7 @@ probes/
   Unicode.Probe/                            # the Native AOT probe
 benchmarks/
   UnicodeEmoji.StringProperties.Benchmarks/ # trie vs HashSet vs Regex
+  Unicode.Algorithms.Benchmarks/            # normalization and casing vs the runtime's
 data/
   unicode/17.0/                             # committed official Unicode emoji data files
   unicode/pins/                             # the pinned archive the shared libraries' tables come from

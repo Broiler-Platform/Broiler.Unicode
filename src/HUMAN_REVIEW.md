@@ -5,7 +5,7 @@ GENERATED - DO NOT EDIT MANUALLY. Regenerate with
 `CODE-ASSURANCE.md`, `assurance.manifest.json` and every generated source header from the
 product tree.
 
-> **Status: PENDING.** Human-reviewed: 0 of 247 relevant units. `dotnet run --project Broiler.Code/src/Broiler.Code.Review.Cli -c Release -- assurance check --root Broiler.Unicode/src --release`
+> **Status: PENDING.** Human-reviewed: 0 of 266 relevant units. `dotnet run --project Broiler.Code/src/Broiler.Code.Review.Cli -c Release -- assurance check --root Broiler.Unicode/src --release`
 > fails while any relevant unit is without a decision bound to its current fingerprint.
 
 ## 1. How To Use This File
@@ -50,12 +50,12 @@ did, which is the narrower and the more useful of the two.
 | Metric | Value |
 |---|---:|
 | Files scanned | 14 |
-| Code units | 461 |
-| Relevant | 247 |
-| Exempt | 214 |
-| Assessed | 247 of 247 (100%) |
-| Human reviewed | 0 of 247 (0%) |
-| Unverified | 247 |
+| Code units | 499 |
+| Relevant | 266 |
+| Exempt | 233 |
+| Assessed | 266 of 266 (100%) |
+| Human reviewed | 0 of 266 (0%) |
+| Unverified | 266 |
 | Aliases naming a decision | 0 |
 
 ## 4. Review States
@@ -67,11 +67,11 @@ annotations and the current fingerprints; nothing stores them.
 |---|---:|
 | NEW | 0 |
 | AI_ASSESSED | 0 |
-| HUMAN_PENDING | 247 |
+| HUMAN_PENDING | 266 |
 | HUMAN_APPROVED_PENDING_FINGERPRINT | 0 |
 | VERIFIED | 0 |
 | STALE | 0 |
-| EXEMPT | 214 |
+| EXEMPT | 233 |
 
 ## 5. Aliases In The Tree
 
@@ -89,8 +89,8 @@ are listed in `CODE-ASSURANCE.md`.
 | `Unicode.Algorithms/IUnicodeTables.cs` | 42 | 3 | 39 | 3 | Low | Medium | 0/0 |
 | `Unicode.Algorithms/UnicodeAlgorithms.cs` | 21 | 19 | 2 | 19 | Low | High | 4/4 |
 | `Unicode.Algorithms/UnicodeCaseFolding.cs` | 13 | 10 | 3 | 10 | Low | High | 2/2 |
-| `Unicode.Algorithms/UnicodeCaseMapping.cs` | 29 | 23 | 6 | 23 | Low | High | 4/4 |
-| `Unicode.Algorithms/UnicodeNormalization.cs` | 44 | 29 | 15 | 29 | Low | High | 2/2 |
+| `Unicode.Algorithms/UnicodeCaseMapping.cs` | 36 | 28 | 8 | 28 | Low | High | 6/6 |
+| `Unicode.Algorithms/UnicodeNormalization.cs` | 75 | 43 | 32 | 43 | Low | High | 2/2 |
 | `Unicode.Algorithms/UnicodeProperties.cs` | 74 | 27 | 47 | 27 | Low | Medium | 0/0 |
 | `Unicode.Algorithms/UnicodeStringProperties.cs` | 35 | 22 | 13 | 22 | Low | High | 1/1 |
 | `Unicode.Generation/UnicodeDatabase.cs` | 64 | 47 | 17 | 47 | Low | Medium | 0/0 |
@@ -132,13 +132,17 @@ written out, so a unit that becomes `High` joins it at the next generation.
   - Falsified if: a result longer than maxLength is answered as Success
 - `Broiler.Unicode.Algorithms.UnicodeCaseMapping.ToLowerCase(string, CaseLanguage, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `503D46`, PENDING
   - Falsified if: a result longer than maxLength is answered as Success
-- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.Map(string, bool, CaseLanguage, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `9F0A22`, PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.NeedsLanguagePass(string, bool, CaseLanguage)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `86262E`, PENDING
+  - Falsified if: a text holding a code point a conditional line of the language changes is answered false
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.Map(string, bool, CaseLanguage, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `5ED48B`, PENDING
   - Falsified if: a result longer than maxLength is answered as Success, or a language pass is applied for the default language
-- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.DefaultPass(string, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `B8867F`, PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.DefaultPass(ReadOnlySpan<char>, string?, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `BA89C3`, PENDING
   - Falsified if: work is done before the meter is charged for it, or a charge differs from Broiler.VM row C13
-- `Broiler.Unicode.Algorithms.UnicodeNormalization.Transform(string, NormalForm, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization, `DBFB2E`, PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.MapFrom(ReadOnlySpan<char>, int, bool, int[], ReadOnlySpan<byte>, ReadOnlySpan<byte>, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing, `D77A84`, PENDING
+  - Falsified if: work is done before the meter is charged for it, a charge differs from Broiler.VM row C13, or a result longer than maxLength is answered as Success
+- `Broiler.Unicode.Algorithms.UnicodeNormalization.Transform(string, NormalForm, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization, `E4472E`, PENDING
   - Falsified if: a result longer than maxLength is answered as Success, or a charge differs from Broiler.VM row N7
-- `Broiler.Unicode.Algorithms.UnicodeNormalization.Produce(string, bool, bool, int, int, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization, `F5D030`, PENDING
+- `Broiler.Unicode.Algorithms.UnicodeNormalization.Produce(string, int, ReadOnlySpan<int>, bool, in FormTables, int, int, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, Spec=UAX #15 via Broiler.VM JsRealm.String and JsUnicodeNormalization, `BA0C85`, PENDING
   - Falsified if: a buffer grows past the longest segment times the longest decomposition, or a refused result is returned
 - `Broiler.Unicode.Algorithms.StringPropertySequences.TryRead(Span<int>, out int)` in `Unicode.Algorithms/UnicodeStringProperties.cs` - Security=High, Spec=ECMA-262 22.2.2.9 properties of strings via Broiler.VM JsUnicodeStringProperties, `995B67`, PENDING
   - Falsified if: a sequence is written into a destination shorter than it, or the cursor advances after refusing
@@ -168,5 +172,5 @@ An assessment is a comment, so changing one moves no fingerprint anywhere, and n
 mechanical checks that it is right; the check holds its values to their vocabularies and no
 further.
 
-15 of the 247 assessed units declare `Origin=AI`. Reading a declaration is the only thing
+30 of the 266 assessed units declare `Origin=AI`. Reading a declaration is the only thing
 that makes it read.

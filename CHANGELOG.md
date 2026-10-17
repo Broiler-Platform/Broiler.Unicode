@@ -18,6 +18,55 @@ While the stream is a preview it keeps its `0.1.0` prefix, and the preview numbe
 Each entry has the headings **Added**, **Changed**, **Observable changes** and **Data**, and says "none"
 under a heading with nothing to report.
 
+## Unreleased
+
+*(To be packed as the next preview the publish workflow selects, which after `0.1.0-preview.4` is
+`0.1.0-preview.5`.)*
+
+### Added
+
+- `benchmarks/Unicode.Algorithms.Benchmarks`, which times `UnicodeNormalization` and `UnicodeCaseMapping`
+  against the runtime's `string.Normalize` and casing on the sample strings of the engines' SJL-7
+  Unicode workloads. It is not a package.
+
+### Changed
+
+- **`Broiler.Unicode.Algorithms`: normalization and case mapping are faster**, with no change to a table
+  or to what a caller can observe. The engines' SJL-7 measurements found both slower than the ICU
+  they replaced; this is the code-only part of the remedy.
+  - `UnicodeCaseMapping` maps U+0000 to U+00FF through values it reads from the tables once, at
+    construction, and finds the first code point casing changes before it writes anything, so an
+    unchanged text allocates nothing. It writes into a stack buffer, or a heap buffer bounded by the
+    limit, instead of a `StringBuilder`. The Turkic and Lithuanian pass runs only when the text holds a
+    code point one of its conditional lines can change, and writes into a buffer the default pass
+    reads, with no intermediate array or string.
+  - `UnicodeNormalization` answers ASCII text before it reads a table, starts its work at the segment
+    holding the first code point the quick check refuses and copies the text before it, looks each
+    code point's decomposition up once and carries it and each combining class through the passes, and
+    reads each table once per call.
+  - Measured by the new benchmarks (BenchmarkDotNet medium job, one Linux x64 container, .NET 10.0.12;
+    the owner metered, the runtime on ICU), at `0.1.0-preview.4` and after: the workload's 40 casing
+    calls 17.47 to 8.70 µs (runtime 2.76 to 2.89 µs), allocating 9,856 to 1,632 bytes; the 40
+    normalization calls 41.3 to 26.8 µs (runtime 5.5 to 5.6 µs), allocating 4.41 to 1 KB;
+    `ToUpperCase("The Quick Brown Fox")` 532 to 130 ns (runtime 27 ns); and
+    `ToLowerCase("plain ascii text 0123")` 530 to 25 ns (runtime 10 ns). Normalization stays about
+    4.8 times the runtime's: its remaining cost is the binary searches the table format implies.
+
+### Observable changes
+
+- No result, status or charge changes: every result, every status and every charge to the meter, in
+  order, is that of `0.1.0-preview.4`. The new `DifferentialTests` hold every code point alone, 40,000
+  random texts at random limits and 300 long texts to that release's implementation, copied into the
+  tests.
+- One difference of reference identity, which the documentation already promised: `ToUpperCase` and
+  `ToLowerCase` with `CaseLanguage.Turkic` or `CaseLanguage.Lithuanian` answer a text that casing does
+  not change, and that holds no code point the language's conditional lines read, as the same string
+  instance. Before, they answered an equal copy.
+
+### Data
+
+- None. Every table is byte-identical.
+
 ## 0.1.0-preview.4, 2026-10-16
 
 *(Published to nuget.org by the Publish workflow, [run 38952273946](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38952273946), from `6e14f93`. The heading read "Unreleased" until then, and this line "To be packed as the next preview the publish workflow
