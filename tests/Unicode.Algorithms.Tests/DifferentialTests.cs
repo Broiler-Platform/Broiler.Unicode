@@ -116,6 +116,83 @@ public sealed class DifferentialTests
         }
     }
 
+    [Fact]
+    public void D6_a_long_unchanged_prefix_before_the_first_change_is_answered_as_preview_4_answered_it()
+    {
+        foreach (var length in new[] { 0, 1, 9, 10, 11, 255, 256, 257, 300, 1000 })
+        {
+            foreach (var tail in new[] { "a", "A", "\u00DF", "\u03A3", "\u0130", "a\u0307", "\uD801\uDC28" })
+            {
+                var text = new string('0', length) + tail;
+
+                foreach (var limit in new[] { 0, 1, 2, 8, 10, 16, length - 1, length, length + 1, length + 3, int.MaxValue })
+                {
+                    if (limit >= 0)
+                    {
+                        Compare(text, limit);
+                    }
+                }
+            }
+        }
+    }
+
+    [Fact]
+    public void D4_every_code_point_s_trie_answers_are_the_range_and_index_tables_answers()
+    {
+        var properties = new UnicodeProperties(UnicodeTables.Instance);
+        var lexical = new EcmaScriptLexical(properties);
+
+        for (var codePoint = -2; codePoint <= UnicodeAlgorithms.MaxCodePoint + 2; codePoint++)
+        {
+            Assert.Equal(ReferenceNormalization.CombiningClass(codePoint), Normalization.CombiningClass(codePoint));
+            Assert.Equal(ReferenceNormalization.QuickCheck(codePoint, false), Normalization.QuickCheck(codePoint, false));
+            Assert.Equal(ReferenceNormalization.QuickCheck(codePoint, true), Normalization.QuickCheck(codePoint, true));
+            Assert.Equal(ReferenceCasing.IsCased(codePoint), Casing.IsCased(codePoint));
+            Assert.Equal(ReferenceCasing.IsCaseIgnorable(codePoint), Casing.IsCaseIgnorable(codePoint));
+            Assert.Equal(ReferenceCasing.IsSoftDotted(codePoint), Casing.IsSoftDotted(codePoint));
+
+            var inRange = (uint)codePoint <= UnicodeAlgorithms.MaxCodePoint;
+            var isAscii = (uint)codePoint < 0x80;
+
+            if (inRange && !isAscii)
+            {
+                Assert.Equal(properties.IdStart.Contains(codePoint), lexical.IsIdentifierStart(codePoint));
+                Assert.Equal(codePoint is 0x200C or 0x200D || properties.IdContinue.Contains(codePoint), lexical.IsIdentifierPart(codePoint));
+            }
+
+            Assert.Equal(
+                codePoint is 0x09 or 0x0B or 0x0C or 0x20 or 0xA0 or 0xFEFF || (codePoint > 0xFF && properties.SpaceSeparator.Contains(codePoint)),
+                lexical.IsWhiteSpace(codePoint));
+        }
+    }
+
+    [Fact]
+    public void D5_every_pair_of_a_composing_first_and_second_composes_as_preview_4_composed_it()
+    {
+        var data = UnicodeTables.Instance.Table(UnicodeTable.CompositionData);
+        var firsts = new SortedSet<int>();
+        var seconds = new SortedSet<int>();
+
+        for (var at = 0; at < data.Length; at += 9)
+        {
+            firsts.Add(data[at] | (data[at + 1] << 8) | (data[at + 2] << 16));
+            seconds.Add(data[at + 3] | (data[at + 4] << 8) | (data[at + 5] << 16));
+        }
+
+        var text = new StringBuilder();
+
+        foreach (var first in firsts)
+        {
+            foreach (var second in seconds)
+            {
+                text.Clear();
+                Append(text, first);
+                Append(text, second);
+                Compare(text.ToString(), int.MaxValue);
+            }
+        }
+    }
+
     private static void Compare(string text, int maxLength)
     {
         foreach (var form in Forms)
@@ -139,12 +216,23 @@ public sealed class DifferentialTests
         }
     }
 
-    private delegate UnicodeStatus Operation(UnicodeWorkCharge charge, out string? result);
+    private delegate UnicodeStatus Operation(UnicodeWorkCharge? charge, out string? result);
 
+    /// <summary>
+    /// The operation with a meter that records every charge, and again without one: the unmetered result
+    /// and status must be the metered ones, since some paths are taken only when there is no meter.
+    /// </summary>
     private static (UnicodeStatus Status, string? Result, List<ulong> Charges) Run(Operation operation)
     {
         var charges = new List<ulong>();
         var status = operation(charges.Add, out var result);
+        var unmetered = operation(null, out var unmeteredResult);
+
+        if (unmetered != status || !string.Equals(unmeteredResult, result, StringComparison.Ordinal))
+        {
+            Assert.Fail($"without a meter the answer is {unmetered} {Escape(unmeteredResult)}, with one {status} {Escape(result)}");
+        }
+
         return (status, result, charges);
     }
 

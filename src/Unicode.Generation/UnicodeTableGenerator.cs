@@ -3,15 +3,15 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   18
-// Annotated:        18/18
-// Exempt:           2
-// Human-reviewed:   0/18
+// Relevant units:   26
+// Annotated:        26/26
+// Exempt:           4
+// Human-reviewed:   0/26
 // IP risk:          Low
 // Security risk:    High
 // Criteria:         1/1
 // Resource impact:  5/10 max
-// Unverified:       18
+// Unverified:       26
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
@@ -63,7 +63,7 @@ public static class UnicodeTableGenerator
     /// <param name="archive">Each pinned file's bytes, by the name the pin writes it under.</param>
     /// <returns>Each table's bytes, in <see cref="UnicodeTable"/> order.</returns>
     /// <exception cref="InvalidDataException">The archive is not the pinned one, or a cross-check fails.</exception>
-    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=5; Fingerprint=D8215B
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=High; Resources=5; Fingerprint=FC1FBE
     // Broiler-Falsified-If: a table is written from a file the pin does not name or that failed verification
     // Broiler-Human:        PENDING
     public static IReadOnlyList<KeyValuePair<UnicodeTable, byte[]>> Generate(UnicodePin pin, IReadOnlyDictionary<string, byte[]> archive)
@@ -79,6 +79,7 @@ public static class UnicodeTableGenerator
         StringProperties(database, tables);
         Normalization(database, tables);
         Casing(database, tables);
+        Lexical(database, tables);
         tables[UnicodeTable.SegmentBreaks] = SegmentBreaks(verified);
 
         return tables.ToList();
@@ -322,7 +323,7 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.UpperOrbitIndex] = upperOrbit.ToArray();
     }
 
-    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=B4720F
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=DE2489
     // Broiler-Human:        PENDING
     private static void Normalization(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
@@ -345,13 +346,14 @@ public static class UnicodeTableGenerator
         var pool = new ByteWriter();
         var poolLength = 0;
 
-        ByteWriter Index(SortedDictionary<int, int[]> decompositions)
+        ByteWriter Index(SortedDictionary<int, int[]> decompositions, Dictionary<int, (int Offset, int Length)> offsets)
         {
             var index = new ByteWriter();
 
             foreach (var (codePoint, mapping) in decompositions)
             {
                 index.Int24(codePoint).UInt16(poolLength).Byte(mapping.Length);
+                offsets[codePoint] = (poolLength, mapping.Length);
 
                 foreach (var part in mapping)
                 {
@@ -364,8 +366,10 @@ public static class UnicodeTableGenerator
             return index;
         }
 
-        var canonical = Index(database.CanonicalDecomposition);
-        var compatibility = Index(database.CompatibilityDecomposition);
+        var canonicalOffsets = new Dictionary<int, (int Offset, int Length)>();
+        var compatibilityOffsets = new Dictionary<int, (int Offset, int Length)>();
+        var canonical = Index(database.CanonicalDecomposition, canonicalOffsets);
+        var compatibility = Index(database.CompatibilityDecomposition, compatibilityOffsets);
         var compositions = new ByteWriter();
 
         foreach (var ((first, second), composite) in database.Compositions)
@@ -398,22 +402,124 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.CompositionData] = compositions.ToArray();
         tables[UnicodeTable.QuickCheckData] = quick.ToArray();
         tables[UnicodeTable.QuickCheckIndex] = quickIndex.ToArray();
+
+        // The constant-time form of the same data: one record per distinct combination, and a trie.
+        var quickChecks = new int[database.CombiningClass.Length];
+
+        for (var set = 0; set < 4; set++)
+        {
+            var value = set % 2 == 0 ? 2 : 1;
+
+            foreach (var range in database.QuickChecks[set])
+            {
+                for (var codePoint = range.First; codePoint <= range.Last; codePoint++)
+                {
+                    quickChecks[codePoint] |= value << (set / 2 * 2);
+                }
+            }
+        }
+
+        var lists = new ByteWriter();
+        var listStarts = new Dictionary<int, (int Start, int Count)>();
+        var entries = 0;
+
+        foreach (var group in database.Compositions.GroupBy(static pair => pair.Key.First))
+        {
+            var count = 0;
+
+            foreach (var ((_, second), composite) in group.OrderBy(static pair => pair.Key.Second))
+            {
+                lists.Int24(second).Int24(composite);
+                count++;
+            }
+
+            listStarts[group.Key] = (entries, count);
+            entries += count;
+        }
+
+        var records = new Records(11);
+        var values = new int[database.CombiningClass.Length];
+
+        for (var codePoint = 0; codePoint < values.Length; codePoint++)
+        {
+            var hangul = (uint)(codePoint - 0xAC00) < 11172;
+            canonicalOffsets.TryGetValue(codePoint, out var canonicalMapping);
+            compatibilityOffsets.TryGetValue(codePoint, out var compatibilityMapping);
+            listStarts.TryGetValue(codePoint, out var list);
+
+            if (hangul && (canonicalMapping.Length != 0 || compatibilityMapping.Length != 0 || list.Count != 0))
+            {
+                throw new InvalidDataException("a Hangul syllable has a decomposition or composition in the tables");
+            }
+
+            values[codePoint] = records.Number(new ByteWriter()
+                .Byte(database.CombiningClass[codePoint])
+                .Byte(quickChecks[codePoint])
+                .UInt16(canonicalMapping.Offset).Byte(canonicalMapping.Length)
+                .UInt16(compatibilityMapping.Offset).Byte(compatibilityMapping.Length)
+                .UInt16(list.Start).Byte(list.Count)
+                .ToArray());
+        }
+
+        tables[UnicodeTable.NormalizationTrie] = Trie(values);
+        tables[UnicodeTable.NormalizationRecords] = records.ToArray();
+        tables[UnicodeTable.CompositionLists] = lists.ToArray();
     }
 
-    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=368C9E
+    /// <summary>
+    /// A trie of one value per code point, <see cref="UnicodeTable.NormalizationTrie"/>'s layout: a
+    /// two-byte block number per 64 code points, then each distinct block of 64 two-byte values, in the
+    /// order the code points first reach it.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=4; Fingerprint=BFDF15
+    // Broiler-Human:        PENDING
+    private static byte[] Trie(int[] values)
+    {
+        if (values.Length != 0x110000)
+        {
+            throw new InvalidDataException("a trie covers U+0000 to U+10FFFF");
+        }
+
+        var index = new ByteWriter();
+        var data = new ByteWriter();
+        var blocks = new Dictionary<string, int>(StringComparer.Ordinal);
+
+        for (var start = 0; start < values.Length; start += 64)
+        {
+            var key = string.Join(',', values.Skip(start).Take(64));
+
+            if (!blocks.TryGetValue(key, out var block))
+            {
+                block = blocks.Count;
+                blocks[key] = block;
+
+                for (var at = start; at < start + 64; at++)
+                {
+                    data.UInt16(values[at]);
+                }
+            }
+
+            index.UInt16(block);
+        }
+
+        return [.. index.ToArray(), .. data.ToArray()];
+    }
+
+    // Broiler-AI:           Origin=Ported; Spec=JSD-0074 SJL-D-6 (c) tables via Broiler.VM UnicodeTableGenerator; IP=Low; Security=Medium; Resources=4; Fingerprint=BA33C1
     // Broiler-Human:        PENDING
     private static void Casing(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
     {
         var pool = new ByteWriter();
         var poolLength = 0;
 
-        ByteWriter Index(SortedDictionary<int, int[]> mappings)
+        ByteWriter Index(SortedDictionary<int, int[]> mappings, Dictionary<int, (int Offset, int Length)> offsets)
         {
             var index = new ByteWriter();
 
             foreach (var (codePoint, mapping) in mappings)
             {
                 index.Int24(codePoint).UInt16(poolLength).Byte(mapping.Length);
+                offsets[codePoint] = (poolLength, mapping.Length);
 
                 foreach (var part in mapping)
                 {
@@ -426,8 +532,10 @@ public static class UnicodeTableGenerator
             return index;
         }
 
-        var upper = Index(database.FullUppercase);
-        var lower = Index(database.FullLowercase);
+        var upperOffsets = new Dictionary<int, (int Offset, int Length)>();
+        var lowerOffsets = new Dictionary<int, (int Offset, int Length)>();
+        var upper = Index(database.FullUppercase, upperOffsets);
+        var lower = Index(database.FullLowercase, lowerOffsets);
 
         byte[] Ranges(string property)
         {
@@ -450,6 +558,62 @@ public static class UnicodeTableGenerator
         tables[UnicodeTable.CasedRanges] = Ranges("Cased");
         tables[UnicodeTable.CaseIgnorableRanges] = Ranges("Case_Ignorable");
         tables[UnicodeTable.SoftDottedRanges] = Ranges("Soft_Dotted");
+
+        var flags = new int[0x110000];
+
+        foreach (var (property, flag) in new[] { ("Cased", 1), ("Case_Ignorable", 2), ("Soft_Dotted", 4) })
+        {
+            Mark(flags, database.BinaryProperties.Single(value => value.ShortName == property).Ranges, flag);
+        }
+
+        var records = new Records(9);
+        var values = new int[flags.Length];
+
+        // A mapping of one code point is written in its record; a longer one by its offset in the pool.
+        int Mapping(SortedDictionary<int, int[]> mappings, Dictionary<int, (int Offset, int Length)> offsets, int codePoint) =>
+            !mappings.TryGetValue(codePoint, out var mapping) ? 0 : mapping.Length == 1 ? mapping[0] : offsets[codePoint].Offset;
+
+        for (var codePoint = 0; codePoint < values.Length; codePoint++)
+        {
+            values[codePoint] = records.Number(new ByteWriter()
+                .Byte(flags[codePoint])
+                .Byte(database.FullUppercase.TryGetValue(codePoint, out var upperMapping) ? upperMapping.Length : 0)
+                .Int24(Mapping(database.FullUppercase, upperOffsets, codePoint))
+                .Byte(database.FullLowercase.TryGetValue(codePoint, out var lowerMapping) ? lowerMapping.Length : 0)
+                .Int24(Mapping(database.FullLowercase, lowerOffsets, codePoint))
+                .ToArray());
+        }
+
+        tables[UnicodeTable.CasingTrie] = Trie(values);
+        tables[UnicodeTable.CasingRecords] = records.ToArray();
+    }
+
+    /// <summary>The ECMAScript lexical classes' trie: ID_Start, ID_Continue and Space_Separator, as bits.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=4; Fingerprint=8BA29D
+    // Broiler-Human:        PENDING
+    private static void Lexical(UnicodeDatabase database, SortedDictionary<UnicodeTable, byte[]> tables)
+    {
+        var values = new int[0x110000];
+
+        Mark(values, database.BinaryProperties.Single(static value => value.ShortName == "ID_Start").Ranges, 1);
+        Mark(values, database.BinaryProperties.Single(static value => value.ShortName == "ID_Continue").Ranges, 2);
+        Mark(values, database.GeneralCategories.Single(static value => value.ShortName == "Zs").Ranges, 4);
+
+        tables[UnicodeTable.LexicalTrie] = Trie(values);
+    }
+
+    /// <summary>Sets <paramref name="flag"/> in every value <paramref name="ranges"/> covers.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=2; Fingerprint=16A213
+    // Broiler-Human:        PENDING
+    private static void Mark(int[] values, IEnumerable<UnicodeRange> ranges, int flag)
+    {
+        foreach (var range in ranges)
+        {
+            for (var codePoint = range.First; codePoint <= range.Last; codePoint++)
+            {
+                values[codePoint] |= flag;
+            }
+        }
     }
 
     /// <summary>
@@ -624,6 +788,63 @@ public static class UnicodeTableGenerator
         }
 
         return (names, index);
+    }
+
+    /// <summary>
+    /// Fixed-size records, each distinct one written once and numbered in the order first met; record 0
+    /// is all zero, the default every code point without data shares.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Low; Resources=2; Fingerprint=8C66A7
+    // Broiler-Human:        PENDING
+    private sealed class Records
+    {
+        private readonly int size;
+
+        // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Low; Resources=1; Fingerprint=D50485
+        // Broiler-Human:        PENDING
+        private readonly Dictionary<string, int> numbers = new(StringComparer.Ordinal);
+
+        private readonly List<byte> bytes = [];
+
+        // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=2; Fingerprint=A7673A
+        // Broiler-Human:        PENDING
+        internal Records(int size)
+        {
+            this.size = size;
+            Number(new byte[size]);
+        }
+
+        /// <summary>The number of <paramref name="record"/>, written when it is new.</summary>
+        // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=2; Fingerprint=C92BF3
+        // Broiler-Human:        PENDING
+        internal int Number(byte[] record)
+        {
+            if (record.Length != size)
+            {
+                throw new InvalidDataException(string.Create(NumberFormatInfo.InvariantInfo, $"a record is {record.Length} bytes, not {size}"));
+            }
+
+            var key = Convert.ToHexString(record);
+
+            if (!numbers.TryGetValue(key, out var number))
+            {
+                number = numbers.Count;
+
+                if (number > 0xFFFF)
+                {
+                    throw new InvalidDataException("more records than a two-byte trie value numbers");
+                }
+
+                numbers[key] = number;
+                bytes.AddRange(record);
+            }
+
+            return number;
+        }
+
+        // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Low; Resources=1; Fingerprint=3D2A26
+        // Broiler-Human:        PENDING
+        internal byte[] ToArray() => [.. bytes];
     }
 
     /// <summary>Little-endian bytes, bounds-checked as they are written.</summary>
