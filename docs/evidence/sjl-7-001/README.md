@@ -140,7 +140,7 @@ as `library-run/` is.
 | Commit | `f3d677a` ([`environment.txt`](library-run-second-reading/environment.txt)). Against the first reading's `378c2f0` it changes no file under `src/`, `probes/` or `data/`: beside the documents, it adds the reference-arm harness `tests/Unicode.ReferenceArms/` and `scripts/reference-arms/`, the harness's line in `.gitattributes` and in the rule tests' list of projects, and the changelog |
 | Taken | 2026-10-16 from 23:59:26Z, on the programme's cloud machine (`linux-x64`, .NET SDK 10.0.401, runtime 10.0.12), with other work running beside it; nothing in these parts is timed |
 | Broiler.Code | `54ce0b9`, the first reading's |
-| CI at the same commit | [run 38984596876](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38984596876), dispatched on this branch |
+| CI at the same commit | [run 38984596876](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38984596876), dispatched on this branch, succeeded in every job, the Native AOT probe on `linux-x64` and `win-x64` and the assurance check among them |
 
 **Every step's outcome equals the first reading's**: [`summary.txt`](library-run-second-reading/summary.txt)
 differs from [`library-run/summary.txt`](library-run/summary.txt) only in the latter's last line, which notes that
