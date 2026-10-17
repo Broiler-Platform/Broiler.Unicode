@@ -44,6 +44,13 @@ under a heading with nothing to report.
     holding the first code point the quick check refuses and copies the text before it, looks each
     code point's decomposition up once and carries it and each combining class through the passes, and
     reads each table once per call.
+  - Measured by the new benchmarks (BenchmarkDotNet medium job, one Linux x64 container, .NET 10.0.12;
+    the owner metered, the runtime on ICU), at `0.1.0-preview.4` and after: the workload's 40 casing
+    calls 17.47 to 8.70 µs (runtime 2.76 to 2.89 µs), allocating 9,856 to 1,632 bytes; the 40
+    normalization calls 41.3 to 26.8 µs (runtime 5.5 to 5.6 µs), allocating 4.41 to 1 KB;
+    `ToUpperCase("The Quick Brown Fox")` 532 to 130 ns (runtime 27 ns); and
+    `ToLowerCase("plain ascii text 0123")` 530 to 25 ns (runtime 10 ns). Normalization stays about
+    4.8 times the runtime's: its remaining cost is the binary searches the table format implies.
 
 ### Observable changes
 
