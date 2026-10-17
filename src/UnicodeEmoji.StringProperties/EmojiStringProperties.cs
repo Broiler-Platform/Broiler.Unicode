@@ -20,7 +20,7 @@ namespace UnicodeEmoji.StringProperties;
 /// </remarks>
 public static class EmojiStringProperties
 {
-    /// <summary>The Unicode emoji data version the lookup tables were generated from (for example <c>"16.0"</c>).</summary>
+    /// <summary>The Unicode emoji data version the lookup tables were generated from (for example <c>"17.0"</c>).</summary>
     public static string UnicodeEmojiVersion => EmojiTrieData.UnicodeEmojiVersion;
 
     /// <summary>

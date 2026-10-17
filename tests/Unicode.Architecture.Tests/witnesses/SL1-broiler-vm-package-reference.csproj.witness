@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SL1 witness, read as Broiler.Unicode.Algorithms: a library that references a package of
+       Broiler.VM. Nothing in Broiler.VM is referenced by these libraries; the meter is a delegate of
+       their own (UnicodeWorkCharge) rather than Broiler.VM's IVmMeter. -->
+  <ItemGroup>
+    <PackageReference Include="Broiler.VM.Abstractions" />
+  </ItemGroup>
+</Project>

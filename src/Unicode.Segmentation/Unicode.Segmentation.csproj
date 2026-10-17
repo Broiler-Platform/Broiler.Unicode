@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The owner's optional segmentation package of the shared JavaScript libraries programme's Unicode
+    area (milestone SJL-7, Broiler.VM's JSD-0074): UAX #29's grapheme, word and sentence boundaries
+    over the break table the caller supplies through IUnicodeTables, with a meter and word statuses.
+    Optional because only an engine with Intl.Segmenter reads it. It carries no table.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Broiler.Unicode.Segmentation</RootNamespace>
+    <AssemblyName>Broiler.Unicode.Segmentation</AssemblyName>
+    <PackageId>Broiler.Unicode.Segmentation</PackageId>
+    <Description>Unicode 17.0.0 text segmentation (UAX #29) for ECMAScript engines over a break table the caller supplies: grapheme, word and sentence boundaries with word statuses and caller-owned metering.</Description>
+    <PackageTags>broiler;unicode;ecmascript;segmentation;uax29</PackageTags>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <NoWarn>1701;1702</NoWarn>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The library-level reference-arm comparison of bundle sjl-7-001 (docs/evidence/sjl-7-001/reference-arms.md):
+    the owner's Unicode algorithms (arm S, through the public API and UnicodeTables.Instance) against test-only
+    copies of Broiler.VM's implementation at 24632b1 (arm V, under V/) and of Broiler.JS's at 4d70821e (arm J,
+    under J/). An executable run in Release under the JIT, never in the Native AOT probe, and never referenced
+    by anything; its arms are retired at SJL-16. README.md beside this file says how it is run.
+
+    IsTestProject is set so that the architecture tests read it as a test project (only rule SL10 holds one);
+    no test host runs it, and it has no tests of its own.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Broiler.Unicode.ReferenceArms</RootNamespace>
+    <AssemblyName>Unicode.ReferenceArms</AssemblyName>
+    <!-- The rule's configuration: JIT only, never Native AOT, never trimmed. -->
+    <PublishAot>false</PublishAot>
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <PublishTrimmed>false</PublishTrimmed>
+    <!-- Arm J's host operations run on the host's ICU: the process must not run in invariant globalization
+         mode, and must not fall back to it silently when ICU is missing. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- The copies' versions are pinned here, not in Directory.Packages.props: this project alone references
+         them, and they are the versions each engine ran, not versions this repository chooses. -->
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Arm S: the owner's implementation at the commit under test. -->
+    <ProjectReference Include="..\..\src\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Segmentation\Unicode.Segmentation.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Tables\Unicode.Tables.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Arm J: the Broiler.Unicode packages Broiler.JS ran at 4d70821e. Its Directory.Packages.props pins
+         Broiler.Regex 0.1.0-preview.4, whose nuspec depends on these two at 0.1.0-preview.3; Broiler.JS's
+         code calls both directly (correspondence, "Five facts"). -->
+    <PackageReference Include="Broiler.Unicode.Properties" Version="0.1.0-preview.3" />
+    <PackageReference Include="Broiler.Unicode.Emoji.StringProperties" Version="0.1.0-preview.3" />
+    <!-- Arm V: NormalizeText reads code points through the shared Utf16.CodePointAt of the package
+         Broiler.VM's Directory.Packages.props pins at 24632b1. -->
+    <PackageReference Include="Broiler.ECMAScript.Algorithms" Version="0.1.0-preview.4" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,108 @@
+{
+  "$comment": [
+    "Broiler.Unicode's rules of the shared JavaScript libraries programme's SL shape (governance section 3.2 of the",
+    "programme in Broiler.VM/docs/javascript-shared-libraries/), adopted under the owner condition \"the programme's",
+    "conventions\" of milestone SJL-7 (docs/roadmap.md, docs/conventions.md) and ported from Broiler.JS's",
+    "Broiler.ECMAScript/Broiler.ECMAScript.Architecture.Tests, in Broiler.VM's register shape: each row states the rule as",
+    "it holds this repository's projects of the programme - the libraries the engines consume (Broiler.Unicode.Algorithms",
+    "and Broiler.Unicode.Segmentation), the generated tables (Broiler.Unicode.Tables), the test-only generator",
+    "(Broiler.Unicode.Generation), the Native AOT probe and the test projects - names the test that asserts it and the",
+    "witness it is shown refusing, and has a status. SL7 is this repository's regeneration of its Unicode tables from its",
+    "pin. RuleRegisterTests holds this file to the tests and the witnesses on disk in both directions. The older packages",
+    "(UnicodeProperties, UnicodeEmoji.*, UnicodeCldr.*) are not the programme's and no rule reads them.",
+    "No row carries a run figure; the bundle that retains a run carries its figures."
+  ],
+  "milestone": "SJL-7",
+  "rules": [
+    {
+      "id": "SL1",
+      "status": "Active",
+      "statement": "No library of the programme references an engine project or package, anything in Broiler.VM, or any project or package outside the programme's own projects: the component-package allow-list is empty, because these libraries are the bottom of the programme's layering. The libraries reference each other only in the layering's direction: Broiler.Unicode.Algorithms references nothing, and Broiler.Unicode.Segmentation, Broiler.Unicode.Tables and Broiler.Unicode.Generation may reference Broiler.Unicode.Algorithms alone. Every library has a row in the layering table, so a new library cannot pass by being unknown.",
+      "evidence": "Each library's project file (ProjectReference, resolved to the referenced project's assembly name, and PackageReference), its restore (obj/project.assets.json, every package resolved directly or transitively, the SDK's own ILLink package aside) and its built assembly's AssemblyRef table",
+      "nonVacuousWhen": "Four libraries are read in all three places, and the layering table names each; three of them reference the algorithms library by project and by assembly, which the layering gives them. The assembly half is shown refusing this test assembly, which references xunit and the libraries.",
+      "test": "SL1_No_library_references_an_engine_Broiler_VM_or_anything_outside_the_layering",
+      "witness": "witnesses/SL1-engine-project-reference.csproj.witness, witnesses/SL1-broiler-vm-package-reference.csproj.witness, witnesses/SL1-against-the-layering.csproj.witness"
+    },
+    {
+      "id": "SL2",
+      "status": "Active",
+      "statement": "No library of the programme, the generator included, declares a mutable static field, a static array or a static field of a mutable collection type, a settable static property, a [ThreadStatic] field, or names AsyncLocal or ThreadLocal. Broiler.VM's rule N12, applied to every library (convention 7). Compiler-generated types and fields - lambda caches, closures, auto-property backing fields, private implementation details - are the compiler's, and are left out.",
+      "evidence": "The Field, Property and CustomAttribute tables, and the TypeRef table, of every library's built assembly",
+      "nonVacuousWhen": "The algorithms library declares constants, the Unicode version and the largest code point among them, which the rule reads as static fields and passes as literals; the witness declares one member of each refused kind and every one is reported.",
+      "test": "SL2_No_library_holds_mutable_static_state",
+      "witness": "witnesses/SL2-mutable-static-state.cs.witness"
+    },
+    {
+      "id": "SL3",
+      "status": "Active",
+      "statement": "No library the engines consume, and not the tables library, reaches anything on Broiler.VM's B5, B5b and B5c lists (dynamic loading, reflection invocation, Reflection.Emit, LambdaExpression.Compile, native-library and function-pointer marshalling, method preparation, platform invoke, module initializers), generic instantiation over a run-time Type, the Type-taking Enum readers, dynamic, reflection-based serialization, file, network or process I/O, or an environment read (convention 8). The test-only generator is not held: it carries this repository's pin as an embedded resource and reads it through Assembly.GetManifestResourceStream and a StreamReader (UnicodePin.Owner, for Broiler.VM's rule I4), and convention 8's I/O clause does not bind it; its exemption is held to exactly that, since read with I/O allowed its one finding is the reflection type it reaches its pin through. The Native AOT probe, an executable that reads Unicode's test files from disk, is held to every clause except I/O.",
+      "evidence": "The MemberRef, TypeRef, AssemblyRef, CustomAttribute and ImplMap tables of the built assemblies of Broiler.Unicode.Algorithms, Broiler.Unicode.Segmentation and Broiler.Unicode.Tables; the generator's, for the extent of its exemption; and the probe's",
+      "nonVacuousWhen": "Three libraries' tables are read, the generator's findings with I/O allowed are exactly its reflection over its embedded pin, and the probe names System.IO.File and is read with I/O allowed; the witness reaches each refused kind once and every one is reported, and read as the probe it still fails on everything but I/O.",
+      "test": "SL3_No_library_reaches_dynamic_code_hidden_machinery_IO_or_the_environment",
+      "witness": "witnesses/SL3-dynamic-code-and-io.cs.witness"
+    },
+    {
+      "id": "SL4",
+      "status": "Active",
+      "statement": "No library of the programme, the generator included, uses a platform globalization or regular-expression API (convention 9): System.Text.RegularExpressions, any System.Globalization type but NumberFormatInfo.InvariantInfo and NumberStyles, TimeZoneInfo, the clock, string normalization, platform casing, char and Rune classification beyond ASCII, a string comparison that defaults to the current culture, or a number parsed, formatted, converted or interpolated without a format provider. These libraries are the Unicode data and algorithms themselves, so the platform's are never an answer here.",
+      "evidence": "The TypeRef and MemberRef tables of every library's built assembly, member references read with their parameter types so that an ordinal overload is told from a culture-sensitive one",
+      "nonVacuousWhen": "The libraries the engines consume compare strings ordinally and the generator parses numbers with a format provider, and the rule reads those references with their parameter types and passes them; the witness uses each refused kind once and every one is reported. ONE STATED LIMIT: a parameterless ToString() on a number is not refused, because every record's generated ToString reaches it; it is a review obligation of convention 6.",
+      "test": "SL4_No_library_uses_platform_globalization_regular_expressions_or_a_culture",
+      "witness": "witnesses/SL4-platform-globalization.cs.witness"
+    },
+    {
+      "id": "SL5",
+      "status": "Active",
+      "statement": "IsAotCompatible and IsTrimmable hold for every library the engines consume and for the tables library, with the trim, AOT and single-file analyzers on; every library of the programme, the generator included, targets net10.0 with nullable enabled, implicit usings disabled, deterministic builds, no unsafe code and warnings as errors (the generator is not Native AOT code and declares neither flag of convention 12, so it is held to everything but those five properties); and nothing is suppressed in any of them: no NoWarn beyond the SDK's own 1701 and 1702 (which each library sets explicitly, resetting the XML-documentation codes the packaging file appends), no WarningsNotAsErrors, no SuppressTrimAnalysisWarnings, no UnconditionalSuppressMessage. An inventory in the shape of Broiler.VM's N36, docs/suppressions.md, lists by file every suppression in the sources and project files of the libraries and the probe and in the repository's build files they import, and says None when there is none. The Native AOT probe is evaluated with Broiler.VM's root settings (PublishAot, full trimming, InvariantGlobalization, UseSystemResourceKeys, IsAotCompatible, warnings as errors) and is held to the same absence of suppressions (convention 12).",
+      "evidence": "Each library's and the probe's properties as MSBuild evaluates them, every built library's CustomAttribute table, and the text of every source and project file of the libraries and the probe and of Directory.Build.props, Directory.Packages.props and eng/Broiler.Packaging.props",
+      "nonVacuousWhen": "Four libraries and the probe are evaluated with every import applied, so a property set in Directory.Build.props or the packaging file and undone in a project file is seen; the inventory scan reads every non-test project file, the sources and the build files; the witness project sets every analyzer on and suppresses one warning, and is refused for that alone, and a NoWarn of the SDK's codes alone is shown to be a reset while one code more is a suppression.",
+      "test": "SL5_Every_library_and_the_probe_hold_to_AOT_and_trimming_with_nothing_suppressed",
+      "witness": "witnesses/SL5-library-suppresses-a-trim-warning.csproj.witness, witnesses/SL5-source-suppresses-a-trim-warning.cs.witness"
+    },
+    {
+      "id": "SL6",
+      "status": "Active",
+      "statement": "The public API of every library of the programme matches its committed baseline, <Project>/PublicAPI.txt, in both directions: nothing public exists that the baseline does not record, and the baseline records nothing that does not exist. Package validation is enabled for every packed library and, once a first version is published, runs against it (convention 16). The baselines are rewritten only by a test run with BROILER_UNICODE_UPDATE_API=1, and the diff is reviewed like any other change.",
+      "evidence": "The public types and members of every library's built assembly, read from metadata, against its PublicAPI.txt; each packed library's evaluated EnablePackageValidation",
+      "nonVacuousWhen": "All four libraries have non-empty listings; the witness has drifted from its baseline once in each direction and both are reported, and nothing else is.",
+      "test": "SL6_The_public_API_matches_the_baseline_in_both_directions",
+      "witness": "witnesses/SL6-api-drift.cs.witness, witnesses/SL6-api-drift.PublicAPI.txt.witness"
+    },
+    {
+      "id": "SL7",
+      "status": "Active",
+      "statement": "Generated data is byte-identical to what its generator writes from its pinned inputs. This repository's generated area is src/Unicode.Tables/UnicodeTableData.g.cs, which Broiler.Unicode.Generation writes (UnicodeTableSource.Write, with the header lines of the algorithms' tests' Archive.SourceHeader) from data/unicode/pins/unicode.pin and the archive beside it, every archived file checked against the pin's length and hash before anything is written. A change belongs in the generator or the pin, never in the file. Each data generator a later milestone adds is added here.",
+      "evidence": "The committed file against the generator's output, regenerated in memory from the pin and the archive, byte for byte, in both directions",
+      "nonVacuousWhen": "The generator reads every file the pin names and writes the whole table source; the witness changes one byte of a committed table and is reported.",
+      "test": "SL7_Generated_data_is_byte_identical_to_what_its_generator_writes",
+      "witness": "HandEditedTableWitness in Unicode.Architecture.Tests.dll"
+    },
+    {
+      "id": "SL8",
+      "status": "Active",
+      "statement": "Every relevant unit of every library the engines consume and of the generator carries a Broiler Code Assurance annotation and the generated artefacts are current, from those projects' first commit (decision SJL-D-5 (a)). The configuration, src/assurance.config.json, covers Unicode.Algorithms, Unicode.Segmentation and Unicode.Generation (paths relative to src/; it may cover the tables library too) under the strict exemption predicate with preprocessor directives forbidden; an exclusion gives its reason and hides no file of a library this rule holds; the artefacts src/CODE-ASSURANCE.md, src/HUMAN_REVIEW.md and src/assurance.manifest.json exist and the manifest lists every source of those libraries; and CI runs the assurance tool's check with --root Broiler.Unicode/src and fails on drift. The tables library is not held: its substance is generated data, which SL7 holds byte for byte, and the tool would rewrite the generated file's header.",
+      "evidence": "src/assurance.config.json against the libraries; the manifest's files array against every source of the libraries held; .github/workflows/ci.yml; and the assurance tool's check, which that workflow runs",
+      "nonVacuousWhen": "Three libraries must be covered and every one of their source files must be in the manifest; the witness configuration leaves the generator out, uses the narrower predicate, permits directives and excludes a source of the algorithms library without a reason, and each is reported, while a reasoned exclusion of the generated tables is accepted. The unit-level half is the tool's own check.",
+      "test": "SL8_The_assurance_scheme_covers_every_library_it_holds_and_CI_gates_on_it",
+      "witness": "witnesses/SL8-config-omits-a-library.json.witness"
+    },
+    {
+      "id": "SL9",
+      "status": "Active",
+      "statement": "Determinism: two runs, and two concurrent threads, over Unicode's own test files give identical output - every line of NormalizationTest.txt, its five columns in the four forms, through Broiler.Unicode.Algorithms' normalization, and every line of GraphemeBreakTest.txt, WordBreakTest.txt and SentenceBreakTest.txt, at its granularity, through Broiler.Unicode.Segmentation's segmenter, both over Broiler.Unicode.Tables' UnicodeTables.Instance; each file read afresh each time and every answer rendered into a report compared as text (conventions 6 and 10).",
+      "evidence": "Four runs, two sequential and two on concurrent threads, through one normalization and one segmenter shared by all four, as an engine shares one instance",
+      "nonVacuousWhen": "Each run reads all four files and renders every case's answer; the witness producer answers from a counter and two runs through it differ.",
+      "test": "SL9_Two_runs_and_two_threads_over_Unicode_s_test_files_give_identical_output",
+      "witness": "NondeterministicWorkWitness in Unicode.Architecture.Tests.dll"
+    },
+    {
+      "id": "SL10",
+      "status": "Active",
+      "statement": "No C# source of the programme's projects (the four libraries, the probe and the two test projects) holds a preprocessor directive, and no file of theirs, of docs/ or of the pin's own text (data/unicode/pins/*.md and unicode.pin) holds a CR; .gitattributes gives each of them LF line endings (convention 17). The archived Unicode files are binary, held by their hashes, and this rule never reads them.",
+      "evidence": "Every .cs file of the projects parsed with Roslyn, its directive trivia read; the bytes of every file of the projects outside build output and the witnesses, of docs/ and of the pin's text; .gitattributes",
+      "nonVacuousWhen": "Every source of every project is parsed, the generated tables and the probe included, and every file read; the witnesses hold a conditional region and a pragma, each directive reported by line, and a file stored with CRLF, which .gitattributes keeps as-is.",
+      "test": "SL10_No_source_of_the_programme_holds_a_preprocessor_directive_or_a_CR",
+      "witness": "witnesses/SL10-preprocessor-directive.cs.witness, witnesses/SL10-crlf-line-endings.cs.witness"
+    }
+  ]
+}

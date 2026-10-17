@@ -7,7 +7,7 @@ using UnicodeEmoji.StringProperties.Generator;
 //
 // With no arguments it generates for the default version using the conventional repository paths.
 
-string version = args.Length > 0 ? args[0] : "16.0";
+string version = args.Length > 0 ? args[0] : "17.0";
 
 string repoRoot;
 try

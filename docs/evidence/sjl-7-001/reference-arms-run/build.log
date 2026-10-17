@@ -1,0 +1,16 @@
+$ dotnet build tests/Unicode.ReferenceArms -c Release --artifacts-path /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build
+  Determining projects to restore...
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.IzVKWZlRqQ/tree/src/Unicode.Algorithms/Unicode.Algorithms.csproj (in 409 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.IzVKWZlRqQ/tree/src/Unicode.Segmentation/Unicode.Segmentation.csproj (in 403 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.IzVKWZlRqQ/tree/src/Unicode.Tables/Unicode.Tables.csproj (in 411 ms).
+  Restored /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.IzVKWZlRqQ/tree/tests/Unicode.ReferenceArms/Unicode.ReferenceArms.csproj (in 409 ms).
+  Unicode.Algorithms -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.Algorithms/release/Broiler.Unicode.Algorithms.dll
+  Unicode.Segmentation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.Segmentation/release/Broiler.Unicode.Segmentation.dll
+  Unicode.Tables -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.Tables/release/Broiler.Unicode.Tables.dll
+  Unicode.ReferenceArms -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.ReferenceArms/release/Unicode.ReferenceArms.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:27.65

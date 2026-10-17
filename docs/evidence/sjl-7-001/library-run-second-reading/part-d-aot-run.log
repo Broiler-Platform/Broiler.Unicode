@@ -1,0 +1,8 @@
+$ probes/Unicode.Probe/bin/Release/net10.0/linux-x64/publish/Broiler.Unicode.Probe data/unicode/pins --report /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/unicode-second/probe-aot.txt
+NormalizationTest.txt	400680	0	e35c258ee9cb9d015aba3c0d49d065062071f5e9b295f6299c4e6e802be2755e
+GraphemeBreakTest.txt	766	0	3f4eabe81745d89c35335777bed903727ecb98383101827755c6b15b6cb6bf3f
+WordBreakTest.txt	1944	0	7e8796209bbe53bebb26a7b0818bb1dc26986bf42bfe0544817ab09d9e75bb2b
+SentenceBreakTest.txt	512	0	3c4940f040b4c7b39d0dcb60e690afd719ac72a1189b7b427552e367185c2312
+CaseFolding.txt	1512	0	83edc43f3e4028ada30e4873f159baae3047c8f3f0e1a864ef5aa551a57d6f0a
+code points	1114112	0	30fb8339f67342fc2e32e74b92616b6bd1382b1370405b54bd095c9da4821429
+Broiler.Unicode.Probe: every case holds

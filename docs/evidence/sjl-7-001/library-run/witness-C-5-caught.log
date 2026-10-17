@@ -1,0 +1,30 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C5_ witness-C-5-caught   # must fail
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.08]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.16]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.17]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.24]     Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through [FAIL]
+[xUnit.net 00:00:00.25]       System.ArgumentException : unknown (Parameter 'name')
+[xUnit.net 00:00:00.25]       Stack Trace:
+[xUnit.net 00:00:00.25]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Algorithms/UnicodeProperties.cs(337,0): at Broiler.Unicode.Algorithms.UnicodeProperties.TryResolve(ReadOnlySpan`1 name, CodePointSet& set)
+[xUnit.net 00:00:00.25]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(242,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through()
+[xUnit.net 00:00:00.25]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.25]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.25]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through [11 ms]
+  Error Message:
+   System.ArgumentException : unknown (Parameter 'name')
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.UnicodeProperties.TryResolve(ReadOnlySpan`1 name, CodePointSet& set) in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/src/Unicode.Algorithms/UnicodeProperties.cs:line 337
+   at Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 242
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 1
+     Failed: 1
+ Total time: 0.9013 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-5-caught.trx

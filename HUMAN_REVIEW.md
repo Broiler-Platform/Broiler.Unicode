@@ -87,3 +87,24 @@ is free of defects or vulnerabilities.
 
 AI tools may help assemble evidence and format this record, but the reviewer identity,
 decision, and attestation above are attributable to the human reviewer named here.
+
+---
+
+## Addendum: what this record does not cover (2026-10-16)
+
+*Added on 2026-10-16, at the shared JavaScript libraries' work package SJL-7.2, by the Broiler.Unicode
+maintainer, with AI assistance. It is not part of the review, the decision or the attestation above,
+which it does not change.*
+
+**The review above names one revision, `89f134ed45f1baaf2bc00a86fb5319ac3ee5befe`.** It covers none of the
+four packages added since: `Broiler.Unicode.Algorithms`, `Broiler.Unicode.Segmentation`,
+`Broiler.Unicode.Tables` and `Broiler.Unicode.Generation`. **No human has reviewed them, and the revision
+reviewed for them is none.**
+
+Their per-unit record is [`src/HUMAN_REVIEW.md`](src/HUMAN_REVIEW.md). Broiler.Code's assurance tool
+generates it from the annotation on every relevant declaration, and binds each decision to that
+declaration's fingerprint rather than to a commit. It reads PENDING for every unit until a reviewer records a
+decision there. CI's assurance job fails when it drifts from the code.
+
+Broiler.VM's release gate reads this file and that one. Under the root conditions above, a release that
+carries the four packages is not approved by this record.

@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Broiler.Unicode's architecture rules SL1 to SL10, of the shared JavaScript libraries programme's SL
+    shape (milestone SJL-7, the owner condition "the programme's conventions"; docs/roadmap.md), ported
+    from Broiler.JS's Broiler.ECMAScript.Architecture.Tests, with a register in Broiler.VM's shape:
+    rules.register.json states each rule, the test that asserts it and the witness it is shown refusing.
+
+    The rules read compiled metadata and project files rather than loading what they judge, as
+    Broiler.VM's group B does: loading an assembly would run what rule SL3 exists to find. The libraries
+    are referenced so that their build output is beside this assembly; only SL7, which regenerates the
+    tables, and SL9, which runs Unicode's own test files through the libraries, call them. Witness
+    sources are compiled in memory with Roslyn and read the same way.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Broiler.Unicode.Architecture.Tests</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Segmentation\Unicode.Segmentation.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Tables\Unicode.Tables.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Generation\Unicode.Generation.csproj" />
+    <!-- Built first, read from its own output: an executable is not referenced as an assembly. -->
+    <ProjectReference Include="..\..\probes\Unicode.Probe\Unicode.Probe.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The pinned archive as the algorithms' tests read it, and the generated source as they write it (SL7). -->
+    <Compile Include="..\Unicode.Algorithms.Tests\Archive.cs" Link="Archive.cs" />
+    <None Include="rules.register.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

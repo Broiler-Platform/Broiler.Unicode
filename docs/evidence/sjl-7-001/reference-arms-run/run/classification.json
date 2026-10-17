@@ -1,0 +1,732 @@
+{
+  "classifier": "scripts/reference-arms/classify_reference_arms.py",
+  "version": "sjl-7-001-classifier@2",
+  "reference": "unicoderef@1",
+  "pin_sha256": "7eb0f08f0b408d278f1c08b29ea93d17a3216c02c45d6dfbe4bbd440cbcd51b0",
+  "host unicode": {
+    "icuUnicodeVersion": "15.1.0",
+    "python unicodedata": "15.1.0"
+  },
+  "recorded answers": {
+    "directory": "/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/reference",
+    "manifest_sha256": "b1a0ecfeeb6114b1e713e2ce25337ff4151e576fd878f80688e52fd6c199c865",
+    "differences cross-checked": 15635934
+  },
+  "differences": 16022956,
+  "verdicts": {
+    "(a')": 27380,
+    "(a)": 15985359,
+    "(b)": 10217
+  },
+  "unnamed by the correspondence": 0,
+  "rows": [
+    {
+      "verdict": "(a')",
+      "row": "C2",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "count": 760
+    },
+    {
+      "verdict": "(a')",
+      "row": "C2",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 2227
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "count": 2560
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "count": 2537
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 7216
+    },
+    {
+      "verdict": "(a')",
+      "row": "C3",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 7611
+    },
+    {
+      "verdict": "(a')",
+      "row": "G3",
+      "arm": "J:JSIntlSegments.Compute",
+      "count": 348
+    },
+    {
+      "verdict": "(a')",
+      "row": "N2",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "count": 864
+    },
+    {
+      "verdict": "(a')",
+      "row": "N2",
+      "arm": "J:JSString.Normalize",
+      "count": 3257
+    },
+    {
+      "verdict": "(a)",
+      "row": "C1",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "count": 2838
+    },
+    {
+      "verdict": "(a)",
+      "row": "C1",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 8513
+    },
+    {
+      "verdict": "(a)",
+      "row": "C12",
+      "arm": "V:JsRealm.StringChangeCase and TransformCase",
+      "count": 10372611
+    },
+    {
+      "verdict": "(a)",
+      "row": "C4",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 3606
+    },
+    {
+      "verdict": "(a)",
+      "row": "C5",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 22
+    },
+    {
+      "verdict": "(a)",
+      "row": "C6",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 6083
+    },
+    {
+      "verdict": "(a)",
+      "row": "C6",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 244
+    },
+    {
+      "verdict": "(a)",
+      "row": "C7",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "count": 2
+    },
+    {
+      "verdict": "(a)",
+      "row": "C7",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "count": 2
+    },
+    {
+      "verdict": "(a)",
+      "row": "G1",
+      "arm": "J:JSIntlSegments.Compute",
+      "count": 42646
+    },
+    {
+      "verdict": "(a)",
+      "row": "G2",
+      "arm": "J:JSIntlSegments.Compute",
+      "count": 33576
+    },
+    {
+      "verdict": "(a)",
+      "row": "I1",
+      "arm": "J:CharExtensions.IsIdentifierPart",
+      "count": 1
+    },
+    {
+      "verdict": "(a)",
+      "row": "I1",
+      "arm": "J:CharExtensions.IsIdentifierStart",
+      "count": 1
+    },
+    {
+      "verdict": "(a)",
+      "row": "I3",
+      "arm": "J:JSRegExp.IsRegExpIdentifierPart",
+      "count": 4700
+    },
+    {
+      "verdict": "(a)",
+      "row": "I3",
+      "arm": "J:JSRegExp.IsRegExpIdentifierStart",
+      "count": 4648
+    },
+    {
+      "verdict": "(a)",
+      "row": "N1",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "count": 23208
+    },
+    {
+      "verdict": "(a)",
+      "row": "N1",
+      "arm": "J:JSString.Normalize",
+      "count": 92832
+    },
+    {
+      "verdict": "(a)",
+      "row": "N6",
+      "arm": "V:JsRealm.NormalizeText",
+      "count": 5295672
+    },
+    {
+      "verdict": "(a)",
+      "row": "P1",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "count": 27967
+    },
+    {
+      "verdict": "(a)",
+      "row": "P1",
+      "arm": "J:JSRegExp.TranslateUnicodeProperty",
+      "count": 65879
+    },
+    {
+      "verdict": "(a)",
+      "row": "P2",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "count": 8
+    },
+    {
+      "verdict": "(a)",
+      "row": "P2",
+      "arm": "J:JSRegExp.TranslateUnicodeProperty",
+      "count": 16
+    },
+    {
+      "verdict": "(a)",
+      "row": "P4",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "count": 283
+    },
+    {
+      "verdict": "(a)",
+      "row": "W1",
+      "arm": "J:FastScanner.IsWhiteSpace",
+      "count": 1
+    },
+    {
+      "verdict": "(b)",
+      "row": "G4",
+      "arm": "J:JSIntlSegments.IsWordLike",
+      "count": 10217
+    }
+  ],
+  "operations": [
+    {
+      "operation": "charge",
+      "arm": "V:JsRealm.NormalizeText",
+      "verdict": "(a)",
+      "count": 377592
+    },
+    {
+      "operation": "grapheme",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a')",
+      "count": 348
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:CharExtensions.IsIdentifierPart",
+      "verdict": "(a)",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:CharExtensions.IsIdentifierStart",
+      "verdict": "(a)",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:FastScanner.IsWhiteSpace",
+      "verdict": "(a)",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:JSRegExp.IsRegExpIdentifierPart",
+      "verdict": "(a)",
+      "count": 4700
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:JSRegExp.IsRegExpIdentifierStart",
+      "verdict": "(a)",
+      "count": 4648
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "verdict": "(a)",
+      "count": 28258
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.TranslateUnicodeProperty",
+      "verdict": "(a)",
+      "count": 65895
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a')",
+      "count": 3320
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a)",
+      "count": 2838
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "count": 9443
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "count": 18204
+    },
+    {
+      "operation": "lower",
+      "arm": "V:JsRealm.StringChangeCase and TransformCase",
+      "verdict": "(a)",
+      "count": 5188301
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a')",
+      "count": 864
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "count": 23208
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a')",
+      "count": 3257
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "count": 92832
+    },
+    {
+      "operation": "normalize",
+      "arm": "V:JsRealm.NormalizeText",
+      "verdict": "(a)",
+      "count": 4918080
+    },
+    {
+      "operation": "sentence",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a)",
+      "count": 42646
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "verdict": "(a')",
+      "count": 2537
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a')",
+      "count": 7611
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "count": 268
+    },
+    {
+      "operation": "upper",
+      "arm": "V:JsRealm.StringChangeCase and TransformCase",
+      "verdict": "(a)",
+      "count": 5184310
+    },
+    {
+      "operation": "word",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a)",
+      "count": 33576
+    },
+    {
+      "operation": "word-status",
+      "arm": "J:JSIntlSegments.IsWordLike",
+      "verdict": "(b)",
+      "count": 10217
+    }
+  ],
+  "groups": [
+    {
+      "operation": "charge",
+      "arm": "V:JsRealm.NormalizeText",
+      "verdict": "(a)",
+      "row": "N6",
+      "reason": "correction of Broiler.VM: the maximum result length is checked on the result, not the decomposition; S charges row N7's units for the decomposition it composes, which arm V refused after its first charge",
+      "count": 377592
+    },
+    {
+      "operation": "grapheme",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a')",
+      "row": "G3",
+      "reason": "correction of Broiler.JS: Broiler.JS's graphemes follow the runtime's data (SJL-D-6 (c))",
+      "count": 348
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:CharExtensions.IsIdentifierPart",
+      "verdict": "(a)",
+      "row": "I1",
+      "reason": "correction of Broiler.JS: IdentifierStartChar is ID_Start, which subtracts Pattern_Syntax (UAX #31)",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:CharExtensions.IsIdentifierStart",
+      "verdict": "(a)",
+      "row": "I1",
+      "reason": "correction of Broiler.JS: IdentifierStartChar is ID_Start, which subtracts Pattern_Syntax (UAX #31)",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:FastScanner.IsWhiteSpace",
+      "verdict": "(a)",
+      "row": "W1",
+      "reason": "correction of Broiler.JS: U+0085 is Cc and in neither WhiteSpace nor LineTerminator",
+      "count": 1
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:JSRegExp.IsRegExpIdentifierPart",
+      "verdict": "(a)",
+      "row": "I3",
+      "reason": "correction of Broiler.JS: group names copy the identifier tests without Pattern_Syntax and without the Unicode 17 tables",
+      "count": 4700
+    },
+    {
+      "operation": "lexical",
+      "arm": "J:JSRegExp.IsRegExpIdentifierStart",
+      "verdict": "(a)",
+      "row": "I3",
+      "reason": "correction of Broiler.JS: group names copy the identifier tests without Pattern_Syntax and without the Unicode 17 tables",
+      "count": 4648
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "verdict": "(a)",
+      "row": "P1",
+      "reason": "correction of Broiler.JS: UnicodeMatchProperty and UnicodeMatchPropertyValue admit the tables' names and aliases exactly",
+      "count": 27967
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "verdict": "(a)",
+      "row": "P2",
+      "reason": "correction of Broiler.JS: Hrkt is a value of Script in PropertyValueAliases.txt and in the specification's table",
+      "count": 8
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.ResolvePropertyOperand",
+      "verdict": "(a)",
+      "row": "P4",
+      "reason": "correction of Broiler.JS: General_Category resolves inside a v-mode set operation",
+      "count": 283
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.TranslateUnicodeProperty",
+      "verdict": "(a)",
+      "row": "P1",
+      "reason": "correction of Broiler.JS: UnicodeMatchProperty and UnicodeMatchPropertyValue admit the tables' names and aliases exactly",
+      "count": 65879
+    },
+    {
+      "operation": "lookup",
+      "arm": "J:JSRegExp.TranslateUnicodeProperty",
+      "verdict": "(a)",
+      "row": "P2",
+      "reason": "correction of Broiler.JS: Hrkt is a value of Script in PropertyValueAliases.txt and in the specification's table",
+      "count": 16
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a')",
+      "row": "C2",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased and Case_Ignorable from the runtime's data, which does not know code points Unicode 16 and 17 add (SJL-D-6 (c))",
+      "count": 760
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 2128
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches, and Final_Sigma reads Cased and Case_Ignorable from the same data, or Cased as row C1 reads it (SJL-D-6 (c))",
+      "count": 432
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLocaleLowerCase(undefined)",
+      "verdict": "(a)",
+      "row": "C1",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased from DerivedCoreProperties.txt (Other_Lowercase, Other_Uppercase)",
+      "count": 2838
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C2",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased and Case_Ignorable from the runtime's data, which does not know code points Unicode 16 and 17 add (SJL-D-6 (c))",
+      "count": 2227
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 6352
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches, and Final_Sigma reads Cased and Case_Ignorable from the same data, or Cased as row C1 reads it (SJL-D-6 (c))",
+      "count": 864
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C1",
+      "reason": "correction of Broiler.JS: Final_Sigma reads Cased from DerivedCoreProperties.txt (Other_Lowercase, Other_Uppercase)",
+      "count": 8513
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C4",
+      "reason": "correction of Broiler.JS: the Turkic lower-case path skips the class's table, so the runtime's older data shows",
+      "count": 3121
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C4",
+      "reason": "correction of Broiler.JS: the Turkic lower-case path skips the class's table, so the runtime's older data shows, in the mappings and in Final_Sigma, whose Cased is read from the same data or as row C1 reads it",
+      "count": 485
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: After_I, Before_Dot, After_Soft_Dotted and More_Above admit no intervening character of combining class 0 or 230; IsContextTransparent reads a mark not of class 230",
+      "count": 15
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: More_Above: no intervening character of combining class 0 or 230",
+      "count": 6068
+    },
+    {
+      "operation": "lower",
+      "arm": "J:JSString.ToLowerCase and ToLocaleLowerCase(locale)",
+      "verdict": "(a)",
+      "row": "C7",
+      "reason": "correction of Broiler.JS: ECMA-402's TransformCase canonicalizes the list and takes its first element",
+      "count": 2
+    },
+    {
+      "operation": "lower",
+      "arm": "V:JsRealm.StringChangeCase and TransformCase",
+      "verdict": "(a)",
+      "row": "C12",
+      "reason": "correction of Broiler.VM: the maximum result length is checked on the whole result",
+      "count": 5188301
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a')",
+      "row": "N2",
+      "reason": "correction of Broiler.JS: the host's ICU carries older Unicode data (SJL-D-6 (c))",
+      "count": 864
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: a lone surrogate is a code point of class 0 without a decomposition",
+      "count": 23207
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSIntlCollator.Compare's NFD",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: normalize reads code points; the runtime's normalizer refuses U+FFFE as it refuses a lone surrogate",
+      "count": 1
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a')",
+      "row": "N2",
+      "reason": "correction of Broiler.JS: the host's ICU carries older Unicode data (SJL-D-6 (c))",
+      "count": 3257
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: a lone surrogate is a code point of class 0 without a decomposition",
+      "count": 92828
+    },
+    {
+      "operation": "normalize",
+      "arm": "J:JSString.Normalize",
+      "verdict": "(a)",
+      "row": "N1",
+      "reason": "correction of Broiler.JS: normalize reads code points; the runtime's normalizer refuses U+FFFE as it refuses a lone surrogate",
+      "count": 4
+    },
+    {
+      "operation": "normalize",
+      "arm": "V:JsRealm.NormalizeText",
+      "verdict": "(a)",
+      "row": "N6",
+      "reason": "correction of Broiler.VM: the maximum result length is checked on the result, not the decomposition",
+      "count": 4918080
+    },
+    {
+      "operation": "sentence",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a)",
+      "row": "G1",
+      "reason": "correction of Broiler.JS: UAX #29's sentence rules",
+      "count": 42646
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToLocaleUpperCase(undefined)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 2537
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a')",
+      "row": "C3",
+      "reason": "correction of Broiler.JS: Broiler.JS's default mappings come from the runtime's data and hand patches (SJL-D-6 (c))",
+      "count": 7611
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C5",
+      "reason": "correction of Broiler.JS: Soft_Dotted from PropList.txt: the hand set lacks U+1DF1A, U+1E04C, U+1E04D and U+1E068",
+      "count": 22
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C6",
+      "reason": "correction of Broiler.JS: After_I, Before_Dot, After_Soft_Dotted and More_Above admit no intervening character of combining class 0 or 230; IsContextTransparent reads a mark not of class 230",
+      "count": 244
+    },
+    {
+      "operation": "upper",
+      "arm": "J:JSString.ToUpperCase and ToLocaleUpperCase(locale)",
+      "verdict": "(a)",
+      "row": "C7",
+      "reason": "correction of Broiler.JS: ECMA-402's TransformCase canonicalizes the list and takes its first element",
+      "count": 2
+    },
+    {
+      "operation": "upper",
+      "arm": "V:JsRealm.StringChangeCase and TransformCase",
+      "verdict": "(a)",
+      "row": "C12",
+      "reason": "correction of Broiler.VM: the maximum result length is checked on the whole result",
+      "count": 5184310
+    },
+    {
+      "operation": "word",
+      "arm": "J:JSIntlSegments.Compute",
+      "verdict": "(a)",
+      "row": "G2",
+      "reason": "correction of Broiler.JS: UAX #29's word rules, without a dictionary",
+      "count": 33576
+    },
+    {
+      "operation": "word-status",
+      "arm": "J:JSIntlSegments.IsWordLike",
+      "verdict": "(b)",
+      "row": "G4",
+      "reason": "implementation-defined: S answers its own word status",
+      "count": 10217
+    }
+  ],
+  "differences.tsv": {
+    "lines": 16022956,
+    "sha256": "7d23a43259c484b2ad21d40e4d5507e6342b70c828091ecec3fe125c317ded5a"
+  },
+  "classification.tsv": {
+    "lines": 16022957,
+    "sha256": "87d95f5bca4963661fab0435f2312eda61007ca09ca63da2a2c892d2a4f673e3"
+  }
+}

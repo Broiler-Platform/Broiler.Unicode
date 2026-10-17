@@ -1,0 +1,41 @@
+// The shared JavaScript libraries' Unicode packages are their own assurance component (convention 18 of
+// docs/conventions.md; decision SJL-D-5 (a)): every relevant declaration of the four projects below carries
+// an annotation, the artefacts beside this file are generated, and CI fails on drift from each project's
+// first commit. Rule SL8 holds this file to the governed projects: one missing from "projects" fails it.
+// The packages that existed before the programme are not governed (docs/conventions.md, "Scope") and are
+// not listed.
+//
+// The strict exemption predicate and the prohibition of preprocessor directives are Broiler.VM's own
+// settings (its rule J6), because code moves between the two repositories; criteria below High are refused
+// because the rubric writes none there.
+//
+// The one exclusion is the generated table data: the regeneration test holds every byte of it to
+// Broiler.Unicode.Generation's output, which this component covers, and a header the assurance generator
+// wrote into it would be a byte the generator does not write.
+//
+// regenerateCommand assumes the layout CI reproduces: Broiler.Code and Broiler.Unicode checked out side by
+// side.
+{
+  "schema": 1,
+  "component": "Broiler.Unicode shared libraries",
+  "projects": [
+    "Unicode.Algorithms/Unicode.Algorithms.csproj",
+    "Unicode.Segmentation/Unicode.Segmentation.csproj",
+    "Unicode.Tables/Unicode.Tables.csproj",
+    "Unicode.Generation/Unicode.Generation.csproj"
+  ],
+  "exemptionPredicate": "strict",
+  "forbidDirectives": true,
+  "criteriaBelowHigh": "refused",
+  "exclude": [
+    { "glob": "Unicode.Tables/UnicodeTableData.g.cs",
+      "reason": "generated data: the regeneration test holds every byte to Broiler.Unicode.Generation's output, and the generator is covered" }
+  ],
+  "spdx": {
+    "copyright": [
+      "2026 Broiler Platform contributors"
+    ],
+    "license": "Apache-2.0"
+  },
+  "regenerateCommand": "dotnet run --project Broiler.Code/src/Broiler.Code.Review.Cli -c Release -- assurance generate --root Broiler.Unicode/src"
+}

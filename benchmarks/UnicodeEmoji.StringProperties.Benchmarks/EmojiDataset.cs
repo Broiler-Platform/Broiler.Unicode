@@ -22,7 +22,7 @@ internal static class EmojiDataset
     private static IReadOnlyList<string> LoadAllEmoji()
     {
         string root = RepoLayout.FindRepoRoot(AppContext.BaseDirectory);
-        string dataDir = RepoLayout.DataDirectory(root, "16.0");
+        string dataDir = RepoLayout.DataDirectory(root, EmojiStringProperties.UnicodeEmojiVersion);
         var list = new List<string>();
         foreach (EmojiSequence sequence in UnicodeEmojiDataParser.ParseSequences(dataDir))
         {

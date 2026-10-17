@@ -1,9 +1,18 @@
 # Publishing previews
 
-The **Publish** GitHub Actions workflow validates and publishes all three runtime
-packages together. Generators, data tools, tests, and benchmarks are excluded.
-Each package includes its README, icon, third-party notices, XML API documentation,
-and assemblies for `net8.0` and `net10.0`; `.snupkg` symbol packages are also produced.
+The **Publish** GitHub Actions workflow validates and publishes every package
+together, on one version. Generators, data tools, tests, probes and benchmarks are
+excluded; `Broiler.Unicode.Generation`, the shared JavaScript libraries' test-only
+table generator, is a package and ships. Each package includes its README, icon,
+third-party notices, XML API documentation and its assemblies: `net8.0` and
+`net10.0` for `Broiler.Unicode.Properties`, `Broiler.Unicode.Emoji.StringProperties`
+and `Broiler.Unicode.Cldr.LocaleData`; `net10.0` for `Broiler.Unicode.Algorithms`,
+`Broiler.Unicode.Segmentation`, `Broiler.Unicode.Tables` and
+`Broiler.Unicode.Generation`. `.snupkg` symbol packages are also produced.
+*(Revised 2026-10-16, at the shared JavaScript libraries' work package SJL-7.2,
+which added the four `net10.0` packages. The paragraph read "validates and
+publishes all three runtime packages together" and "assemblies for `net8.0` and
+`net10.0`".)*
 
 ## Version selection
 
@@ -27,14 +36,14 @@ this workflow must be coordinated to avoid races and feed indexing delays.
 
 ## One-time setup
 
-1. Provide a nuget.org API key permitted to push all three IDs listed in the root
-   README through an accessible `NUGET_API_KEY` Actions secret or the shared
+1. Provide a nuget.org API key permitted to push every ID listed in the root
+   README (seven since SJL-7.2; the sentence read "all three IDs") through an accessible `NUGET_API_KEY` Actions secret or the shared
    organization `NUGET_TOKEN` secret. `NUGET_API_KEY` takes precedence if both are
    set. Every publish run requires a key.
    Select **Push new packages and package versions**, the intended package owner,
    and a package glob matching `Broiler.Unicode.*` (or the broader `Broiler.*`
    for a shared key). A key restricted to existing package versions cannot create
-   the renamed IDs. Check that the key has not expired. See
+   the renamed IDs, or the four IDs SJL-7.2 adds. Check that the key has not expired. See
    [NuGet's scoped API key documentation](https://learn.microsoft.com/en-us/nuget/nuget-org/scoped-api-keys).
 2. Ensure this repository's `GITHUB_TOKEN` can read the corresponding GitHub
    packages for version resolution. The version job already requests

@@ -6,6 +6,21 @@ namespace Broiler.Unicode.Properties;
 /// backed by compact range tables generated from the Unicode Character Database 17.0.0.
 /// No data is read from disk and there is no native dependency.
 /// </summary>
+/// <remarks>
+/// <para>
+/// <b>Warning: these lookups match names loosely</b> - ignoring case, <c>_</c>, spaces and <c>-</c> - which
+/// ECMA-262's UnicodeMatchProperty and UnicodeMatchPropertyValue forbid, so <c>\p{letter}</c> and
+/// <c>\p{lu}</c> resolve here and are a <c>SyntaxError</c> in the language. Each call returns an array of
+/// its own, so no caller can change what the next one receives (item U2). An ECMAScript engine uses
+/// <c>Broiler.Unicode.Algorithms</c>' exact lookup instead (<c>UnicodeProperties.TryResolve</c>), which
+/// admits exactly the names and aliases the specification's tables admit and answers immutable sets.
+/// </para>
+/// <para>
+/// These lookups stay for their existing consumers until they move, as the shared JavaScript libraries
+/// programme's milestone SJL-7 decided (Broiler.Unicode's roadmap, item U1). Their data is Unicode 17.0.0,
+/// <see cref="UnicodeVersion"/>.
+/// </para>
+/// </remarks>
 public static class UnicodeProperties
 {
     private static readonly Dictionary<string, (int Lo, int Hi)[]> BinaryCache = new(StringComparer.Ordinal);
@@ -13,6 +28,9 @@ public static class UnicodeProperties
     private static readonly Dictionary<string, (int Lo, int Hi)[]> ScriptExtensionsCache = new(StringComparer.Ordinal);
     private static readonly Dictionary<string, (int Lo, int Hi)[]> GeneralCategoryCache = new(StringComparer.Ordinal);
     private static readonly object Gate = new();
+
+    /// <summary>The Unicode version of the range tables these lookups read.</summary>
+    public const string UnicodeVersion = "17.0.0";
 
     /// <summary>
     /// Returns the sorted, non-overlapping code-point ranges for the named binary
@@ -65,15 +83,18 @@ public static class UnicodeProperties
         var key = Normalize(name);
         lock (Gate)
         {
-            if (cache.TryGetValue(key, out var cached))
-                return cached;
+            if (!cache.TryGetValue(key, out var ranges))
+            {
+                if (!table.TryGetValue(key, out var encoded))
+                    return null;
 
-            if (!table.TryGetValue(key, out var encoded))
-                return null;
+                ranges = Parse(encoded);
+                cache[key] = ranges;
+            }
 
-            var parsed = Parse(encoded);
-            cache[key] = parsed;
-            return parsed;
+            // A copy: the cached array is shared, and a caller that changed it would change the next
+            // caller's answer (Broiler.Unicode's roadmap, item U2).
+            return ranges.Length == 0 ? ranges : ((int Lo, int Hi)[])ranges.Clone();
         }
     }
 

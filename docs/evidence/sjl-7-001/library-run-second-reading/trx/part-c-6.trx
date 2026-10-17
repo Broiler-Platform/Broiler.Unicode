@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="877a0870-89d0-4a47-8e5b-d7e88a949b08" name="@vm 2026-10-17 00:00:40" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-17T00:00:40.5783397+00:00" queuing="2026-10-17T00:00:40.5783397+00:00" start="2026-10-17T00:00:38.6573367+00:00" finish="2026-10-17T00:00:40.7239837+00:00" />
+  <TestSettings name="default" id="b93507ba-83c8-4ece-a0a2-9056c8e247c5">
+    <Deployment runDeploymentRoot="_vm_2026-10-17_00_00_40" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="87a0e60f-8555-48b1-b20c-8c47735a3c4d" testId="90ccf263-67c2-3ff0-ae4d-f44ac94bf1b6" testName="Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_No_library_uses_platform_globalization_regular_expressions_or_a_culture" computerName="vm" duration="00:00:00.0546430" startTime="2026-10-17T00:00:39.3624757+00:00" endTime="2026-10-17T00:00:39.3624982+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87a0e60f-8555-48b1-b20c-8c47735a3c4d" />
+    <UnitTestResult executionId="f07c6867-4179-493a-b5bd-23c18c470f7c" testId="5ed3f29f-c519-0be1-8671-050cecd2a598" testName="Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_The_witness_is_refused_for_each_platform_dependence" computerName="vm" duration="00:00:01.2728271" startTime="2026-10-17T00:00:40.6348691+00:00" endTime="2026-10-17T00:00:40.6348691+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f07c6867-4179-493a-b5bd-23c18c470f7c" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_The_witness_is_refused_for_each_platform_dependence" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.architecture.tests/bin/release/net10.0/unicode.architecture.tests.dll" id="5ed3f29f-c519-0be1-8671-050cecd2a598">
+      <Execution id="f07c6867-4179-493a-b5bd-23c18c470f7c" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Architecture.Tests/bin/Release/net10.0/Unicode.Architecture.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Architecture.Tests.SharedRuleTests" name="SL4_The_witness_is_refused_for_each_platform_dependence" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_No_library_uses_platform_globalization_regular_expressions_or_a_culture" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.architecture.tests/bin/release/net10.0/unicode.architecture.tests.dll" id="90ccf263-67c2-3ff0-ae4d-f44ac94bf1b6">
+      <Execution id="87a0e60f-8555-48b1-b20c-8c47735a3c4d" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Architecture.Tests/bin/Release/net10.0/Unicode.Architecture.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Architecture.Tests.SharedRuleTests" name="SL4_No_library_uses_platform_globalization_regular_expressions_or_a_culture" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="90ccf263-67c2-3ff0-ae4d-f44ac94bf1b6" executionId="87a0e60f-8555-48b1-b20c-8c47735a3c4d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ed3f29f-c519-0be1-8671-050cecd2a598" executionId="f07c6867-4179-493a-b5bd-23c18c470f7c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.08]   Discovering: Unicode.Architecture.Tests
+[xUnit.net 00:00:00.16]   Discovered:  Unicode.Architecture.Tests
+[xUnit.net 00:00:00.17]   Starting:    Unicode.Architecture.Tests
+[xUnit.net 00:00:01.56]   Finished:    Unicode.Architecture.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

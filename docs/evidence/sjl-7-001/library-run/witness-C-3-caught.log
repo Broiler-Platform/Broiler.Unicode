@@ -1,0 +1,51 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C3_ witness-C-3-caught   # must fail
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.21]     Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused [FAIL]
+[xUnit.net 00:00:00.21]       Assert.Throws() Failure: No exception was thrown
+[xUnit.net 00:00:00.21]       Expected: typeof(System.ArgumentException)
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.22]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(114,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused()
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.22]     Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version [FAIL]
+[xUnit.net 00:00:00.22]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.22]                   ↓ (pos 1)
+[xUnit.net 00:00:00.22]       Expected: "17.0.0"
+[xUnit.net 00:00:00.22]       Actual:   "16.0.0"
+[xUnit.net 00:00:00.22]                   ↑ (pos 1)
+[xUnit.net 00:00:00.22]       Stack Trace:
+[xUnit.net 00:00:00.22]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(103,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version()
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.22]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.22]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused [8 ms]
+  Error Message:
+   Assert.Throws() Failure: No exception was thrown
+Expected: typeof(System.ArgumentException)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 114
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version [2 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+            ↓ (pos 1)
+Expected: "17.0.0"
+Actual:   "16.0.0"
+            ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 103
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 2
+     Failed: 2
+ Total time: 0.7789 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-3-caught.trx

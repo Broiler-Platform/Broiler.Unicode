@@ -7,7 +7,7 @@ using UnicodeEmoji.StringProperties.Generator;
 //   dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- generate <version>
 //   dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- update   <version>   (download + generate)
 //
-// <version> is a Unicode emoji version such as "16.0". Files are stored under data/unicode/<version>/.
+// <version> is a Unicode emoji version such as "17.0". Files are stored under data/unicode/<version>/.
 
 string[] DataFiles = ["emoji-test.txt", "emoji-sequences.txt", "emoji-zwj-sequences.txt"];
 
@@ -18,7 +18,7 @@ if (args.Length < 1)
 }
 
 string command = args[0].ToLowerInvariant();
-string version = args.Length > 1 ? args[1] : "16.0";
+string version = args.Length > 1 ? args[1] : "17.0";
 
 string repoRoot;
 try

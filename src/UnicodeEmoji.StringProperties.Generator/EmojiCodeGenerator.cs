@@ -16,7 +16,7 @@ public static class EmojiCodeGenerator
 {
     /// <summary>Runs the full parse → build → emit pipeline.</summary>
     /// <param name="dataDirectory">Directory containing the emoji data files for the version.</param>
-    /// <param name="unicodeEmojiVersion">The Unicode emoji version string, for example <c>"16.0"</c>.</param>
+    /// <param name="unicodeEmojiVersion">The Unicode emoji version string, for example <c>"17.0"</c>.</param>
     /// <param name="outputPath">The path of the generated source file to write.</param>
     /// <returns>A summary of what was generated.</returns>
     public static GenerationResult Generate(string dataDirectory, string unicodeEmojiVersion, string outputPath)

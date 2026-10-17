@@ -1,0 +1,17 @@
+$ test_run tests/UnicodeProperties.Tests FullyQualifiedName~RangeLookupTests witness-C-2-reverted
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.09]   Discovering: UnicodeProperties.Tests
+[xUnit.net 00:00:00.13]   Discovered:  UnicodeProperties.Tests
+[xUnit.net 00:00:00.14]   Starting:    UnicodeProperties.Tests
+[xUnit.net 00:00:00.20]   Finished:    UnicodeProperties.Tests
+  Passed Broiler.Unicode.Tests.RangeLookupTests.The_package_states_its_Unicode_version [3 ms]
+  Passed Broiler.Unicode.Tests.RangeLookupTests.A_caller_that_changes_its_ranges_does_not_change_the_next_callers [9 ms]
+
+Test Run Successful.
+Total tests: 2
+     Passed: 2
+ Total time: 0.7740 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-2-reverted.trx

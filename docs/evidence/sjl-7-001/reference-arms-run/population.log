@@ -1,0 +1,7 @@
+$ python3 -I scripts/reference-arms/generate_population.py --out /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population
+U2 names.tsv: 76606
+U3 casing.tsv: 1802424
+U4 normalization.tsv: 1279837
+U5 string-properties.tsv: 32189
+U6 segmentation.tsv: 68768
+U7 limits.tsv: 149

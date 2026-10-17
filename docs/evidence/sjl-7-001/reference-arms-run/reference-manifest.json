@@ -1,0 +1,100 @@
+{
+  "reference": "scripts/reference-arms/unicoderef.py",
+  "version": "unicoderef@1",
+  "pin": {
+    "file": "/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.IzVKWZlRqQ/tree/data/unicode/pins/unicode.pin",
+    "sha256": "7eb0f08f0b408d278f1c08b29ea93d17a3216c02c45d6dfbe4bbd440cbcd51b0",
+    "version": "17.0.0"
+  },
+  "inputs": {
+    "data/unicode/pins/ecma262/table-binary-unicode-properties-of-strings.html": "9c4e35660c28217fb8dd7786de72010c30f901e534a57e3c16eef4831d6bf0e1",
+    "data/unicode/pins/ecma262/table-binary-unicode-properties.html": "bb09794cb0cf887f011f5d1a133b2a29734e432ba0cf87db9281afbd151b8ea0",
+    "data/unicode/pins/ecma262/table-nonbinary-unicode-properties.html": "08da59f7725ab8c8c932c965d22de931bbf38b1ea9430f67a2cd0163984074f2",
+    "emoji-17.0.0/emoji-sequences.txt": "12cc8267dc33cbd11ed32bcf6fc5dc2ad9c7a77bae1bdfba2f41b1b9b3ead8dd",
+    "emoji-17.0.0/emoji-zwj-sequences.txt": "5b25441daed2322b068c5e70cda522946a4f0274df864445a1965a92e5fc5cad",
+    "ucd-17.0.0/CaseFolding.txt": "ff8d8fefbf123574205085d6714c36149eb946d717a0c585c27f0f4ef58c4183",
+    "ucd-17.0.0/DerivedCoreProperties.txt": "24c7fed1195c482faaefd5c1e7eb821c5ee1fb6de07ecdbaa64b56a99da22c08",
+    "ucd-17.0.0/DerivedNormalizationProps.txt": "71fd6a206a2c0cdd41feb6b7f656aa31091db45e9cedc926985d718397f9e488",
+    "ucd-17.0.0/PropList.txt": "130dcddcaadaf071008bdfce1e7743e04fdfbc910886f017d9f9ac931d8c64dd",
+    "ucd-17.0.0/PropertyAliases.txt": "4441f573caf952ffece1d7c892e7715bd7136dfc26f96eb6f268bf1e474715fb",
+    "ucd-17.0.0/PropertyValueAliases.txt": "64e9a5f76f7a1e8b5a47d6a1f9a26522a251208f5276bdfa1559dac7cf2e827a",
+    "ucd-17.0.0/ScriptExtensions.txt": "ec2107e58825a1586acee8e0911ce18260394ac8b87e535ca325f1ccbeb06bc6",
+    "ucd-17.0.0/Scripts.txt": "9f5e50d3abaee7d6ce09480f325c706f485ae3240912527e651954d2d6b035bf",
+    "ucd-17.0.0/SpecialCasing.txt": "efc25faf19de21b92c1194c111c932e03d2a5eaf18194e33f1156e96de4c9588",
+    "ucd-17.0.0/UnicodeData.txt": "2e1efc1dcb59c575eedf5ccae60f95229f706ee6d031835247d843c11d96470c",
+    "ucd-17.0.0/auxiliary/GraphemeBreakProperty.txt": "d6b51d1d2ae5c33b451b7ed994b48f1f4dc62b2272a5831e7fd418514a6bae89",
+    "ucd-17.0.0/auxiliary/SentenceBreakProperty.txt": "871c0c985ad95125e25b302414065a10839d068970bceb383ecec138f22a0a18",
+    "ucd-17.0.0/auxiliary/WordBreakProperty.txt": "72274cac1e6b919507db35655c3e175aa27274668a1ece95c28d2069f2ad9852",
+    "ucd-17.0.0/emoji/emoji-data.txt": "2cb2bb9455cda83e8481541ecf5b6dfda66a3bb89efa3fa7c5297eccf607b72b",
+    "ucd-17.0.0/extracted/DerivedBinaryProperties.txt": "13dd09d35a9377e33eb388a01e6581d4bfec6b2685316078c341982fa444071a"
+  },
+  "population": {
+    "manifest_sha256": "4c7ea4cab883e05e2be87e00d7b302c063fda7d8d8d01922246e2e1d8441500f"
+  },
+  "files": {
+    "sets.tsv": {
+      "lines": 458,
+      "sha256": "4268bdc12c72073012fb3b36fd969554dce557e1598f4e8253ae3db09db558ed",
+      "what": "every set a lookup answers, by its resolution's name, and the lexical sets: <name>\\t<ranges>"
+    },
+    "string-sets.tsv": {
+      "lines": 7906,
+      "sha256": "0213e8a54931da9a17d24be0ec6665d52da6a525b30aa06ba76b9e368fdceae6",
+      "what": "every member string of each property of strings: <property>\\t<units>"
+    },
+    "folding.tsv": {
+      "lines": 1512,
+      "sha256": "58c9de37fed12f7d00105058bee048b270a1dbf689982de68407a126b0c80ccd",
+      "what": "simple case folding: <code point>\\t<folding>, for every code point that does not fold to itself"
+    },
+    "orbits.tsv": {
+      "lines": 1482,
+      "sha256": "1e4f96d7324c0be0c236771d6313d5f15968669ca903c5f11dda3a21503bd0b6",
+      "what": "every orbit of more than one code point; every other code point's orbit is itself"
+    },
+    "canonicalize.tsv": {
+      "lines": 1169,
+      "sha256": "38b2db29d03a1f764abf99f235b344128e2f1a896a12975dcb79be24cc776290",
+      "what": "Canonicalize without u: <unit>\\t<result>, for every code unit it changes"
+    },
+    "names-ref.tsv": {
+      "lines": 76606,
+      "sha256": "0bc604b4d7adb249dfcd127b6eccf1d6a109988098f9db85b7b3650964066a92",
+      "what": "the arbiter's answers for names.tsv, line for line"
+    },
+    "casing-ref.tsv": {
+      "lines": 1802424,
+      "sha256": "af7109972fa530e4520eca8ccf6274b52963bf4735ebd3af99dcae0b0880757b",
+      "what": "the arbiter's answers for casing.tsv, line for line"
+    },
+    "normalization-ref.tsv": {
+      "lines": 1279837,
+      "sha256": "31ce8e7de974103b4d30a7525b1766a18a3e76a246c011a3a42bba565cd83be8",
+      "what": "the arbiter's answers for normalization.tsv, line for line"
+    },
+    "string-properties-ref.tsv": {
+      "lines": 32189,
+      "sha256": "cec16c291cd7ce8b8b8983730a7b9496770d23a5ce8d0f4876d08efa69b1c85f",
+      "what": "the arbiter's answers for string-properties.tsv, line for line"
+    },
+    "segmentation-ref.tsv": {
+      "lines": 68768,
+      "sha256": "75b94e3b25cd6116e5be3b89e14e818c32dc62cb65be5d556cf69a9ea7265570",
+      "what": "the arbiter's answers for segmentation.tsv, line for line"
+    },
+    "limits-ref.tsv": {
+      "lines": 149,
+      "sha256": "faab4df2b0acd06d10ef6ec30bfe5bb453ac28905dee80d833863e23304df3fe",
+      "what": "the arbiter's answers for limits.tsv, line for line"
+    }
+  },
+  "seconds": {
+    "load": 0.3,
+    "names-ref.tsv": 0.2,
+    "casing-ref.tsv": 10.9,
+    "normalization-ref.tsv": 4.7,
+    "string-properties-ref.tsv": 0.2,
+    "segmentation-ref.tsv": 1.7,
+    "limits-ref.tsv": 1.7
+  }
+}

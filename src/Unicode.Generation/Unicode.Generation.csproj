@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The owner's generator of the shared JavaScript libraries programme's Unicode tables (milestone
+    SJL-7, decision SJL-D-6 (c)): it reads a Unicode pin and the archive it names, verifies every
+    file's length, hash and version header, and writes every table Broiler.Unicode.Algorithms and
+    Broiler.Unicode.Segmentation read, byte for byte. A port of Broiler.VM's UnicodeDatabase,
+    UnicodeTableGenerator and the Unicode parts of its CldrTableGenerator. Test-only: it reaches each
+    engine's tests as a pinned package and never a product closure. It reads no file itself; the caller
+    hands it the pin's text and the archive's bytes.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Broiler.Unicode.Generation</RootNamespace>
+    <AssemblyName>Broiler.Unicode.Generation</AssemblyName>
+    <PackageId>Broiler.Unicode.Generation</PackageId>
+    <Description>Test-only: the generator of Broiler.Unicode's algorithm tables from a pinned Unicode Character Database archive, for engines that embed the tables and hold them byte for byte.</Description>
+    <PackageTags>broiler;unicode;generator;tables;test</PackageTags>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>1701;1702</NoWarn>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+  </ItemGroup>
+
+  <!-- This repository's pin, so that an engine's test can hold its own pin equal to the owner's (Broiler.VM's rule I4). -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\data\unicode\pins\unicode.pin" LogicalName="Broiler.Unicode.Generation.unicode.pin" />
+  </ItemGroup>
+
+</Project>

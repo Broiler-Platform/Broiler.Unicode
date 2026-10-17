@@ -1,0 +1,22 @@
+$ python3 -m unittest discover -s scripts/reference-arms/tests
+refused: the host's ICU carries Unicode 9.0.0, and this Python's unicodedata 15.1.0
+.{"(a)": 1, "(b)": 1}
+{"(a)": 1, "(b)": 1}
+{"(c)": 1}
+.{"(a)": 1}
+{"(a)": 1}
+the recorded answer '00AA 03C3' is not the arbiter's '00AA 03C2': ['lower', 'U3', '00AA 03A3', 'default', 'J', '00AA 03C2', '00AA 03C3']
+refused: 1 recorded answers are not the arbiter's; nothing is written
+.......................U2 names.tsv: 43966
+U3 casing.tsv: 6441
+U4 normalization.tsv: 3374
+U5 string-properties.tsv: 670
+U6 segmentation.tsv: 446
+U7 limits.tsv: 149
+.....refused: ucd-17.0.0/SpecialCasing.txt: 17049 bytes with SHA-256 efc25faf19de21b92c1194c111c932e03d2a5eaf18194e33f1156e96de4c9588; the pin says 17049 bytes with 0fc25faf19de21b92c1194c111c932e03d2a5eaf18194e33f1156e96de4c9588
+.refused: ucd-17.0.0/CaseFolding.txt: 87539 bytes with SHA-256 933c94e6fbd8d20630b8d07694e74033de2db889e4736e976effe31170506618; the pin says 87539 bytes with ff8d8fefbf123574205085d6714c36149eb946d717a0c585c27f0f4ef58c4183
+.............................................
+----------------------------------------------------------------------
+Ran 76 tests in 30.623s
+
+OK

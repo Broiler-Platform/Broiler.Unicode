@@ -1,0 +1,17 @@
+$ test_run tests/Unicode.Architecture.Tests FullyQualifiedName~SL4_ part-c-6
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Architecture.Tests/bin/Release/net10.0/Unicode.Architecture.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Architecture.Tests/bin/Release/net10.0/Unicode.Architecture.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.08]   Discovering: Unicode.Architecture.Tests
+[xUnit.net 00:00:00.16]   Discovered:  Unicode.Architecture.Tests
+[xUnit.net 00:00:00.17]   Starting:    Unicode.Architecture.Tests
+  Passed Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_No_library_uses_platform_globalization_regular_expressions_or_a_culture [54 ms]
+[xUnit.net 00:00:01.56]   Finished:    Unicode.Architecture.Tests
+  Passed Broiler.Unicode.Architecture.Tests.SharedRuleTests.SL4_The_witness_is_refused_for_each_platform_dependence [1 s]
+
+Test Run Successful.
+Total tests: 2
+     Passed: 2
+ Total time: 2.0523 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/unicode-second/trx/part-c-6.trx

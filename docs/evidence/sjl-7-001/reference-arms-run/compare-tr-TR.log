@@ -1,0 +1,9 @@
+$ dotnet /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/build/bin/Unicode.ReferenceArms/release/Unicode.ReferenceArms.dll compare --population /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population --out /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/run-tr-TR --culture tr-TR
+mode culture; culture tr-TR; ICU 74.2.0.0 (Unicode 15.1.0); population /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population
+upper U3: 1802424 inputs, 5407280 cases, J:JSString.ToUpperCase and ToLocaleUpperCase(locale) 7879 of 5407280 differ (0 not called), J:JSString.ToLocaleUpperCase(undefined) 8773 of 1802424 differ (3604856 not called) (0 not taken; 3.0 s)
+upper U7: 125 inputs, 375 cases, J:JSString.ToUpperCase and ToLocaleUpperCase(locale) 0 of 375 differ (0 not called), J:JSString.ToLocaleUpperCase(undefined) 1 of 125 differ (250 not called) (24 not taken; 15.4 s)
+lower U3: 1802424 inputs, 5407280 cases, J:JSString.ToLowerCase and ToLocaleLowerCase(locale) 27647 of 5407280 differ (0 not called), J:JSString.ToLocaleLowerCase(undefined) 69855 of 1802424 differ (3604856 not called) (0 not taken; 2.8 s)
+lower U7: 125 inputs, 375 cases, J:JSString.ToLowerCase and ToLocaleLowerCase(locale) 0 of 375 differ (0 not called), J:JSString.ToLocaleLowerCase(undefined) 6 of 125 differ (250 not called) (24 not taken; 19.1 s)
+normalize U4: 1279837 inputs, 5119348 cases, J:JSString.Normalize 96089 of 5119348 differ (0 not called), J:JSIntlCollator.Compare's NFD 24072 of 1279837 differ (3839511 not called) (0 not taken; 2.5 s)
+normalize U7: 24 inputs, 96 cases, J:JSString.Normalize 0 of 96 differ (0 not called), J:JSIntlCollator.Compare's NFD 0 of 24 differ (72 not called) (125 not taken; 34.1 s)
+234322 differences; listing sha256 9b1af6776b2f9c8498be456b3dd41bd7f2a76995cb4964338aac763941599445; 77 s

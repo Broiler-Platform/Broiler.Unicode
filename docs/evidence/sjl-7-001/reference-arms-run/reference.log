@@ -1,0 +1,13 @@
+$ python3 -I scripts/reference-arms/unicoderef.py --population /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/population --out /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/arms-judged/reference
+sets.tsv: 458
+string-sets.tsv: 7906
+folding.tsv: 1512
+orbits.tsv: 1482
+canonicalize.tsv: 1169
+names-ref.tsv: 76606
+casing-ref.tsv: 1802424
+normalization-ref.tsv: 1279837
+string-properties-ref.tsv: 32189
+segmentation-ref.tsv: 68768
+limits-ref.tsv: 149
+done in 19.8 s

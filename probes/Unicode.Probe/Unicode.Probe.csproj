@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The Native AOT probe of the shared JavaScript libraries' convention 12, for the Unicode packages the
+    engines consume (milestone SJL-7, the owner's condition of the programme's conventions): an
+    executable published with the settings of Broiler.VM's composition roots - Native AOT, full
+    trimming, invariant globalization, system resource keys and warnings as errors - that runs
+    Unicode's own test files from the pinned archive through Broiler.Unicode.Algorithms and
+    Broiler.Unicode.Segmentation, over the tables of Broiler.Unicode.Tables. It proves that the packages
+    compile into a Native AOT image with no warning and give there the answers they give under the JIT:
+    CI compares the two runs' reports byte for byte.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Broiler.Unicode.Probe</RootNamespace>
+    <AssemblyName>Broiler.Unicode.Probe</AssemblyName>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Convention 12 (rule SL5): the analyzers report everything, and the packaging props' NoWarn does not reach here. -->
+    <NoWarn>1701;1702</NoWarn>
+    <IsAotCompatible>true</IsAotCompatible>
+    <PublishAot>true</PublishAot>
+    <TrimMode>full</TrimMode>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Unicode.Algorithms\Unicode.Algorithms.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Segmentation\Unicode.Segmentation.csproj" />
+    <ProjectReference Include="..\..\src\Unicode.Tables\Unicode.Tables.csproj" />
+  </ItemGroup>
+
+</Project>

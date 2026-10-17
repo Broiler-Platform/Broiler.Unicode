@@ -1,10 +1,10 @@
 # Broiler.Unicode
 
 Unicode property, emoji string-property, and CLDR locale-data components used by
-Broiler.JS. This README focuses on the `Broiler.Unicode.Emoji.StringProperties` package.
-
-Managed, allocation-light matching of **Unicode RGI emoji string properties** (UTS #51) for .NET,
-backed by a generated trie. No ICU, no native dependency, no runtime downloads, no giant regex.
+Broiler.JS, and the Unicode character data and algorithms of the shared JavaScript libraries,
+which both Broiler JavaScript engines consume. The
+[shared libraries' packages](#the-shared-javascript-libraries-unicode-packages) are described
+first; the rest of this README focuses on the `Broiler.Unicode.Emoji.StringProperties` package.
 
 > **Preview status:** This is unstable, substantially AI-assisted first-preview software.
 > Generated tables and their generators require human source and data-provenance review.
@@ -12,7 +12,84 @@ backed by a generated trie. No ICU, no native dependency, no runtime downloads, 
 > [HUMAN_REVIEW.md](HUMAN_REVIEW.md) for the reviewed revision and conditions before
 > describing the current checkout as approved.
 
-- **Supported Unicode emoji version:** **16.0**
+## The shared JavaScript libraries' Unicode packages
+
+The shared JavaScript libraries programme gives each JavaScript language algorithm and data set
+one maintained implementation, in libraries that name neither JavaScript engine. Both Broiler.JS
+and Broiler.VM's JavaScript profile consume them. Its Unicode area, milestone SJL-7, lives here:
+
+- Broiler.VM's JSD-0074 placed all six sub-areas in this repository.
+- This repository's [roadmap](docs/roadmap.md) carries its items and the owner conditions it adopted.
+- The programme's plan lives in the Broiler.VM repository, under
+  `docs/javascript-shared-libraries/`.
+
+| Package | Holds |
+|---|---|
+| `Broiler.Unicode.Algorithms` | Exact property lookups by the names ECMA-262 admits, per-code-point classes, the ECMAScript lexical classes, case folding with its orbits, the full case mappings with Final_Sigma and the Turkic and Lithuanian languages, NFC, NFD, NFKC and NFKD, and the properties of strings. It carries **no table**: every type reads its tables through the `IUnicodeTables` its caller passes. |
+| `Broiler.Unicode.Segmentation` | UAX #29's grapheme, word and sentence boundaries, with word statuses. Optional: only an engine with `Intl.Segmenter` reads it. No table either. |
+| `Broiler.Unicode.Tables` | This repository's own embedding of the generated tables, with `UnicodeTables.Instance`, for tests, probes and consumers other than the engines. Neither engine references it: each embeds its own tables (decision SJL-D-6 (c)). |
+| `Broiler.Unicode.Generation` | Test-only. The generator: it verifies a pinned archive by length, SHA-256 and version header and writes every table byte for byte. It carries this repository's pin, so an engine's test can hold its own pin equal to it. |
+
+```csharp
+using Broiler.Unicode.Algorithms;
+using Broiler.Unicode.Tables;
+
+var properties = new UnicodeProperties(UnicodeTables.Instance);
+properties.TryResolve("Script_Extensions", "Grek", out var greek);   // true
+properties.TryResolve("letter", out _);                               // false: names are matched exactly
+
+var normalization = new UnicodeNormalization(UnicodeTables.Instance);
+normalization.Transform("é", NormalForm.Nfc, maxLength: 1024, charge: null, out var nfc);
+// UnicodeStatus.Success, nfc == "é"
+```
+
+**Scope.** The engines call these packages for:
+
+- the property escapes of regular expressions, `v`-flag properties of strings included;
+- the identifier classes of the lexical grammar;
+- `String.prototype.normalize`;
+- `toUpperCase`, `toLowerCase` and their locale forms;
+- the case folding of `i`-flag matching;
+- `Intl.Segmenter`.
+
+What stays in each engine is argument conversion, locale negotiation, error construction and its own
+resource policy. The [adapter guide](docs/adapter-guide-unicode.md) gives each operation's
+contract.
+
+**Pins.**
+
+- **Data.** Unicode **17.0.0** (`UnicodeAlgorithms.UnicodeVersion`), from the archive
+  [`data/unicode/pins/`](data/unicode/pins/README.md). Its [`unicode.pin`](data/unicode/pins/unicode.pin)
+  hashes every file the generator reads, the same files by the same hashes as Broiler.VM's pin.
+- **Names.** ECMA-262's three property tables, at `0248456c`, from the same archive.
+- **Regeneration.** A test regenerates every table byte for byte (the programme's rule SL7).
+
+**Conventions.** The four packages follow the programme's
+[conventions](docs/conventions.md), in the owner's copy with the same numbering. Among them:
+
+- caller-owned metering and explicit maximum lengths;
+- failure as data;
+- no host Unicode, culture or regular expressions;
+- no mutable statics;
+- Native AOT and trimming with no warning suppressed;
+- an XML documentation comment on every public member.
+
+The rules that decide them, SL1 to SL10, run in
+[`tests/Unicode.Architecture.Tests`](tests/Unicode.Architecture.Tests/rules.register.json). The
+Native AOT probe, [`probes/Unicode.Probe`](probes/Unicode.Probe), runs Unicode's own test files in CI.
+
+**Consumers.** None yet. Broiler.VM's and Broiler.JS's cut-overs are milestone SJL-7's work
+packages SJL-7.4 and SJL-7.5.
+
+**Target framework:** `net10.0`. **Dependencies:** none. **Changes:** [`CHANGELOG.md`](CHANGELOG.md).
+
+## The emoji string-property package
+
+Managed, allocation-light matching of **Unicode RGI emoji string properties** (UTS #51) for .NET,
+backed by a generated trie. No ICU, no native dependency, no runtime downloads, no giant regex.
+
+- **Supported Unicode emoji version:** **17.0** *(corrected 2026-10-16, roadmap item U7: it read
+  16.0, while the generated data has carried 17.0)*
 - **Target frameworks:** `net8.0`, `net10.0`
 - **Dependencies:** none (pure managed C#)
 
@@ -58,13 +135,17 @@ one UTF-16 `char` equals one character.
 
 ## Installation
 
-The repository ships three packages, each targeting `net8.0` and `net10.0`:
+The repository ships seven packages, all on one version:
 
-| Package | Purpose |
-|---|---|
-| `Broiler.Unicode.Properties` | Unicode character properties, scripts, categories, and case mappings |
-| `Broiler.Unicode.Emoji.StringProperties` | Unicode RGI emoji sequence matching |
-| `Broiler.Unicode.Cldr.LocaleData` | CLDR locale data for Intl implementations |
+| Package | Purpose | Target frameworks |
+|---|---|---|
+| `Broiler.Unicode.Properties` | Unicode character properties, scripts, categories, and case mappings | `net8.0`, `net10.0` |
+| `Broiler.Unicode.Emoji.StringProperties` | Unicode RGI emoji sequence matching | `net8.0`, `net10.0` |
+| `Broiler.Unicode.Cldr.LocaleData` | CLDR locale data for Intl implementations | `net8.0`, `net10.0` |
+| `Broiler.Unicode.Algorithms` | The shared JavaScript libraries' Unicode algorithms, over tables the caller passes | `net10.0` |
+| `Broiler.Unicode.Segmentation` | UAX #29 boundaries, over a break table the caller passes | `net10.0` |
+| `Broiler.Unicode.Tables` | The generated tables, and a provider over them | `net10.0` |
+| `Broiler.Unicode.Generation` | Test-only: the table generator and this repository's pin | `net10.0` |
 
 Select prerelease packages while the libraries are in preview:
 
@@ -102,7 +183,7 @@ EmojiSequenceEnumerator EmojiStringProperties.EnumerateRgiEmoji(ReadOnlySpan<cha
 EmojiSequenceEnumerator EmojiStringProperties.Enumerate(ReadOnlySpan<char> text, EmojiSequenceProperties filter);
 
 // The Unicode emoji version the tables were generated from
-string EmojiStringProperties.UnicodeEmojiVersion; // "16.0"
+string EmojiStringProperties.UnicodeEmojiVersion; // "17.0"
 ```
 
 ### Enumeration without allocating strings
@@ -132,7 +213,8 @@ EmojiSequenceProperties p = EmojiStringProperties.GetProperties("🇩🇪");
 ## How it works
 
 The official Unicode data files are treated as the **source of truth** and are committed under
-[`data/unicode/16.0/`](data/unicode/16.0):
+[`data/unicode/17.0/`](data/unicode/17.0), whose two sequence files carry the hashes
+[`data/unicode/pins/unicode.pin`](data/unicode/pins/unicode.pin) records for them:
 
 - `emoji-test.txt`
 - `emoji-sequences.txt`
@@ -155,16 +237,20 @@ The `DataTool` downloads the official files and regenerates the lookup tables:
 
 ```sh
 # Download data/unicode/<version>/ and regenerate src/.../Generated/EmojiTrieData.g.cs
-dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- update 16.0
+dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- update 17.0
 
 # Or as separate steps:
-dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- download 16.0
-dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- generate 16.0
+dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- download 17.0
+dotnet run --project src/UnicodeEmoji.StringProperties.DataTool -- generate 17.0
 ```
 
 Then bump `UnicodeEmojiVersion` in [`Directory.Build.props`](Directory.Build.props), review the diff of
 the generated file, run the tests, and commit. Data is fetched **only** by this tool — never during a
 normal build or at runtime.
+
+**This does not move the shared JavaScript libraries' Unicode version.** Their archive,
+[`data/unicode/pins/`](data/unicode/pins/README.md), moves only by a dated decision that moves
+Broiler.VM's pin in the same change, and its files are never downloaded again by a tool.
 
 ## Benchmarks
 
@@ -190,7 +276,7 @@ giant alternation regex.
   text-segmentation (UAX #29) implementation.
 - **Emoji presentation is matching-only.** The library reports properties of text; it does not render,
   normalize, or transform emoji.
-- **Version-pinned.** The data is generated for a single Unicode version (currently 16.0). Use the
+- **Version-pinned.** The data is generated for a single Unicode version (currently 17.0). Use the
   `DataTool` to move to another version.
 
 ## Project layout
@@ -200,12 +286,24 @@ src/
   UnicodeEmoji.StringProperties/            # the NuGet library (net8.0; net10.0)
   UnicodeEmoji.StringProperties.Generator/  # parser + trie builder + source emitter
   UnicodeEmoji.StringProperties.DataTool/   # downloads data + drives the generator
+  Unicode.Algorithms/                       # the shared libraries' algorithms (net10.0)
+  Unicode.Segmentation/                     # UAX #29 boundaries (net10.0)
+  Unicode.Tables/                           # the generated tables and a provider (net10.0)
+  Unicode.Generation/                       # the pin's checks and the table generator (net10.0)
+  assurance.config.json                     # the assurance gate over the four projects above
 tests/
   UnicodeEmoji.StringProperties.Tests/      # golden + data-driven xUnit tests
+  Unicode.Algorithms.Tests/                 # Unicode's test files, ECMA-262's tables, the contract, SL7
+  Unicode.Architecture.Tests/               # the conventions' rules SL1 to SL10
+probes/
+  Unicode.Probe/                            # the Native AOT probe
 benchmarks/
   UnicodeEmoji.StringProperties.Benchmarks/ # trie vs HashSet vs Regex
 data/
-  unicode/16.0/                             # committed official Unicode data files
+  unicode/17.0/                             # committed official Unicode emoji data files
+  unicode/pins/                             # the pinned archive the shared libraries' tables come from
+docs/
+  roadmap.md, conventions.md, adapter-guide-unicode.md, evidence/
 ```
 
 ## License

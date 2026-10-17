@@ -1,0 +1,16 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C1_ witness-C-1-reverted
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.PnZ5p9f89J/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.15]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.21]   Finished:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [4 ms]
+
+Test Run Successful.
+Total tests: 1
+     Passed: 1
+ Total time: 0.7615 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/library-run/trx/witness-C-1-reverted.trx
