@@ -5,7 +5,7 @@
 // ----------------------
 // Relevant units:   3
 // Annotated:        3/3
-// Exempt:           39
+// Exempt:           48
 // Human-reviewed:   0/3
 // IP risk:          Low
 // Security risk:    Medium
@@ -64,7 +64,7 @@ public interface IUnicodeTables
 /// characters and a two-byte value; its index table holds each entry's two-byte offset, in the same
 /// order. The numbering is part of this package's contract: a member is never renumbered.
 /// </remarks>
-// Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=0; Fingerprint=24D55A
+// Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) table provider; IP=Low; Security=Low; Resources=0; Fingerprint=DFC9C5
 // Broiler-Human:        PENDING
 public enum UnicodeTable
 {
@@ -199,4 +199,67 @@ public enum UnicodeTable
     /// to the next run's first code point.
     /// </summary>
     SegmentBreaks = 37,
+
+    /// <summary>
+    /// Normalization's per-code-point trie (<see cref="UnicodeTable.NormalizationRecords"/> by number):
+    /// 17,408 two-byte block numbers, one per 64 code points, then the blocks, each 64 two-byte values.
+    /// A code point's value is the two bytes at 34,816 + (block × 64 + the code point's low six bits) × 2.
+    /// Every trie table has this layout.
+    /// </summary>
+    NormalizationTrie = 38,
+
+    /// <summary>
+    /// The records <see cref="NormalizationTrie"/> numbers, thirteen bytes each; record 0 is every code
+    /// point's default and all zero. Each holds, in order: the Canonical_Combining_Class; a byte of flags,
+    /// NFC_QC in its low two bits and NFKC_QC in the next two (0 Yes, 1 Maybe, 2 No), 16 when the first
+    /// code point of the canonical decomposition is NFC_QC=Yes and 32 when the first of the decomposition
+    /// NFKC uses is NFKC_QC=Yes; the full canonical decomposition's first element in
+    /// <see cref="DecompositionElements"/> in two bytes, its length in code points in one and in UTF-16
+    /// code units in one (0 and 0 when there is none); the full compatibility decomposition's likewise,
+    /// when it differs from the canonical one; and the code point's first entry in
+    /// <see cref="CompositionLists"/> in two bytes and its entry count in one. Hangul syllables are the
+    /// algorithm's and have no decomposition here.
+    /// </summary>
+    NormalizationRecords = 39,
+
+    /// <summary>
+    /// Every primary composite by its first code point, Full_Composition_Exclusion and Hangul excluded:
+    /// the second code point and the composite, three bytes each, grouped by first and ordered by second.
+    /// </summary>
+    CompositionLists = 40,
+
+    /// <summary>Case mapping's per-code-point trie (<see cref="UnicodeTable.CasingRecords"/> by number), in <see cref="NormalizationTrie"/>'s layout.</summary>
+    CasingTrie = 41,
+
+    /// <summary>
+    /// The records <see cref="CasingTrie"/> numbers, nine bytes each; record 0 is all zero. Each holds a
+    /// byte of flags (1 Cased, 2 Case_Ignorable, 4 Soft_Dotted); the full upper-case mapping's length in
+    /// code points in one byte (0 when upper-casing leaves the code point) and, in three, the code point
+    /// it maps to when the length is 1 or its offset in <see cref="MappingPool"/> when it is longer; and
+    /// the full lower-case mapping likewise, U+03A3 mapping to U+03C3.
+    /// </summary>
+    CasingRecords = 42,
+
+    /// <summary>
+    /// The ECMAScript lexical classes per code point, in <see cref="NormalizationTrie"/>'s layout: each
+    /// value's bit 1 is ID_Start, bit 2 ID_Continue and bit 4 General_Category=Space_Separator.
+    /// </summary>
+    LexicalTrie = 43,
+
+    /// <summary>
+    /// The code points of every full decomposition as four-byte elements: the code point in the low three
+    /// bytes and its Canonical_Combining_Class in the high one, little-endian.
+    /// </summary>
+    DecompositionElements = 44,
+
+    /// <summary>
+    /// The full upper-case mapping per code point, in <see cref="NormalizationTrie"/>'s layout: 0 when
+    /// upper-casing leaves the code point; 0x8000 when the mapping is longer than one code point or its
+    /// difference does not fit, so <see cref="CasingRecords"/> holds it; and otherwise the difference of
+    /// the code point it maps to, as a fifteen-bit two's-complement number.
+    /// </summary>
+    UpperDeltaTrie = 45,
+
+    /// <summary>The full lower-case mapping per code point, in <see cref="UpperDeltaTrie"/>'s encoding.</summary>
+    LowerDeltaTrie = 46,
 }

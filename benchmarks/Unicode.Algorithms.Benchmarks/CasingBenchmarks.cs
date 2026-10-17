@@ -8,7 +8,8 @@ namespace Broiler.Unicode.Algorithms.Benchmarks;
 /// <summary>
 /// Casing: the workload's four calls per sample (upper and lower case, Turkic upper case and Lithuanian
 /// lower case, forty calls per operation), and the two single calls the SJL-7 direct timing named. The
-/// owner is metered as the engines meter it; the runtime reads the invariant culture and ICU's tr and lt.
+/// owner is metered as Broiler.VM meters it, and the workload also without a meter, as Broiler.JS calls
+/// it; the runtime reads the invariant culture and ICU's tr and lt.
 /// </summary>
 [MemoryDiagnoser]
 [CategoriesColumn]
@@ -36,6 +37,25 @@ public class CasingBenchmarks
             casing.ToLowerCase(sample, CaseLanguage.Default, int.MaxValue, charge, out var lower);
             casing.ToUpperCase(sample, CaseLanguage.Turkic, int.MaxValue, charge, out var turkic);
             casing.ToLowerCase(sample, CaseLanguage.Lithuanian, int.MaxValue, charge, out var lithuanian);
+            total += upper!.Length + lower!.Length + turkic!.Length + lithuanian!.Length;
+        }
+
+        return total;
+    }
+
+    /// <summary>The owner over the workload's four calls per sample without a meter, as Broiler.JS calls it.</summary>
+    [Benchmark]
+    [BenchmarkCategory("Workload")]
+    public int OwnerWorkloadUnmetered()
+    {
+        var total = 0;
+
+        foreach (var sample in Samples.Casing)
+        {
+            casing.ToUpperCase(sample, CaseLanguage.Default, int.MaxValue, null, out var upper);
+            casing.ToLowerCase(sample, CaseLanguage.Default, int.MaxValue, null, out var lower);
+            casing.ToUpperCase(sample, CaseLanguage.Turkic, int.MaxValue, null, out var turkic);
+            casing.ToLowerCase(sample, CaseLanguage.Lithuanian, int.MaxValue, null, out var lithuanian);
             total += upper!.Length + lower!.Length + turkic!.Length + lithuanian!.Length;
         }
 

@@ -16,12 +16,12 @@ and the figures below are the measurement of how far from that claim the per-uni
 | Files scanned | 14 |
 | Files not covered | 1 |
 | Files carrying an annotation | 14 |
-| Code units | 499 |
-| Relevant | 266 |
-| Exempt by predicate | 233 |
-| Annotated | 266 of 266 (100%) |
-| Human reviewed | 0 of 266 (0%) |
-| Unverified | 266 |
+| Code units | 546 |
+| Relevant | 306 |
+| Exempt by predicate | 240 |
+| Annotated | 306 of 306 (100%) |
+| Human reviewed | 0 of 306 (0%) |
+| Unverified | 306 |
 
 ## Review states
 
@@ -29,18 +29,18 @@ and the figures below are the measurement of how far from that claim the per-uni
 |---|---:|
 | NEW | 0 |
 | AI_ASSESSED | 0 |
-| HUMAN_PENDING | 266 |
+| HUMAN_PENDING | 306 |
 | HUMAN_APPROVED_PENDING_FINGERPRINT | 0 |
 | VERIFIED | 0 |
 | STALE | 0 |
-| EXEMPT | 233 |
+| EXEMPT | 240 |
 
 ## IP risk
 
 | Value | Units |
 |---|---:|
 | None | 0 |
-| Low | 266 |
+| Low | 308 |
 | Medium | 0 |
 | High | 0 |
 | Unknown | 0 |
@@ -51,9 +51,9 @@ and the figures below are the measurement of how far from that claim the per-uni
 | Value | Units |
 |---|---:|
 | None | 0 |
-| Low | 85 |
-| Medium | 161 |
-| High | 20 |
+| Low | 102 |
+| Medium | 182 |
+| High | 24 |
 | Critical | 0 |
 | *not annotated* | 0 |
 
@@ -63,10 +63,12 @@ and the figures below are the measurement of how far from that claim the per-uni
 |---|---:|
 | Maximum | 5 / 10 |
 | Average over annotated units | 1.3 / 10 |
-| Units scored | 266 |
+| Units scored | 306 |
 
 ## High-security review areas
 
+- `Broiler.Unicode.Algorithms.TableReader.RequireTrie(IUnicodeTables, UnicodeTable)` in `Unicode.Algorithms/UnicodeAlgorithms.cs` - Security=High, human line PENDING
+- `Broiler.Unicode.Algorithms.TableReader.RequireRecords(IUnicodeTables, UnicodeTable, UnicodeTable, int)` in `Unicode.Algorithms/UnicodeAlgorithms.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.TableReader.Require(IUnicodeTables, UnicodeTable, int)` in `Unicode.Algorithms/UnicodeAlgorithms.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.TableReader.Checked(IUnicodeTables)` in `Unicode.Algorithms/UnicodeAlgorithms.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.Utf16Reader.Next(ReadOnlySpan<char>, int, out int)` in `Unicode.Algorithms/UnicodeAlgorithms.cs` - Security=High, human line PENDING
@@ -77,8 +79,10 @@ and the figures below are the measurement of how far from that claim the per-uni
 - `Broiler.Unicode.Algorithms.UnicodeCaseMapping.ToLowerCase(string, CaseLanguage, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.UnicodeCaseMapping.NeedsLanguagePass(string, bool, CaseLanguage)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.UnicodeCaseMapping.Map(string, bool, CaseLanguage, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
-- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.DefaultPass(ReadOnlySpan<char>, string?, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
-- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.MapFrom(ReadOnlySpan<char>, int, bool, int[], ReadOnlySpan<byte>, ReadOnlySpan<byte>, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.DefaultPass(ReadOnlySpan<char>, string?, bool, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.MapAscii(string, int, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.MapFrom(ReadOnlySpan<char>, int, bool, int[], in CaseTables, bool, bool, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
+- `Broiler.Unicode.Algorithms.UnicodeCaseMapping.Triggers(bool, CaseLanguage)` in `Unicode.Algorithms/UnicodeCaseMapping.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.UnicodeNormalization.Transform(string, NormalForm, int, UnicodeWorkCharge?, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.UnicodeNormalization.Produce(string, int, ReadOnlySpan<int>, bool, in FormTables, int, int, out string?)` in `Unicode.Algorithms/UnicodeNormalization.cs` - Security=High, human line PENDING
 - `Broiler.Unicode.Algorithms.StringPropertySequences.TryRead(Span<int>, out int)` in `Unicode.Algorithms/UnicodeStringProperties.cs` - Security=High, human line PENDING
@@ -92,8 +96,8 @@ and the figures below are the measurement of how far from that claim the per-uni
 
 | Metric | Value |
 |---|---:|
-| Units carrying a criterion | 20 |
-| Units required to carry one | 20 |
+| Units carrying a criterion | 24 |
+| Units required to carry one | 24 |
 | Required and missing | 0 |
 
 A `Broiler-Falsified-If:` line states, at the declaration, the observation that would make
@@ -114,14 +118,14 @@ that the rule is reviewable in one place rather than in several hundred.
 
 | Case | Units |
 |---|---:|
-| TrivialPropertyOrAccessor | 37 |
-| ParameterAssigningConstructor | 4 |
+| TrivialPropertyOrAccessor | 38 |
+| ParameterAssigningConstructor | 5 |
 | TrivialExpressionBodiedMember | 0 |
 | CompilerSuppliedRecordOrEnumMember | 0 |
 | DelegatingOverrideOrOperator | 0 |
 | InsideAssemblyMarker | 0 |
-| FieldDeclaringStorage | 52 |
-| EnumMemberOfADeclaredVocabulary | 140 |
+| FieldDeclaringStorage | 48 |
+| EnumMemberOfADeclaredVocabulary | 149 |
 | DeclaredInSource | 0 |
 
 ## Per-unit exemptions
@@ -151,7 +155,7 @@ enter, and none of its files is covered.
 ## Change detection
 
 `assurance.manifest.json` lists **every** code unit in the 4 covered assemblies -
-499 of them, exempt and relevant alike - with the fingerprint of its declaration.
+546 of them, exempt and relevant alike - with the fingerprint of its declaration.
 This manifest is a change-detection record, not a review. A unit listed there is watched, not reviewed:
 the entry records what the declaration's tokens hashed to when the generator last ran, and
 nothing else. What the manifest adds is that a unit the exemption predicate treats as

@@ -25,6 +25,10 @@ under a heading with nothing to report.
 
 ### Added
 
+- **Constant-time tables**, `UnicodeTable` members 38 to 46, which the generator writes and
+  `Broiler.Unicode.Tables` carries: `NormalizationTrie`, `NormalizationRecords`, `CompositionLists`,
+  `DecompositionElements`, `CasingTrie`, `CasingRecords`, `UpperDeltaTrie`, `LowerDeltaTrie` and
+  `LexicalTrie`. Each member documents its layout.
 - `benchmarks/Unicode.Algorithms.Benchmarks`, which times `UnicodeNormalization` and `UnicodeCaseMapping`
   against the runtime's `string.Normalize` and casing on the sample strings of the engines' SJL-7
   Unicode workloads. It is not a package.
@@ -52,12 +56,37 @@ under a heading with nothing to report.
     `ToLowerCase("plain ascii text 0123")` 530 to 25 ns (runtime 10 ns). Normalization stays about
     4.8 times the runtime's: its remaining cost is the binary searches the table format implies.
 
+- **`Broiler.Unicode.Algorithms` reads the constant-time tables** (the second part of the remedy).
+  Every per-code-point answer of `UnicodeNormalization`, `UnicodeCaseMapping` and `EcmaScriptLexical`,
+  their public lookups included, is one trie lookup and at most one record read, instead of a binary
+  search.
+  - **What a provider must carry changes.** `UnicodeNormalization` requires `NormalizationLayout`,
+    `NormalizationTrie`, `NormalizationRecords`, `DecompositionElements` and `CompositionLists`;
+    `UnicodeCaseMapping` requires `CasingLayout`, `MappingPool`, `CasingTrie`, `CasingRecords`,
+    `UpperDeltaTrie` and `LowerDeltaTrie`; `EcmaScriptLexical` requires `LexicalTrie`. Each refuses a
+    provider that lacks one, or whose trie names a block or record it does not hold. A provider of
+    `0.1.0-preview.4`'s tables is refused: an engine regenerates its tables when it adopts this release.
+  - The tables `CombiningClassData`, `CanonicalIndex`, `CompatibilityIndex`, `DecompositionPool`,
+    `CompositionData`, `QuickCheckData`, `QuickCheckIndex`, `UpperIndex`, `LowerIndex`, `CasedRanges`,
+    `CaseIgnorableRanges` and `SoftDottedRanges` are still generated with their numbers, but no type
+    reads them; an engine may stop embedding them.
+  - Casing maps a run of ASCII at once, metered or not, charging each letter its unit before the run
+    is written; applies the Turkic upper case's one line in the default pass; and copies the text
+    between the code points a language's lines read. A text of ASCII alone reads no table.
+  - Measured as above, at `0.1.0-preview.4` and after both parts: the 40 normalization calls 41.3 to
+    7.2 µs metered and 6.7 µs unmetered (runtime 5.9 µs); the workload's 40 casing calls 17.47 to
+    4.96 µs metered and 4.36 µs unmetered (runtime 2.91 µs); `ToUpperCase("The Quick Brown Fox")`, with
+    its fifteen one-unit charges, 532 to 65 ns (runtime 27 ns); `ToLowerCase("plain ascii text 0123")`
+    530 to 16 ns (runtime 9 ns).
+
 ### Observable changes
 
 - No result, status or charge changes: every result, every status and every charge to the meter, in
   order, is that of `0.1.0-preview.4`. The new `DifferentialTests` hold every code point alone, 40,000
-  random texts at random limits and 300 long texts to that release's implementation, copied into the
-  tests.
+  random texts at random limits, 300 long texts, long unchanged prefixes, every composing pair and
+  Turkic texts of i at every limit to that release's implementation, copied into the tests, with a
+  meter and without one; and every code point's class, quick checks and casing properties to the old
+  tables'.
 - One difference of reference identity, which the documentation already promised: `ToUpperCase` and
   `ToLowerCase` with `CaseLanguage.Turkic` or `CaseLanguage.Lithuanian` answer a text that casing does
   not change, and that holds no code point the language's conditional lines read, as the same string
@@ -65,7 +94,9 @@ under a heading with nothing to report.
 
 ### Data
 
-- None. Every table is byte-identical.
+- The 37 tables of `0.1.0-preview.4` are byte-identical. The nine new ones add 449,775 bytes, from the
+  same pinned archive: `src/Unicode.Tables/UnicodeTableData.g.cs` carries 46 tables, 761,183 bytes,
+  Unicode 17.0.0, and the regeneration test still holds every byte to the generator (rule SL7).
 
 ## 0.1.0-preview.4, 2026-10-16
 

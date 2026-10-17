@@ -3,15 +3,15 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   27
-// Annotated:        27/27
-// Exempt:           47
-// Human-reviewed:   0/27
+// Relevant units:   31
+// Annotated:        31/31
+// Exempt:           46
+// Human-reviewed:   0/31
 // IP risk:          Low
 // Security risk:    Medium
 // Criteria:         0/0
 // Resource impact:  1/10 max
-// Unverified:       27
+// Unverified:       31
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
@@ -313,6 +313,11 @@ public sealed class UnicodeProperties
     // Broiler-Human:        PENDING
     internal int SetCount => tables.Table(UnicodeTable.PropertySets).Length / 6;
 
+    /// <summary>The provider the properties read.</summary>
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Low; Resources=0; Fingerprint=F71F26
+    // Broiler-Human:        PENDING
+    internal IUnicodeTables Tables => tables;
+
     /// <summary>The range list every set reads.</summary>
     // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.2.2.9 via Broiler.VM JsUnicodeProperties; IP=Low; Security=Medium; Resources=1; Fingerprint=1DF51F
     // Broiler-Human:        PENDING
@@ -450,28 +455,39 @@ public sealed class UnicodeProperties
 /// an identifier character. WhiteSpace is TAB, VT, FF, ZWNBSP and General_Category=Space_Separator: it
 /// does not include U+0085, which a platform's white-space test does, nor the line terminators.
 /// </para>
-/// <para>ASCII is answered by comparison; anything else is one binary search. Nothing allocates.</para>
+/// <para>
+/// ASCII is answered by comparison; anything else is one lookup in <see cref="UnicodeTable.LexicalTrie"/>.
+/// Nothing allocates.
+/// </para>
 /// </remarks>
 // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Low; Resources=1; Fingerprint=1D1E80
 // Broiler-Human:        PENDING
 public sealed class EcmaScriptLexical
 {
-    private readonly CodePointSet idStart;
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Low; Resources=0; Fingerprint=F43A1C
+    // Broiler-Human:        PENDING
+    private const int IdStartBit = 1;
 
-    private readonly CodePointSet idContinue;
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Low; Resources=0; Fingerprint=DEB5ED
+    // Broiler-Human:        PENDING
+    private const int IdContinueBit = 2;
 
-    private readonly CodePointSet spaceSeparator;
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Low; Resources=0; Fingerprint=A3C764
+    // Broiler-Human:        PENDING
+    private const int SpaceSeparatorBit = 4;
+
+    private readonly IUnicodeTables tables;
 
     /// <summary>The lexical classes over <paramref name="properties"/>.</summary>
-    /// <param name="properties">The property lookups.</param>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=5B3A1D
+    /// <param name="properties">The property lookups, over a provider that also carries <see cref="UnicodeTable.LexicalTrie"/>.</param>
+    /// <exception cref="ArgumentException">The provider lacks <see cref="UnicodeTable.LexicalTrie"/> or holds a malformed one.</exception>
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=63442F
     // Broiler-Human:        PENDING
     public EcmaScriptLexical(UnicodeProperties properties)
     {
         ArgumentNullException.ThrowIfNull(properties);
-        idStart = properties.IdStart;
-        idContinue = properties.IdContinue;
-        spaceSeparator = properties.SpaceSeparator;
+        tables = properties.Tables;
+        TableReader.RequireTrie(tables, UnicodeTable.LexicalTrie);
     }
 
     /// <summary>
@@ -479,35 +495,35 @@ public sealed class EcmaScriptLexical
     /// (ECMA-262 section 12.7, "Names and Keywords"). A surrogate code point is not one.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=F820E7
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=DDDD07
     // Broiler-Human:        PENDING
     public bool IsIdentifierStart(int codePoint) =>
         codePoint < 0x80
             ? (uint)((codePoint | 0x20) - 'a') <= 'z' - 'a' || codePoint is '$' or '_'
-            : idStart.Contains(codePoint);
+            : HasBit(codePoint, IdStartBit);
 
     /// <summary>
     /// Whether <paramref name="codePoint"/> is an IdentifierPartChar: ID_Continue, <c>$</c>, ZWNJ or ZWJ
     /// (ECMA-262 section 12.7). <c>_</c> and the decimal digits are in ID_Continue itself.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=05ADE8
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=6F38C8
     // Broiler-Human:        PENDING
     public bool IsIdentifierPart(int codePoint) =>
         codePoint < 0x80
             ? (uint)((codePoint | 0x20) - 'a') <= 'z' - 'a' || (uint)(codePoint - '0') <= 9 || codePoint is '$' or '_'
-            : codePoint is 0x200C or 0x200D || idContinue.Contains(codePoint);
+            : codePoint is 0x200C or 0x200D || HasBit(codePoint, IdContinueBit);
 
     /// <summary>
     /// Whether <paramref name="codePoint"/> is WhiteSpace: U+0009, U+000B, U+000C, U+FEFF or a
     /// Space_Separator (ECMA-262 section 12.2, "White Space"). Line terminators and U+0085 are not.
     /// </summary>
     /// <param name="codePoint">A code point.</param>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=0103D9
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=67C1A3
     // Broiler-Human:        PENDING
     public bool IsWhiteSpace(int codePoint) =>
         codePoint is 0x09 or 0x0B or 0x0C or 0x20 or 0xA0 or 0xFEFF ||
-        (codePoint > 0xFF && spaceSeparator.Contains(codePoint));
+        (codePoint > 0xFF && HasBit(codePoint, SpaceSeparatorBit));
 
     /// <summary>
     /// Whether <paramref name="codePoint"/> is a LineTerminator: LF, CR, U+2028 or U+2029 (ECMA-262
@@ -517,4 +533,10 @@ public sealed class EcmaScriptLexical
     // Broiler-AI:           Origin=Ported; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=3081D2
     // Broiler-Human:        PENDING
     public static bool IsLineTerminator(int codePoint) => codePoint is 0x0A or 0x0D or 0x2028 or 0x2029;
+
+    /// <summary>Whether <paramref name="codePoint"/>'s lexical value carries <paramref name="bit"/>; no code point outside the code space does.</summary>
+    // Broiler-AI:           Origin=AI; Spec=ECMA-262 12.2 and 12.7 via Broiler.VM JsUnicodeLexical; IP=Low; Security=Medium; Resources=1; Fingerprint=7490E3
+    // Broiler-Human:        PENDING
+    private bool HasBit(int codePoint, int bit) =>
+        (uint)codePoint <= UnicodeAlgorithms.MaxCodePoint && (TableReader.Trie(TableReader.Words(tables.Table(UnicodeTable.LexicalTrie)), codePoint) & bit) != 0;
 }

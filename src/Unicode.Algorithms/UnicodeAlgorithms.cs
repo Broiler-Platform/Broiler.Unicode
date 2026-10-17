@@ -3,20 +3,22 @@
 //
 // Broiler Code Assurance
 // ----------------------
-// Relevant units:   19
-// Annotated:        19/19
+// Relevant units:   27
+// Annotated:        27/27
 // Exempt:           2
-// Human-reviewed:   0/19
+// Human-reviewed:   0/27
 // IP risk:          Low
 // Security risk:    High
-// Criteria:         4/4
+// Criteria:         6/6
 // Resource impact:  2/10 max
-// Unverified:       19
+// Unverified:       27
 //
 // GENERATED - DO NOT EDIT MANUALLY
 
 using System;
+using System.Buffers.Binary;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace Broiler.Unicode.Algorithms;
 
@@ -159,6 +161,95 @@ internal static class TableReader
         }
 
         return -1;
+    }
+
+    /// <summary>The bytes of a trie's block index: one two-byte block number per 64 code points.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Low; Resources=0; Fingerprint=AE76C1
+    // Broiler-Human:        PENDING
+    internal const int TrieIndexBytes = (UnicodeAlgorithms.MaxCodePoint + 1) / 64 * 2;
+
+    /// <summary>
+    /// A trie table as its two-byte words, which <see cref="Trie(ReadOnlySpan{ushort}, int)"/> reads. A
+    /// view: nothing is copied, and the tables' little-endian order is read as such on any host.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=4755D0
+    // Broiler-Human:        PENDING
+    internal static ReadOnlySpan<ushort> Words(ReadOnlySpan<byte> trie) => MemoryMarshal.Cast<byte, ushort>(trie);
+
+    /// <summary>
+    /// The value a trie gives <paramref name="codePoint"/>, which must be U+0000 to U+10FFFF: two reads,
+    /// the block number and the value (<see cref="UnicodeTable.NormalizationTrie"/>'s layout).
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=2A4E58
+    // Broiler-Human:        PENDING
+    internal static int Trie(ReadOnlySpan<ushort> trie, int codePoint) =>
+        Word(trie, (TrieIndexBytes / 2) + ((Word(trie, codePoint >> 6) << 6) | (codePoint & 63)));
+
+    /// <summary>A table of four-byte elements as its elements, which <see cref="Element"/> reads.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=E5D23F
+    // Broiler-Human:        PENDING
+    internal static ReadOnlySpan<int> Elements(ReadOnlySpan<byte> table) => MemoryMarshal.Cast<byte, int>(table);
+
+    /// <summary>A little-endian four-byte element of a table read as elements.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=864497
+    // Broiler-Human:        PENDING
+    internal static int Element(ReadOnlySpan<int> elements, int index) =>
+        BitConverter.IsLittleEndian ? elements[index] : BinaryPrimitives.ReverseEndianness(elements[index]);
+
+    /// <summary>A little-endian two-byte word of a table read as words.</summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=Medium; Resources=1; Fingerprint=DDBF10
+    // Broiler-Human:        PENDING
+    internal static int Word(ReadOnlySpan<ushort> words, int index) =>
+        BitConverter.IsLittleEndian ? words[index] : BinaryPrimitives.ReverseEndianness(words[index]);
+
+    /// <summary>
+    /// A required trie, refused when the provider does not carry it or it is not well formed: a full block
+    /// index, whole blocks, and every block number naming one of them.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=High; Resources=2; Fingerprint=D22D05
+    // Broiler-Falsified-If: a trie whose index names a block it does not hold, or that is cut short, is accepted
+    // Broiler-Human:        PENDING
+    internal static void RequireTrie(IUnicodeTables tables, UnicodeTable table)
+    {
+        var data = tables.Table(table);
+
+        if (data.Length <= TrieIndexBytes || (data.Length - TrieIndexBytes) % 128 != 0)
+        {
+            throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"{table} is {data.Length} bytes, not a block index and whole blocks."), nameof(tables));
+        }
+
+        var blocks = (data.Length - TrieIndexBytes) / 128;
+
+        for (var at = 0; at < TrieIndexBytes; at += 2)
+        {
+            if (UInt16(data, at) >= blocks)
+            {
+                throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"{table} names block {UInt16(data, at)} of {blocks}."), nameof(tables));
+            }
+        }
+    }
+
+    /// <summary>
+    /// A required record table, refused when it is missing, is not whole records, or has fewer records
+    /// than the highest number <paramref name="trie"/> gives.
+    /// </summary>
+    // Broiler-AI:           Origin=AI; Spec=JSD-0074 SJL-D-6 (c) constant-time tables; IP=Low; Security=High; Resources=2; Fingerprint=08747A
+    // Broiler-Falsified-If: a trie value naming a record past the record table's end is accepted
+    // Broiler-Human:        PENDING
+    internal static void RequireRecords(IUnicodeTables tables, UnicodeTable trie, UnicodeTable records, int recordSize)
+    {
+        Require(tables, records, recordSize);
+
+        var data = tables.Table(trie);
+        var count = tables.Table(records).Length / recordSize;
+
+        for (var at = TrieIndexBytes; at < data.Length; at += 2)
+        {
+            if (UInt16(data, at) >= count)
+            {
+                throw new ArgumentException(string.Create(NumberFormatInfo.InvariantInfo, $"{trie} names record {UInt16(data, at)} of {count} in {records}."), nameof(tables));
+            }
+        }
     }
 
     /// <summary>The <paramref name="position"/>th three-byte value of a layout table.</summary>
