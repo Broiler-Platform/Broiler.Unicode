@@ -117,7 +117,7 @@ public sealed class DifferentialTests
     }
 
     [Fact]
-    public void D6_a_long_unchanged_prefix_before_the_first_change_is_answered_as_preview_4_answered_it()
+    public void D4_a_long_unchanged_prefix_before_the_first_change_is_answered_as_preview_4_answered_it()
     {
         foreach (var length in new[] { 0, 1, 9, 10, 11, 255, 256, 257, 300, 1000 })
         {
@@ -137,7 +137,7 @@ public sealed class DifferentialTests
     }
 
     [Fact]
-    public void D4_every_code_point_s_trie_answers_are_the_range_and_index_tables_answers()
+    public void D5_every_code_point_s_trie_answers_are_the_range_and_index_tables_answers()
     {
         var properties = new UnicodeProperties(UnicodeTables.Instance);
         var lexical = new EcmaScriptLexical(properties);
@@ -167,7 +167,7 @@ public sealed class DifferentialTests
     }
 
     [Fact]
-    public void D5_every_pair_of_a_composing_first_and_second_composes_as_preview_4_composed_it()
+    public void D6_every_pair_of_a_composing_first_and_second_composes_as_preview_4_composed_it()
     {
         var data = UnicodeTables.Instance.Table(UnicodeTable.CompositionData);
         var firsts = new SortedSet<int>();
