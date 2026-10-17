@@ -1,0 +1,48 @@
+part-a-probe-jit: 
+part-a: Total tests: 17  Passed: 17 
+  A5 binary properties: 98 names run, 0 failed
+  A5 Script and Script_Extensions: 346 value names run under 4 property names, 0 failed
+  A5 properties of strings: 7 names run, 0 failed
+  A5 refused set: 1105 lone names and 49 string-property names refused, 0 failed
+  A5 General_Category: 80 value names run alone and under 2 property names, 0 failed
+  A1 part 1's closing claim: 1097026 code points run in four forms, 0 failed
+  A1 NormalizationTest.txt: 20034 lines run, 400680 comparisons, 0 failed
+  A2 WordBreakTest.txt: 1944 lines run, 0 failed
+  A2 SentenceBreakTest.txt: 512 lines run, 0 failed
+  A2 GraphemeBreakTest.txt: 766 lines run, 0 failed
+  A4 SpecialCasing.txt's conditional lines: 12 lines, 32 cases run, 0 failed
+  A4 every code point alone: 1114112 code points upper- and lower-cased, 0 failed
+  A3 CaseFolding.txt: 1512 C and S lines, 1114112 code points folded and orbited, 0 failed
+part-b-run-1: Total tests: 8  Passed: 8 
+part-b-run-2: Total tests: 8  Passed: 8 
+part-c-6: Total tests: 2  Passed: 2 
+part-c-old-package: Total tests: 2  Passed: 2 
+part-c: Total tests: 23  Passed: 23 
+part-d-aot-compare: 
+part-d-aot-publish: 
+part-d-aot-run: 
+part-d-assurance-drift-caught: Broiler.Unicode shared libraries: 5 violations: J3 1, J5 2, J7 2. 
+part-d-assurance-drift-reverted: Broiler.Unicode shared libraries: no violations. 
+part-d-assurance: Broiler.Unicode shared libraries: no violations. 
+part-d-rules: Total tests: 32  Passed: 32 
+witness-C-1-build: 
+witness-C-1-caught: Total tests: 1  Failed: 1 
+witness-C-1-revert-build: 
+witness-C-1-reverted: Total tests: 1  Passed: 1 
+witness-C-2-build: 
+witness-C-2-caught: Total tests: 2  Passed: 1  Failed: 1 
+witness-C-2-revert-build: 
+witness-C-2-reverted: Total tests: 2  Passed: 2 
+witness-C-3-build: 
+witness-C-3-caught: Total tests: 2  Failed: 2 
+witness-C-3-revert-build: 
+witness-C-3-reverted: Total tests: 2  Passed: 2 
+witness-C-4-build: 
+witness-C-4-caught: Total tests: 6  Passed: 2  Failed: 4 
+witness-C-4-revert-build: 
+witness-C-4-reverted: Total tests: 6  Passed: 6 
+witness-C-5-build: 
+witness-C-5-caught: Total tests: 1  Failed: 1 
+witness-C-5-revert-build: 
+witness-C-5-reverted: Total tests: 1  Passed: 1 
+every step ended as the rule expects

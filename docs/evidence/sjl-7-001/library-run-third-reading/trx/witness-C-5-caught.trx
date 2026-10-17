@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4e238715-d73d-42aa-aae1-ca423372d250" name="@vm 2026-10-17 12:53:01" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-17T12:53:01.0035969+00:00" queuing="2026-10-17T12:53:01.0035970+00:00" start="2026-10-17T12:52:59.8406240+00:00" finish="2026-10-17T12:53:01.0133150+00:00" />
+  <TestSettings name="default" id="9de706fc-db1e-48f2-8682-bbab32e791e9">
+    <Deployment runDeploymentRoot="_vm_2026-10-17_12_53_01" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4d5c9e5b-b12e-4977-97f4-ef4d5ea04a09" testId="5ad12504-32fc-8e19-4d3d-8ce729fdb6bf" testName="Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through" computerName="vm" duration="00:00:00.0147291" startTime="2026-10-17T12:53:00.8335182+00:00" endTime="2026-10-17T12:53:00.8335443+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4d5c9e5b-b12e-4977-97f4-ef4d5ea04a09">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : unknown (Parameter 'name')</Message>
+          <StackTrace>   at Broiler.Unicode.Algorithms.UnicodeProperties.TryResolve(ReadOnlySpan`1 name, CodePointSet&amp; set) in /tmp/tmp.optljurOLY/tree/src/Unicode.Algorithms/UnicodeProperties.cs:line 342
+   at Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through() in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 242
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through" storage="/tmp/tmp.optljuroly/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="5ad12504-32fc-8e19-4d3d-8ce729fdb6bf">
+      <Execution id="4d5c9e5b-b12e-4977-97f4-ef4d5ea04a09" />
+      <TestMethod codeBase="/tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.ContractTests" name="C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5ad12504-32fc-8e19-4d3d-8ce729fdb6bf" executionId="4d5c9e5b-b12e-4977-97f4-ef4d5ea04a09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.13]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.25]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.26]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.34]       System.ArgumentException : unknown (Parameter 'name')
+[xUnit.net 00:00:00.34]       Stack Trace:
+[xUnit.net 00:00:00.34]         /tmp/tmp.optljurOLY/tree/src/Unicode.Algorithms/UnicodeProperties.cs(342,0): at Broiler.Unicode.Algorithms.UnicodeProperties.TryResolve(ReadOnlySpan`1 name, CodePointSet&amp; set)
+[xUnit.net 00:00:00.34]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(242,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through()
+[xUnit.net 00:00:00.34]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.34]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.35]   Finished:    Unicode.Algorithms.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="vm" outcome="Error" timestamp="2026-10-17T12:53:00.8305583+00:00">
+        <Text>[xUnit.net 00:00:00.34]     Broiler.Unicode.Algorithms.Tests.ContractTests.C5_an_unknown_name_is_a_false_and_a_lone_surrogate_passes_through [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

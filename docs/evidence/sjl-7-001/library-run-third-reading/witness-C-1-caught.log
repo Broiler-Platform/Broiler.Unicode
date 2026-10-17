@@ -1,0 +1,32 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C1_ witness-C-1-caught   # must fail
+Test run for /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.07]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.15]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.21]     Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [FAIL]
+[xUnit.net 00:00:00.21]       Assert.Contains() Failure: Sub-string not found
+[xUnit.net 00:00:00.21]       String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+[xUnit.net 00:00:00.21]       Not found: "Broiler.Unicode.Algorithms"
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(37,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning()
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.22]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [5 ms]
+  Error Message:
+   Assert.Contains() Failure: Sub-string not found
+String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+Not found: "Broiler.Unicode.Algorithms"
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning() in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 37
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 1
+     Failed: 1
+ Total time: 0.8476 Seconds
+Results File: /home/user/broiler.unicode/docs/evidence/sjl-7-001/library-run-third-reading/trx/witness-C-1-caught.trx

@@ -1,0 +1,51 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C3_ witness-C-3-caught   # must fail
+Test run for /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.20]     Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused [FAIL]
+[xUnit.net 00:00:00.20]       Assert.Throws() Failure: No exception was thrown
+[xUnit.net 00:00:00.20]       Expected: typeof(System.ArgumentException)
+[xUnit.net 00:00:00.20]       Stack Trace:
+[xUnit.net 00:00:00.21]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(114,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused()
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.21]     Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version [FAIL]
+[xUnit.net 00:00:00.21]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:00.21]                   ↓ (pos 1)
+[xUnit.net 00:00:00.21]       Expected: "17.0.0"
+[xUnit.net 00:00:00.21]       Actual:   "16.0.0"
+[xUnit.net 00:00:00.21]                   ↑ (pos 1)
+[xUnit.net 00:00:00.21]       Stack Trace:
+[xUnit.net 00:00:00.21]         /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(103,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version()
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.21]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.22]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused [7 ms]
+  Error Message:
+   Assert.Throws() Failure: No exception was thrown
+Expected: typeof(System.ArgumentException)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_tables_of_another_version_are_refused() in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 114
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version [2 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+            ↓ (pos 1)
+Expected: "17.0.0"
+Actual:   "16.0.0"
+            ↑ (pos 1)
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C3_every_package_states_the_pin_s_version() in /tmp/tmp.optljurOLY/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 103
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 2
+     Failed: 2
+ Total time: 0.7268 Seconds
+Results File: /home/user/broiler.unicode/docs/evidence/sjl-7-001/library-run-third-reading/trx/witness-C-3-caught.trx

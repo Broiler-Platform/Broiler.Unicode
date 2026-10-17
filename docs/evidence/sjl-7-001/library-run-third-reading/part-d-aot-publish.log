@@ -1,0 +1,12 @@
+$ dotnet publish probes/Unicode.Probe -c Release -r linux-x64
+  Determining projects to restore...
+  Restored /tmp/tmp.optljurOLY/tree/src/Unicode.Segmentation/Unicode.Segmentation.csproj (in 459 ms).
+  Restored /tmp/tmp.optljurOLY/tree/src/Unicode.Tables/Unicode.Tables.csproj (in 459 ms).
+  Restored /tmp/tmp.optljurOLY/tree/probes/Unicode.Probe/Unicode.Probe.csproj (in 458 ms).
+  Restored /tmp/tmp.optljurOLY/tree/src/Unicode.Algorithms/Unicode.Algorithms.csproj (in 459 ms).
+  Unicode.Algorithms -> /tmp/tmp.optljurOLY/tree/src/Unicode.Algorithms/bin/Release/net10.0/Broiler.Unicode.Algorithms.dll
+  Unicode.Segmentation -> /tmp/tmp.optljurOLY/tree/src/Unicode.Segmentation/bin/Release/net10.0/Broiler.Unicode.Segmentation.dll
+  Unicode.Tables -> /tmp/tmp.optljurOLY/tree/src/Unicode.Tables/bin/Release/net10.0/Broiler.Unicode.Tables.dll
+  Unicode.Probe -> /tmp/tmp.optljurOLY/tree/probes/Unicode.Probe/bin/Release/net10.0/linux-x64/Broiler.Unicode.Probe.dll
+  Generating native code
+  Unicode.Probe -> /tmp/tmp.optljurOLY/tree/probes/Unicode.Probe/bin/Release/net10.0/linux-x64/publish/

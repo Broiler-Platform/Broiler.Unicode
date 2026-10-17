@@ -28,6 +28,9 @@ SJL-7.2's last part. It is not taken yet, and nothing here reads it.")*
 - Part D's first reading holds for D-1, D-3 and D-4. D-2 holds when this branch reaches the default branch.
 - Part D's second reading, at `f3d677a` at SJL-7.6, holds for D-1, D-3 and D-4 again; D-2 still waits on the
   merge (section 5). *(Added 2026-10-17, at SJL-7.6.)*
+- **This branch reached the default branch at `eab5e64`, so D-2 holds, and part D is MET**, read as both readings
+  framed D-2. A third reading at `6ee6338`, the default branch carrying `0.1.0-preview.5`, holds for all four
+  checks, and parts A to C pass there again (section 5). *(Added 2026-10-17, after SJL-7.6.)*
 - The reference-arm comparison is **MET** at `3f7dbce`, under its rule as revised after its first run, which
   makes it weaker evidence (section 6).
 
@@ -158,6 +161,59 @@ reading's byte for byte. Parts A, B and C hold again at this commit, though this
 **Part D is therefore MET for D-1, D-3 and D-4 at both readings, and D-2 waits on the merge of this branch** into
 the default branch. Until then part D is not judged MET, and neither is the owner's clause 1.
 
+### The merge, and part D's third reading on `0.1.0-preview.5`
+
+*Added 2026-10-17, after SJL-7.6.*
+
+**D-2 holds.** Pull request [#15](https://github.com/Broiler-Platform/Broiler.Unicode/pull/15) merged this branch
+into the default branch at `eab5e64`, on 2026-10-17, with a merge commit whose second parent is `33386ee`, the
+second reading's head with its CI record. Its tree is `33386ee`'s, byte for byte. CI on the default branch at
+`eab5e64`, [run 39011176855](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/39011176855),
+succeeded. From then on, the default branch carries `docs/roadmap.md` with this milestone's items and this
+milestone's records: SJL-7.1's owner conditions, SJL-7.2's and SJL-7.6's.
+
+**What reaches the default branch after it.** The owner then had normalization, case mapping and the lexical
+classes made faster:
+- [#16](https://github.com/Broiler-Platform/Broiler.Unicode/pull/16) without changing the tables' format;
+- [#17](https://github.com/Broiler-Platform/Broiler.Unicode/pull/17) with constant-time tables, which the
+  generator writes and the provider hands over like the others.
+
+They were published as `0.1.0-preview.5` from `b802014`
+([run 39028782865](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/39028782865)), and
+[#18](https://github.com/Broiler-Platform/Broiler.Unicode/pull/18) records the release in the changelog, at
+`6ee6338`. Both engines moved to `0.1.0-preview.5` the same day. This bundle judged parts A to C at `378c2f0`, on
+code `0.1.0-preview.4` carries, so the same script took every part again at `6ee6338`. The rule asks for no third
+reading. It is taken so that the record shows the conditions and the owner's clauses on the code the engines now
+run.
+
+| | |
+|---|---|
+| Commit | `6ee63386a98941c389f67161123f5448062bddef`, the default branch's head ([`environment.txt`](library-run-third-reading/environment.txt)). Against the second reading's `f3d677a` it changes, under `src/`: `Unicode.Algorithms`' `IUnicodeTables.cs`, `UnicodeAlgorithms.cs`, `UnicodeCaseMapping.cs`, `UnicodeNormalization.cs`, `UnicodeProperties.cs` and `PublicAPI.txt`; the generator `UnicodeTableGenerator.cs` and the tables it writes, `UnicodeTableData.g.cs`; and the assurance artefacts, regenerated. Nothing under `probes/` or `data/` changes |
+| Taken | 2026-10-17 from 12:50:34Z, on the programme's cloud machine (`linux-x64`, .NET SDK 10.0.401, runtime 10.0.12); nothing in these parts is timed |
+| Broiler.Code | `afd4ffb`, its default branch's head, which CI also checks out |
+| CI at the same commit | [run 39029873398](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/39029873398), on the default branch, succeeded in every job, the Native AOT probe on `linux-x64` and `win-x64` and the assurance check among them |
+
+**Every step's outcome equals the second reading's.** [`summary.txt`](library-run-third-reading/summary.txt) is
+the second reading's, byte for byte, and so is the probe's report under the JIT,
+[`probe-jit.txt`](library-run-third-reading/probe-jit.txt). The probe's report is the library's answers over the
+pinned inputs, so those answers did not move with the faster code. Part A ran every case of A1 to A5 again with
+none failing. Part B regenerated every table byte for byte, the new ones included, in both runs, 8 tests each.
+Part C's 23 and 2 contract tests passed, and each witness was caught and passed on its revert as before.
+
+| Check | Third reading |
+|---|---|
+| D-1 conventions | **Holds.** Rules SL1 to SL10 pass, 32 tests ([`part-d-rules.log`](library-run-third-reading/part-d-rules.log)); the Native AOT probe publishes with no warning ([`part-d-aot-publish.log`](library-run-third-reading/part-d-aot-publish.log)) and its report equals the JIT's ([`part-d-aot-compare.log`](library-run-third-reading/part-d-aot-compare.log)); the consumed packages' project files are the first reading's; and CI runs the probe |
+| D-2 the roadmap | **Holds.** The default branch is this commit, and carries `docs/roadmap.md` with the milestone's items and its records |
+| D-3 the assurance gate | **Holds.** `assurance check` reports no violations ([`part-d-assurance.log`](library-run-third-reading/part-d-assurance.log)), and the injected drift was caught with the same 5 violations, J3, J5 and J7 ([`part-d-assurance-drift-caught.log`](library-run-third-reading/part-d-assurance-drift-caught.log)), passing on its revert. The artefacts were regenerated for the new code and are committed: 306 relevant units, against 247. [`HUMAN_REVIEW.md`](../../../HUMAN_REVIEW.md) is the first reading's and names the revision it reviews; [`src/HUMAN_REVIEW.md`](../../../src/HUMAN_REVIEW.md) reads PENDING for all 306 |
+| D-4 pinned and hashed inputs | **Holds**: part B's two runs pass, 8 tests each ([`part-b-run-1.log`](library-run-third-reading/part-b-run-1.log), [`part-b-run-2.log`](library-run-third-reading/part-b-run-2.log)) |
+
+**Part D is MET, and with it the owner's clause 1.** D-1, D-3 and D-4 held at both readings the rule asks for.
+At both, D-2 was read as holding when this branch reached the default branch, and it did so at `eab5e64` with
+every file the readings named unchanged. The rule says every check must hold at both readings, and D-2 did not
+yet hold on the default branch when either reading was taken. This verdict therefore depends on the condition
+both readings stated, met after them. The third reading, on the code the engines now run, holds for all four
+checks.
+
 ## 6. The reference-arm comparison: MET under the rule as revised after its first run
 
 **Read under [`reference-arms-revised-2026-10-16-after-first-run.md`](reference-arms-revised-2026-10-16-after-first-run.md).**
@@ -220,6 +276,12 @@ comparison already was, by this run.
 
 ## 7. What this bundle does not yet hold
 
-- **Part D's check D-2 at either reading**, which holds when this branch reaches the default branch. *(Revised
-  2026-10-17, at SJL-7.6, when the second reading was taken. This item read "**Part D's second reading**, at
-  SJL-7.6.")*
+Nothing that this bundle's rules decide is outstanding. *(Revised 2026-10-17, after SJL-7.6, when this branch
+reached the default branch and the third reading was taken. The section held one item, "**Part D's check D-2 at
+either reading**, which holds when this branch reaches the default branch.", which read until SJL-7.6
+"**Part D's second reading**, at SJL-7.6.")*
+
+- **No reference-arm comparison on `0.1.0-preview.5`.** The comparison was taken at `3f7dbce`, on
+  `0.1.0-preview.4`'s sources. The third reading's probe report and part A to C runs show the library's answers
+  unchanged, and the differential tests `0.1.0-preview.5` added compare it with `0.1.0-preview.4` on every form.
+  Neither is the comparison [`reference-arms.md`](reference-arms.md) states, and no rule asks for it again.
