@@ -73,6 +73,11 @@ under a heading with nothing to report.
   - Casing maps a run of ASCII at once, metered or not, charging each letter its unit before the run
     is written; applies the Turkic upper case's one line in the default pass; and copies the text
     between the code points a language's lines read. A text of ASCII alone reads no table.
+  - Measured as above, at `0.1.0-preview.4` and after both parts: the 40 normalization calls 41.3 to
+    7.2 µs metered and 6.7 µs unmetered (runtime 5.9 µs); the workload's 40 casing calls 17.47 to
+    4.96 µs metered and 4.36 µs unmetered (runtime 2.91 µs); `ToUpperCase("The Quick Brown Fox")`, with
+    its fifteen one-unit charges, 532 to 65 ns (runtime 27 ns); `ToLowerCase("plain ascii text 0123")`
+    530 to 16 ns (runtime 9 ns).
 
 ### Observable changes
 
