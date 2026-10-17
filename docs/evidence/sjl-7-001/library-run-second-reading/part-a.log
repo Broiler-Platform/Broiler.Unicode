@@ -1,0 +1,84 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~UnicodeTestFileTests|FullyQualifiedName~EcmaScriptTableTests|FullyQualifiedName~UcdPropertyTests part-a
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_binary_property_name_and_alias_resolves_to_its_canonical_property [50 ms]
+  Standard Output Messages:
+ A5 binary properties: 98 names run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_Script_value_and_alias_resolves_under_Script_and_Script_Extensions [23 ms]
+  Standard Output Messages:
+ A5 Script and Script_Extensions: 346 value names run under 4 property names, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_property_of_strings_resolves [10 ms]
+  Standard Output Messages:
+ A5 properties of strings: 7 names run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_the_refused_set_is_refused [14 ms]
+  Standard Output Messages:
+ A5 refused set: 1105 lone names and 49 string-property names refused, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_General_Category_value_and_alias_resolves_alone_and_as_a_value [23 ms]
+  Standard Output Messages:
+ A5 General_Category: 80 value names run alone and under 2 property names, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_code_point_s_General_Category_is_the_UCD_s [834 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_part_1_closing_claim [1 s]
+  Standard Output Messages:
+ A1 part 1's closing claim: 1097026 code points run in four forms, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_every_line [421 ms]
+  Standard Output Messages:
+ A1 NormalizationTest.txt: 20034 lines run, 400680 comparisons, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: "WordBreakTest.txt", granularity: Word) [27 ms]
+  Standard Output Messages:
+ A2 WordBreakTest.txt: 1944 lines run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: "SentenceBreakTest.txt", granularity: Sentence) [2 ms]
+  Standard Output Messages:
+ A2 SentenceBreakTest.txt: 512 lines run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: "GraphemeBreakTest.txt", granularity: Grapheme) [2 ms]
+  Standard Output Messages:
+ A2 GraphemeBreakTest.txt: 766 lines run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_conditional_line_where_it_holds_and_where_it_does_not [18 ms]
+  Standard Output Messages:
+ A4 SpecialCasing.txt's conditional lines: 12 lines, 32 cases run, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_code_point_alone_in_the_default_language [751 ms]
+  Standard Output Messages:
+ A4 every code point alone: 1114112 code points upper- and lower-cased, 0 failed
+
+
+  Passed Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_Script_and_Script_Extensions_value_is_the_UCD_s_set [1 s]
+  Passed Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_binary_property_ECMA_262_admits_is_the_UCD_s_set [402 ms]
+  Passed Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_the_lexical_classes_are_the_clauses_sets_over_the_UCD_s [243 ms]
+[xUnit.net 00:00:04.81]   Finished:    Unicode.Algorithms.Tests
+  Passed Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A3_CaseFolding_every_line_and_every_orbit [2 s]
+  Standard Output Messages:
+ A3 CaseFolding.txt: 1512 C and S lines, 1114112 code points folded and orbited, 0 failed
+
+
+
+Test Run Successful.
+Total tests: 17
+     Passed: 17
+ Total time: 5.3658 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/unicode-second/trx/part-a.trx

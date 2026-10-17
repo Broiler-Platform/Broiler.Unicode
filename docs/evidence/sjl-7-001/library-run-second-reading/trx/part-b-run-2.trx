@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="da09318d-d0fe-4e49-a0b8-5818b970feff" name="@vm 2026-10-17 00:00:34" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-17T00:00:34.7016950+00:00" queuing="2026-10-17T00:00:34.7016950+00:00" start="2026-10-17T00:00:32.7640732+00:00" finish="2026-10-17T00:00:34.7750081+00:00" />
+  <TestSettings name="default" id="c26040dd-6457-49d5-8965-903308e4944c">
+    <Deployment runDeploymentRoot="_vm_2026-10-17_00_00_34" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="1dee28d9-3d81-4333-9361-d2ae9da082db" testId="8b9794d4-31fb-a0a3-a3c5-78da7ec585e5" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_pinned_input_is_refused" computerName="vm" duration="00:00:00.0278874" startTime="2026-10-17T00:00:33.4551764+00:00" endTime="2026-10-17T00:00:33.4551766+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1dee28d9-3d81-4333-9361-d2ae9da082db" />
+    <UnitTestResult executionId="0c4c7bfa-08e5-48e5-a100-f8ac14984f94" testId="60aeaa39-4691-4f42-2f64-542e83abcf6d" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Two_generations_write_the_same_bytes" computerName="vm" duration="00:00:00.3968822" startTime="2026-10-17T00:00:34.6313331+00:00" endTime="2026-10-17T00:00:34.6313337+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c4c7bfa-08e5-48e5-a100-f8ac14984f94" />
+    <UnitTestResult executionId="e18a63c0-9290-4679-9ae2-6ca57fd5ac67" testId="24a9ad17-2eea-a489-3678-c760bdb801d4" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_regenerates_byte_for_byte_from_the_pin" computerName="vm" duration="00:00:00.0060254" startTime="2026-10-17T00:00:34.2340658+00:00" endTime="2026-10-17T00:00:34.2340660+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e18a63c0-9290-4679-9ae2-6ca57fd5ac67" />
+    <UnitTestResult executionId="189e4681-a1a8-454e-98a0-03e696a40e27" testId="bbd5a0e3-e318-1bb7-8198-e3046f0d4738" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_generator_package_carries_this_repository_s_pin" computerName="vm" duration="00:00:00.0008911" startTime="2026-10-17T00:00:33.4617637+00:00" endTime="2026-10-17T00:00:33.4617638+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="189e4681-a1a8-454e-98a0-03e696a40e27" />
+    <UnitTestResult executionId="2f178e7b-3f18-414f-adab-7b46159b5560" testId="dd4c9335-0d73-f4fd-1f09-5b7bc1aca65b" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_the_algorithms_read_is_generated" computerName="vm" duration="00:00:00.7412286" startTime="2026-10-17T00:00:34.2034554+00:00" endTime="2026-10-17T00:00:34.2034556+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f178e7b-3f18-414f-adab-7b46159b5560" />
+    <UnitTestResult executionId="89b3d8c1-89ba-480f-a9d6-b84a5ed1768f" testId="643e4666-c98f-7d6f-239a-6a6bda944751" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_hash_in_the_pin_is_refused_before_anything_is_written" computerName="vm" duration="00:00:00.0546337" startTime="2026-10-17T00:00:33.4204401+00:00" endTime="2026-10-17T00:00:33.4204553+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89b3d8c1-89ba-480f-a9d6-b84a5ed1768f" />
+    <UnitTestResult executionId="c356e75c-cccf-4578-a37b-b93e02536959" testId="5b9eeaa2-ce63-c002-4ff6-db0bb63e4388" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_pin_equals_Broiler_VM_pin_by_file_name_length_and_hash" computerName="vm" duration="00:00:00.0090807" startTime="2026-10-17T00:00:33.4606538+00:00" endTime="2026-10-17T00:00:33.4606539+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c356e75c-cccf-4578-a37b-b93e02536959" />
+    <UnitTestResult executionId="0c9618a0-6d29-4b4d-850c-58e924083541" testId="970ceb05-f1ab-17ea-846f-a6e1416d266b" testName="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_committed_table_is_reported_with_its_table" computerName="vm" duration="00:00:00.0242558" startTime="2026-10-17T00:00:34.2278370+00:00" endTime="2026-10-17T00:00:34.2278372+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c9618a0-6d29-4b4d-850c-58e924083541" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_the_algorithms_read_is_generated" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="dd4c9335-0d73-f4fd-1f09-5b7bc1aca65b">
+      <Execution id="2f178e7b-3f18-414f-adab-7b46159b5560" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Every_table_the_algorithms_read_is_generated" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Two_generations_write_the_same_bytes" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="60aeaa39-4691-4f42-2f64-542e83abcf6d">
+      <Execution id="0c4c7bfa-08e5-48e5-a100-f8ac14984f94" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Two_generations_write_the_same_bytes" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_committed_table_is_reported_with_its_table" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="970ceb05-f1ab-17ea-846f-a6e1416d266b">
+      <Execution id="0c9618a0-6d29-4b4d-850c-58e924083541" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Control_a_changed_byte_of_a_committed_table_is_reported_with_its_table" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_byte_of_a_pinned_input_is_refused" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="8b9794d4-31fb-a0a3-a3c5-78da7ec585e5">
+      <Execution id="1dee28d9-3d81-4333-9361-d2ae9da082db" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Control_a_changed_byte_of_a_pinned_input_is_refused" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_generator_package_carries_this_repository_s_pin" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="bbd5a0e3-e318-1bb7-8198-e3046f0d4738">
+      <Execution id="189e4681-a1a8-454e-98a0-03e696a40e27" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="The_generator_package_carries_this_repository_s_pin" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Control_a_changed_hash_in_the_pin_is_refused_before_anything_is_written" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="643e4666-c98f-7d6f-239a-6a6bda944751">
+      <Execution id="89b3d8c1-89ba-480f-a9d6-b84a5ed1768f" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Control_a_changed_hash_in_the_pin_is_refused_before_anything_is_written" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.Every_table_regenerates_byte_for_byte_from_the_pin" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="24a9ad17-2eea-a489-3678-c760bdb801d4">
+      <Execution id="e18a63c0-9290-4679-9ae2-6ca57fd5ac67" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="Every_table_regenerates_byte_for_byte_from_the_pin" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.RegenerationTests.The_pin_equals_Broiler_VM_pin_by_file_name_length_and_hash" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="5b9eeaa2-ce63-c002-4ff6-db0bb63e4388">
+      <Execution id="c356e75c-cccf-4578-a37b-b93e02536959" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.RegenerationTests" name="The_pin_equals_Broiler_VM_pin_by_file_name_length_and_hash" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8b9794d4-31fb-a0a3-a3c5-78da7ec585e5" executionId="1dee28d9-3d81-4333-9361-d2ae9da082db" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="60aeaa39-4691-4f42-2f64-542e83abcf6d" executionId="0c4c7bfa-08e5-48e5-a100-f8ac14984f94" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24a9ad17-2eea-a489-3678-c760bdb801d4" executionId="e18a63c0-9290-4679-9ae2-6ca57fd5ac67" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bbd5a0e3-e318-1bb7-8198-e3046f0d4738" executionId="189e4681-a1a8-454e-98a0-03e696a40e27" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dd4c9335-0d73-f4fd-1f09-5b7bc1aca65b" executionId="2f178e7b-3f18-414f-adab-7b46159b5560" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="643e4666-c98f-7d6f-239a-6a6bda944751" executionId="89b3d8c1-89ba-480f-a9d6-b84a5ed1768f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b9eeaa2-ce63-c002-4ff6-db0bb63e4388" executionId="c356e75c-cccf-4578-a37b-b93e02536959" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="970ceb05-f1ab-17ea-846f-a6e1416d266b" executionId="0c9618a0-6d29-4b4d-850c-58e924083541" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.12]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:01.48]   Finished:    Unicode.Algorithms.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

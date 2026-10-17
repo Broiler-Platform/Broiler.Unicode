@@ -1,0 +1,35 @@
+$ dotnet build Broiler.Unicode.slnx -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Unicode.Algorithms -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/Unicode.Algorithms/bin/Release/net10.0/Broiler.Unicode.Algorithms.dll
+  UnicodeCldr.LocaleData -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeCldr.LocaleData/bin/Release/net8.0/UnicodeCldr.LocaleData.dll
+  UnicodeEmoji.StringProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeEmoji.StringProperties/bin/Release/net10.0/UnicodeEmoji.StringProperties.dll
+  UnicodeEmoji.StringProperties.Generator -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeEmoji.StringProperties.Generator/bin/Release/net10.0/UnicodeEmoji.StringProperties.Generator.dll
+  UnicodeCldr.LocaleData -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeCldr.LocaleData/bin/Release/net10.0/UnicodeCldr.LocaleData.dll
+  UnicodeCldr.LocaleData.Generator -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeCldr.LocaleData.Generator/bin/Release/net8.0/UnicodeCldr.LocaleData.Generator.dll
+  UnicodeCldr.LocaleData.Generator -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeCldr.LocaleData.Generator/bin/Release/net10.0/UnicodeCldr.LocaleData.Generator.dll
+  Unicode.Generation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/Unicode.Generation/bin/Release/net10.0/Broiler.Unicode.Generation.dll
+  Unicode.Tables -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/Unicode.Tables/bin/Release/net10.0/Broiler.Unicode.Tables.dll
+  UnicodeEmoji.StringProperties.Generator -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeEmoji.StringProperties.Generator/bin/Release/net8.0/UnicodeEmoji.StringProperties.Generator.dll
+  UnicodeProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeProperties/bin/Release/net10.0/Broiler.Unicode.Properties.dll
+  UnicodeProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeProperties/bin/Release/net8.0/Broiler.Unicode.Properties.dll
+  Unicode.Segmentation -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/Unicode.Segmentation/bin/Release/net10.0/Broiler.Unicode.Segmentation.dll
+  UnicodeEmoji.StringProperties -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeEmoji.StringProperties/bin/Release/net8.0/UnicodeEmoji.StringProperties.dll
+  UnicodeCldr.LocaleData.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeCldr.LocaleData.Tests/bin/Release/net10.0/UnicodeCldr.LocaleData.Tests.dll
+  UnicodeProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeProperties.Tests/bin/Release/net8.0/UnicodeProperties.Tests.dll
+  UnicodeProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeProperties.Tests/bin/Release/net10.0/UnicodeProperties.Tests.dll
+  UnicodeCldr.LocaleData.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeCldr.LocaleData.Tests/bin/Release/net8.0/UnicodeCldr.LocaleData.Tests.dll
+  UnicodeEmoji.StringProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeEmoji.StringProperties.Tests/bin/Release/net8.0/UnicodeEmoji.StringProperties.Tests.dll
+  Unicode.Probe -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/probes/Unicode.Probe/bin/Release/net10.0/Broiler.Unicode.Probe.dll
+  UnicodeEmoji.StringProperties.DataTool -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeEmoji.StringProperties.DataTool/bin/Release/net10.0/UnicodeEmoji.StringProperties.DataTool.dll
+  UnicodeEmoji.StringProperties.Benchmarks -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/benchmarks/UnicodeEmoji.StringProperties.Benchmarks/bin/Release/net10.0/UnicodeEmoji.StringProperties.Benchmarks.dll
+  UnicodeEmoji.StringProperties.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/UnicodeEmoji.StringProperties.Tests/bin/Release/net10.0/UnicodeEmoji.StringProperties.Tests.dll
+  Unicode.Algorithms.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+  UnicodeCldr.LocaleData.DataTool -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/src/UnicodeCldr.LocaleData.DataTool/bin/Release/net10.0/UnicodeCldr.LocaleData.DataTool.dll
+  Unicode.Architecture.Tests -> /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Architecture.Tests/bin/Release/net10.0/Unicode.Architecture.Tests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:14.45

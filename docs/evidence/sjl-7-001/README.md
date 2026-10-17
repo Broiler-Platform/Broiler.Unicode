@@ -26,6 +26,8 @@ The heading read "at the end of SJL-7.2's tests and gates", and its last item "T
 SJL-7.2's last part. It is not taken yet, and nothing here reads it.")*
 - Parts A, B and C are **MET** at `378c2f0`.
 - Part D's first reading holds for D-1, D-3 and D-4. D-2 holds when this branch reaches the default branch.
+- Part D's second reading, at `f3d677a` at SJL-7.6, holds for D-1, D-3 and D-4 again; D-2 still waits on the
+  merge (section 5). *(Added 2026-10-17, at SJL-7.6.)*
 - The reference-arm comparison is **MET** at `3f7dbce`, under its rule as revised after its first run, which
   makes it weaker evidence (section 6).
 
@@ -126,6 +128,36 @@ tables hold is refused before it is read: a 1,000-character name is refused in A
 **Part D is judged MET only if every check holds at both readings.** The second reading is at the commit this
 bundle names at SJL-7.6.
 
+### Part D's second reading, at SJL-7.6
+
+The same script took every part again, at `f3d677ab1f18096292f3eb03d00f13ea4d4aa39c`, this branch's head
+when both engines' cut-overs had landed on `0.1.0-preview.4` as published from `6e14f93`. It did not stop. Its
+logs, result files and summary are in [`library-run-second-reading/`](library-run-second-reading/), laid out
+as `library-run/` is.
+
+| | |
+|---|---|
+| Commit | `f3d677a` ([`environment.txt`](library-run-second-reading/environment.txt)). Against the first reading's `378c2f0` it changes no file under `src/`, `probes/` or `data/`: beside the documents, it adds the reference-arm harness `tests/Unicode.ReferenceArms/` and `scripts/reference-arms/`, the harness's line in `.gitattributes` and in the rule tests' list of projects, and the changelog |
+| Taken | 2026-10-16 from 23:59:26Z, on the programme's cloud machine (`linux-x64`, .NET SDK 10.0.401, runtime 10.0.12), with other work running beside it; nothing in these parts is timed |
+| Broiler.Code | `54ce0b9`, the first reading's |
+| CI at the same commit | [run 38984596876](https://github.com/Broiler-Platform/Broiler.Unicode/actions/runs/38984596876), dispatched on this branch |
+
+**Every step's outcome equals the first reading's**: [`summary.txt`](library-run-second-reading/summary.txt)
+differs from [`library-run/summary.txt`](library-run/summary.txt) only in the latter's last line, which notes that
+its summary was rewritten by the script's corrected summary step. The probe's report under the JIT is the first
+reading's byte for byte. Parts A, B and C hold again at this commit, though this bundle judges them at
+`378c2f0`.
+
+| Check | Second reading |
+|---|---|
+| D-1 conventions | **Holds.** Rules SL1 to SL10 pass, 32 tests ([`part-d-rules.log`](library-run-second-reading/part-d-rules.log)); the Native AOT probe publishes with no warning ([`part-d-aot-publish.log`](library-run-second-reading/part-d-aot-publish.log)) and its report equals the JIT's ([`part-d-aot-compare.log`](library-run-second-reading/part-d-aot-compare.log)); the consumed packages' project files are the first reading's; and CI runs the probe |
+| D-2 the roadmap | **Holds when this branch merges, as at the first reading.** The default branch is still `0faa1f9`, an ancestor of this branch: it carries `docs/roadmap.md` with the milestone's items, and this milestone's records reach it with this branch |
+| D-3 the assurance gate | **Holds.** `assurance check` reports no violations ([`part-d-assurance.log`](library-run-second-reading/part-d-assurance.log)); the injected drift was caught again with the same 5 violations, J3, J5 and J7 ([`part-d-assurance-drift-caught.log`](library-run-second-reading/part-d-assurance-drift-caught.log)), and passed on its revert; the artefacts under `src/` and both `HUMAN_REVIEW.md` files are the first reading's |
+| D-4 pinned and hashed inputs | **Holds**: part B's two runs pass again, 8 tests each ([`part-b-run-1.log`](library-run-second-reading/part-b-run-1.log), [`part-b-run-2.log`](library-run-second-reading/part-b-run-2.log)) |
+
+**Part D is therefore MET for D-1, D-3 and D-4 at both readings, and D-2 waits on the merge of this branch** into
+the default branch. Until then part D is not judged MET, and neither is the owner's clause 1.
+
 ## 6. The reference-arm comparison: MET under the rule as revised after its first run
 
 **Read under [`reference-arms-revised-2026-10-16-after-first-run.md`](reference-arms-revised-2026-10-16-after-first-run.md).**
@@ -188,4 +220,6 @@ comparison already was, by this run.
 
 ## 7. What this bundle does not yet hold
 
-- **Part D's second reading**, at SJL-7.6.
+- **Part D's check D-2 at either reading**, which holds when this branch reaches the default branch. *(Revised
+  2026-10-17, at SJL-7.6, when the second reading was taken. This item read "**Part D's second reading**, at
+  SJL-7.6.")*

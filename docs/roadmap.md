@@ -164,6 +164,16 @@ the library with both engines' implementations before their cut-overs, under
 [`reference-arms.md`](evidence/sjl-7-001/reference-arms.md). They are SJL-7.2's last part and are recorded in the
 bundle. The preview package an engine admits is published when the owner chooses, from this stream.")*
 
+## SJL-7.6: the owner's evidence at the end of the milestone, 2026-10-17
+
+*Added 2026-10-17, at work package SJL-7.6, by the Broiler.Unicode maintainer.* `0.1.0-preview.4` was published
+to nuget.org from `6e14f93` on 2026-10-16, on the owner's instruction, and both engines' cut-overs are on it:
+Broiler.VM's at its SJL-7.4 and Broiler.JS's at its SJL-7.5, each embedding tables this repository's generator
+writes from a pin held equal to this one. Bundle `sjl-7-001` took part D's second reading at `f3d677a`
+([section 5](evidence/sjl-7-001/README.md#part-ds-second-reading-at-sjl-76)): D-1, D-3 and D-4 hold again, every
+step of the library run ending as at the first reading, and **D-2 holds only when this branch reaches the default
+branch**, which still carries the roadmap as merged at `0faa1f9`. Until it does, the owner's clause 1 is not met.
+
 ## 1. Items
 
 *(2026-10-16: each item's state at the end of SJL-7.2 is in the record above. The table is kept as SJL-0

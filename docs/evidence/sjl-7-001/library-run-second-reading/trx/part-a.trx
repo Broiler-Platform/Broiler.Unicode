@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="9e5e1360-8e96-4d99-af7f-0a849052a487" name="@vm 2026-10-17 00:00:24" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-17T00:00:24.2579466+00:00" queuing="2026-10-17T00:00:24.2579467+00:00" start="2026-10-17T00:00:22.2741187+00:00" finish="2026-10-17T00:00:27.6540760+00:00" />
+  <TestSettings name="default" id="08f3aae1-ba35-4f8e-b708-a30b3a70441a">
+    <Deployment runDeploymentRoot="_vm_2026-10-17_00_00_24" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="69548ca5-7ed2-485a-9ac5-ffd2007ff453" testId="9e934166-65cc-8286-bdb2-0e6a7d101e00" testName="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_the_lexical_classes_are_the_clauses_sets_over_the_UCD_s" computerName="vm" duration="00:00:00.2431982" startTime="2026-10-17T00:00:26.1692981+00:00" endTime="2026-10-17T00:00:26.1692985+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="69548ca5-7ed2-485a-9ac5-ffd2007ff453" />
+    <UnitTestResult executionId="0b338b9e-8141-4023-80fd-10b71b4f9000" testId="9912a9c8-2fd4-48b4-d698-3ef061cfeb7f" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A3_CaseFolding_every_line_and_every_orbit" computerName="vm" duration="00:00:02.0189864" startTime="2026-10-17T00:00:27.5441267+00:00" endTime="2026-10-17T00:00:27.5441267+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b338b9e-8141-4023-80fd-10b71b4f9000">
+      <Output>
+        <StdOut>A3 CaseFolding.txt: 1512 C and S lines, 1114112 code points folded and orbited, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="76e28842-3e7d-4689-9d33-18bf34b17add" testId="c0f48f68-334e-fb35-4155-9580ff9adc54" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_part_1_closing_claim" computerName="vm" duration="00:00:01.3636287" startTime="2026-10-17T00:00:24.2947946+00:00" endTime="2026-10-17T00:00:24.2947950+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76e28842-3e7d-4689-9d33-18bf34b17add">
+      <Output>
+        <StdOut>A1 part 1's closing claim: 1097026 code points run in four forms, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="40e02ebe-dc46-48f4-956c-9c52dcaf96d7" testId="45140674-3848-e5e2-ba6e-51522dcf1986" testName="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_binary_property_ECMA_262_admits_is_the_UCD_s_set" computerName="vm" duration="00:00:00.4025939" startTime="2026-10-17T00:00:25.9276806+00:00" endTime="2026-10-17T00:00:25.9276810+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40e02ebe-dc46-48f4-956c-9c52dcaf96d7" />
+    <UnitTestResult executionId="ab0bd9c4-be4b-4753-bb8b-68d7d7043529" testId="d591c850-74d2-6578-f2b7-70f949279ce6" testName="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_property_of_strings_resolves" computerName="vm" duration="00:00:00.0108556" startTime="2026-10-17T00:00:23.0405239+00:00" endTime="2026-10-17T00:00:23.0405241+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab0bd9c4-be4b-4753-bb8b-68d7d7043529">
+      <Output>
+        <StdOut>A5 properties of strings: 7 names run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="77fd2251-89b0-474a-ad6a-1947bf8d5ba6" testId="51144137-8e78-3606-c17b-45af58ddcefa" testName="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_General_Category_value_and_alias_resolves_alone_and_as_a_value" computerName="vm" duration="00:00:00.0235218" startTime="2026-10-17T00:00:23.0581912+00:00" endTime="2026-10-17T00:00:23.0581914+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77fd2251-89b0-474a-ad6a-1947bf8d5ba6">
+      <Output>
+        <StdOut>A5 General_Category: 80 value names run alone and under 2 property names, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fb7995c0-8f81-4e20-b522-8e59646a400c" testId="0f4824d3-6671-fd6d-c392-ed1abf61c45c" testName="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_the_refused_set_is_refused" computerName="vm" duration="00:00:00.0147491" startTime="2026-10-17T00:00:23.0405654+00:00" endTime="2026-10-17T00:00:23.0405655+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb7995c0-8f81-4e20-b522-8e59646a400c">
+      <Output>
+        <StdOut>A5 refused set: 1105 lone names and 49 string-property names refused, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="181018bf-96b7-4849-96bc-03ae175e519e" testId="f6547c81-a6a7-d054-c928-cfda7889a855" testName="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_Script_and_Script_Extensions_value_is_the_UCD_s_set" computerName="vm" duration="00:00:01.7569981" startTime="2026-10-17T00:00:25.5205006+00:00" endTime="2026-10-17T00:00:25.5205008+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="181018bf-96b7-4849-96bc-03ae175e519e" />
+    <UnitTestResult executionId="d3bc2820-0835-46c8-9f32-6231998bb429" testId="942316ef-a4d7-0367-3225-4f7a4e608a36" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_every_line" computerName="vm" duration="00:00:00.4217472" startTime="2026-10-17T00:00:24.7195727+00:00" endTime="2026-10-17T00:00:24.7195730+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d3bc2820-0835-46c8-9f32-6231998bb429">
+      <Output>
+        <StdOut>A1 NormalizationTest.txt: 20034 lines run, 400680 comparisons, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2be0ef15-50aa-4aa8-9f47-6ff802680456" testId="da1a250c-a256-91db-e70f-1bc2d9dca631" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_conditional_line_where_it_holds_and_where_it_does_not" computerName="vm" duration="00:00:00.0186116" startTime="2026-10-17T00:00:24.7684258+00:00" endTime="2026-10-17T00:00:24.7684261+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2be0ef15-50aa-4aa8-9f47-6ff802680456">
+      <Output>
+        <StdOut>A4 SpecialCasing.txt's conditional lines: 12 lines, 32 cases run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f884118d-535d-4194-9deb-fed1976f3111" testId="21e9ad24-9c97-a752-7a9b-1c135d076db1" testName="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_Script_value_and_alias_resolves_under_Script_and_Script_Extensions" computerName="vm" duration="00:00:00.0236221" startTime="2026-10-17T00:00:23.0396186+00:00" endTime="2026-10-17T00:00:23.0396188+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f884118d-535d-4194-9deb-fed1976f3111">
+      <Output>
+        <StdOut>A5 Script and Script_Extensions: 346 value names run under 4 property names, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6d903749-de4c-4e85-abe0-d535a2e0bfd0" testId="c0e220e0-2198-bd3e-bb9a-3c25723f3b5a" testName="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_code_point_s_General_Category_is_the_UCD_s" computerName="vm" duration="00:00:00.8342769" startTime="2026-10-17T00:00:23.7630115+00:00" endTime="2026-10-17T00:00:23.7630121+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d903749-de4c-4e85-abe0-d535a2e0bfd0" />
+    <UnitTestResult executionId="960f1bd4-8a82-4e1a-93a0-b15e01304d42" testId="693c110d-1d62-5863-f5ec-20fa60b580e8" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;WordBreakTest.txt&quot;, granularity: Word)" computerName="vm" duration="00:00:00.0271023" startTime="2026-10-17T00:00:24.7440968+00:00" endTime="2026-10-17T00:00:24.7440972+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="960f1bd4-8a82-4e1a-93a0-b15e01304d42">
+      <Output>
+        <StdOut>A2 WordBreakTest.txt: 1944 lines run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c786f463-1847-47f6-b9f6-2e2799e7776e" testId="2819e861-ffd8-e22c-02e3-6f859ff685f4" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_code_point_alone_in_the_default_language" computerName="vm" duration="00:00:00.7514115" startTime="2026-10-17T00:00:25.5201561+00:00" endTime="2026-10-17T00:00:25.5201566+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c786f463-1847-47f6-b9f6-2e2799e7776e">
+      <Output>
+        <StdOut>A4 every code point alone: 1114112 code points upper- and lower-cased, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d24004c9-deff-4e92-baea-e8d70e2578b3" testId="7c6aa9a5-0050-23c1-4ae6-c621df6c915b" testName="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_binary_property_name_and_alias_resolves_to_its_canonical_property" computerName="vm" duration="00:00:00.0509298" startTime="2026-10-17T00:00:23.0028597+00:00" endTime="2026-10-17T00:00:23.0029464+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d24004c9-deff-4e92-baea-e8d70e2578b3">
+      <Output>
+        <StdOut>A5 binary properties: 98 names run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a93cd604-0422-45d1-a885-f3b2d51d7a03" testId="444b50e2-32f0-d8e2-aa62-170dca60a42d" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;GraphemeBreakTest.txt&quot;, granularity: Grapheme)" computerName="vm" duration="00:00:00.0026470" startTime="2026-10-17T00:00:24.7495396+00:00" endTime="2026-10-17T00:00:24.7495397+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a93cd604-0422-45d1-a885-f3b2d51d7a03">
+      <Output>
+        <StdOut>A2 GraphemeBreakTest.txt: 766 lines run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1945d51d-abe2-4fca-bfd7-5d1da635519a" testId="4e5df80f-ffcc-0b9f-b2cf-5cd754fd918b" testName="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;SentenceBreakTest.txt&quot;, granularity: Sentence)" computerName="vm" duration="00:00:00.0022186" startTime="2026-10-17T00:00:24.7466336+00:00" endTime="2026-10-17T00:00:24.7466339+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1945d51d-abe2-4fca-bfd7-5d1da635519a">
+      <Output>
+        <StdOut>A2 SentenceBreakTest.txt: 512 lines run, 0 failed</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_General_Category_value_and_alias_resolves_alone_and_as_a_value" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="51144137-8e78-3606-c17b-45af58ddcefa">
+      <Execution id="77fd2251-89b0-474a-ad6a-1947bf8d5ba6" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests" name="A5_every_General_Category_value_and_alias_resolves_alone_and_as_a_value" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A3_CaseFolding_every_line_and_every_orbit" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="9912a9c8-2fd4-48b4-d698-3ef061cfeb7f">
+      <Execution id="0b338b9e-8141-4023-80fd-10b71b4f9000" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A3_CaseFolding_every_line_and_every_orbit" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_binary_property_name_and_alias_resolves_to_its_canonical_property" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="7c6aa9a5-0050-23c1-4ae6-c621df6c915b">
+      <Execution id="d24004c9-deff-4e92-baea-e8d70e2578b3" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests" name="A5_every_binary_property_name_and_alias_resolves_to_its_canonical_property" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_the_lexical_classes_are_the_clauses_sets_over_the_UCD_s" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="9e934166-65cc-8286-bdb2-0e6a7d101e00">
+      <Execution id="69548ca5-7ed2-485a-9ac5-ffd2007ff453" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests" name="A6_the_lexical_classes_are_the_clauses_sets_over_the_UCD_s" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;SentenceBreakTest.txt&quot;, granularity: Sentence)" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="4e5df80f-ffcc-0b9f-b2cf-5cd754fd918b">
+      <Execution id="1945d51d-abe2-4fca-bfd7-5d1da635519a" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A2_break_tests_every_line" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_the_refused_set_is_refused" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="0f4824d3-6671-fd6d-c392-ed1abf61c45c">
+      <Execution id="fb7995c0-8f81-4e20-b522-8e59646a400c" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests" name="A5_the_refused_set_is_refused" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_binary_property_ECMA_262_admits_is_the_UCD_s_set" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="45140674-3848-e5e2-ba6e-51522dcf1986">
+      <Execution id="40e02ebe-dc46-48f4-956c-9c52dcaf96d7" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests" name="A6_every_binary_property_ECMA_262_admits_is_the_UCD_s_set" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_code_point_s_General_Category_is_the_UCD_s" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="c0e220e0-2198-bd3e-bb9a-3c25723f3b5a">
+      <Execution id="6d903749-de4c-4e85-abe0-d535a2e0bfd0" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests" name="A6_every_code_point_s_General_Category_is_the_UCD_s" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;WordBreakTest.txt&quot;, granularity: Word)" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="693c110d-1d62-5863-f5ec-20fa60b580e8">
+      <Execution id="960f1bd4-8a82-4e1a-93a0-b15e01304d42" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A2_break_tests_every_line" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_every_line" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="942316ef-a4d7-0367-3225-4f7a4e608a36">
+      <Execution id="d3bc2820-0835-46c8-9f32-6231998bb429" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A1_NormalizationTest_every_line" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A2_break_tests_every_line(file: &quot;GraphemeBreakTest.txt&quot;, granularity: Grapheme)" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="444b50e2-32f0-d8e2-aa62-170dca60a42d">
+      <Execution id="a93cd604-0422-45d1-a885-f3b2d51d7a03" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A2_break_tests_every_line" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A1_NormalizationTest_part_1_closing_claim" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="c0f48f68-334e-fb35-4155-9580ff9adc54">
+      <Execution id="76e28842-3e7d-4689-9d33-18bf34b17add" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A1_NormalizationTest_part_1_closing_claim" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_property_of_strings_resolves" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="d591c850-74d2-6578-f2b7-70f949279ce6">
+      <Execution id="ab0bd9c4-be4b-4753-bb8b-68d7d7043529" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests" name="A5_every_property_of_strings_resolves" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_code_point_alone_in_the_default_language" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="2819e861-ffd8-e22c-02e3-6f859ff685f4">
+      <Execution id="c786f463-1847-47f6-b9f6-2e2799e7776e" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A4_every_code_point_alone_in_the_default_language" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests.A4_every_conditional_line_where_it_holds_and_where_it_does_not" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="da1a250c-a256-91db-e70f-1bc2d9dca631">
+      <Execution id="2be0ef15-50aa-4aa8-9f47-6ff802680456" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UnicodeTestFileTests" name="A4_every_conditional_line_where_it_holds_and_where_it_does_not" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests.A6_every_Script_and_Script_Extensions_value_is_the_UCD_s_set" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="f6547c81-a6a7-d054-c928-cfda7889a855">
+      <Execution id="181018bf-96b7-4849-96bc-03ae175e519e" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.UcdPropertyTests" name="A6_every_Script_and_Script_Extensions_value_is_the_UCD_s_set" />
+    </UnitTest>
+    <UnitTest name="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests.A5_every_Script_value_and_alias_resolves_under_Script_and_Script_Extensions" storage="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.qq6o2t77o2/tree/tests/unicode.algorithms.tests/bin/release/net10.0/unicode.algorithms.tests.dll" id="21e9ad24-9c97-a752-7a9b-1c135d076db1">
+      <Execution id="f884118d-535d-4194-9deb-fed1976f3111" />
+      <TestMethod codeBase="/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Broiler.Unicode.Algorithms.Tests.EcmaScriptTableTests" name="A5_every_Script_value_and_alias_resolves_under_Script_and_Script_Extensions" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9e934166-65cc-8286-bdb2-0e6a7d101e00" executionId="69548ca5-7ed2-485a-9ac5-ffd2007ff453" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9912a9c8-2fd4-48b4-d698-3ef061cfeb7f" executionId="0b338b9e-8141-4023-80fd-10b71b4f9000" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0f48f68-334e-fb35-4155-9580ff9adc54" executionId="76e28842-3e7d-4689-9d33-18bf34b17add" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45140674-3848-e5e2-ba6e-51522dcf1986" executionId="40e02ebe-dc46-48f4-956c-9c52dcaf96d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d591c850-74d2-6578-f2b7-70f949279ce6" executionId="ab0bd9c4-be4b-4753-bb8b-68d7d7043529" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="51144137-8e78-3606-c17b-45af58ddcefa" executionId="77fd2251-89b0-474a-ad6a-1947bf8d5ba6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0f4824d3-6671-fd6d-c392-ed1abf61c45c" executionId="fb7995c0-8f81-4e20-b522-8e59646a400c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6547c81-a6a7-d054-c928-cfda7889a855" executionId="181018bf-96b7-4849-96bc-03ae175e519e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="942316ef-a4d7-0367-3225-4f7a4e608a36" executionId="d3bc2820-0835-46c8-9f32-6231998bb429" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da1a250c-a256-91db-e70f-1bc2d9dca631" executionId="2be0ef15-50aa-4aa8-9f47-6ff802680456" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="21e9ad24-9c97-a752-7a9b-1c135d076db1" executionId="f884118d-535d-4194-9deb-fed1976f3111" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0e220e0-2198-bd3e-bb9a-3c25723f3b5a" executionId="6d903749-de4c-4e85-abe0-d535a2e0bfd0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="693c110d-1d62-5863-f5ec-20fa60b580e8" executionId="960f1bd4-8a82-4e1a-93a0-b15e01304d42" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2819e861-ffd8-e22c-02e3-6f859ff685f4" executionId="c786f463-1847-47f6-b9f6-2e2799e7776e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c6aa9a5-0050-23c1-4ae6-c621df6c915b" executionId="d24004c9-deff-4e92-baea-e8d70e2578b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="444b50e2-32f0-d8e2-aa62-170dca60a42d" executionId="a93cd604-0422-45d1-a885-f3b2d51d7a03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e5df80f-ffcc-0b9f-b2cf-5cd754fd918b" executionId="1945d51d-abe2-4fca-bfd7-5d1da635519a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="17" executed="17" passed="17" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.13]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.14]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:04.81]   Finished:    Unicode.Algorithms.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

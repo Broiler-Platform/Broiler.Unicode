@@ -1,0 +1,32 @@
+$ test_run tests/Unicode.Algorithms.Tests FullyQualifiedName~C1_ witness-C-1-caught   # must fail
+Test run for /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+/tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/bin/Release/net10.0/Unicode.Algorithms.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 10.0.12)
+[xUnit.net 00:00:00.06]   Discovering: Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.12]   Discovered:  Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.12]   Starting:    Unicode.Algorithms.Tests
+[xUnit.net 00:00:00.19]     Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [FAIL]
+[xUnit.net 00:00:00.19]       Assert.Contains() Failure: Sub-string not found
+[xUnit.net 00:00:00.19]       String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+[xUnit.net 00:00:00.19]       Not found: "Broiler.Unicode.Algorithms"
+[xUnit.net 00:00:00.19]       Stack Trace:
+[xUnit.net 00:00:00.20]         /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs(37,0): at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning()
+[xUnit.net 00:00:00.20]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.20]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.21]   Finished:    Unicode.Algorithms.Tests
+  Failed Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning [8 ms]
+  Error Message:
+   Assert.Contains() Failure: Sub-string not found
+String:    "namespace Broiler.Unicode.Properties;\n\n//"···
+Not found: "Broiler.Unicode.Algorithms"
+  Stack Trace:
+     at Broiler.Unicode.Algorithms.Tests.ContractTests.C1_the_loose_lookup_carries_its_documented_warning() in /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/tmp/tmp.QQ6O2t77o2/tree/tests/Unicode.Algorithms.Tests/ContractTests.cs:line 37
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Test Run Failed.
+Total tests: 1
+     Failed: 1
+ Total time: 0.7620 Seconds
+Results File: /tmp/claude-0/-home-user/0a6f6b61-1da7-5ce6-9020-88003835d4eb/scratchpad/sjl7/unicode-second/trx/witness-C-1-caught.trx
