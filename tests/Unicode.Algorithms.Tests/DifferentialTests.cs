@@ -116,6 +116,26 @@ public sealed class DifferentialTests
         }
     }
 
+    [Fact]
+    public void D4_a_long_unchanged_prefix_before_the_first_change_is_answered_as_preview_4_answered_it()
+    {
+        foreach (var length in new[] { 0, 1, 9, 10, 11, 255, 256, 257, 300, 1000 })
+        {
+            foreach (var tail in new[] { "a", "A", "\u00DF", "\u03A3", "\u0130", "a\u0307", "\uD801\uDC28" })
+            {
+                var text = new string('0', length) + tail;
+
+                foreach (var limit in new[] { 0, 1, 2, 8, 10, 16, length - 1, length, length + 1, length + 3, int.MaxValue })
+                {
+                    if (limit >= 0)
+                    {
+                        Compare(text, limit);
+                    }
+                }
+            }
+        }
+    }
+
     private static void Compare(string text, int maxLength)
     {
         foreach (var form in Forms)

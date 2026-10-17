@@ -371,7 +371,7 @@ public sealed class UnicodeCaseMapping
     /// after the text before it copied as it is. U+0000 to U+00FF are mapped through the values read at
     /// construction; the result is refused as soon as it is longer than <paramref name="maxLength"/>.
     /// </summary>
-    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=47CC99
+    // Broiler-AI:           Origin=Ported; Spec=ECMA-262 22.1.3.29 and Unicode 3.13 via Broiler.VM JsRealm.String and JsUnicodeCasing; IP=Low; Security=High; Resources=5; Fingerprint=D77A84
     // Broiler-Falsified-If: work is done before the meter is charged for it, a charge differs from Broiler.VM row C13, or a result longer than maxLength is answered as Success
     // Broiler-Human:        PENDING
     private UnicodeStatus MapFrom(
@@ -379,8 +379,9 @@ public sealed class UnicodeCaseMapping
         int maxLength, UnicodeWorkCharge? charge, out string? result)
     {
         // The result is refused once it passes the limit, and one mapping writes at most six code
-        // units, so the output never needs more than the limit and eight.
-        var bound = maxLength + 8L;
+        // units, so past the unchanged text it copies first the output never needs more than the limit
+        // and eight.
+        var bound = Math.Max(maxLength, first) + 8L;
         var capacity = Math.Min(source.Length + 8L, bound);
         Span<char> output = capacity <= StackLimit ? stackalloc char[StackLimit] : new char[capacity];
         var written = first;
