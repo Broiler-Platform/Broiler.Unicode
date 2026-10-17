@@ -32,6 +32,19 @@ Filed 2026-10-16, at work package SJL-7.2.
   - Its embedded bytes equal the generator's output (rule SL7's shape in the engine).
   - `Broiler.Unicode.Tables` is this repository's own embedding, for tests and probes. Neither engine
     references it.
+  - **Which tables each type reads**, from the release that adds the constant-time tables (the changelog's
+    entry; *added 2026-10-17*).
+    A constructor refuses a provider that lacks one, or holds a malformed trie:
+    - `UnicodeNormalization`: `NormalizationLayout`, `DecompositionPool`, `NormalizationTrie`,
+      `NormalizationRecords` and `CompositionLists`.
+    - `UnicodeCaseMapping`: `CasingLayout`, `MappingPool`, `CasingTrie` and `CasingRecords`, and
+      `UnicodeNormalization`'s tables.
+    - `EcmaScriptLexical`: `LexicalTrie`, beside the property tables `UnicodeProperties` reads.
+
+    `CombiningClassData`, `CanonicalIndex`, `CompatibilityIndex`, `CompositionData`, `QuickCheckData`,
+    `QuickCheckIndex`, `UpperIndex`, `LowerIndex`, `CasedRanges`, `CaseIgnorableRanges` and
+    `SoftDottedRanges` are still generated, with their numbers, but no type reads them any more. An
+    engine may stop embedding them.
 - **Consumers:** recorded here at the cut-overs. Broiler.VM's is SJL-7.4 and Broiler.JS's is SJL-7.5. The
   correspondence `docs/evidence/sjl-7-001/correspondence.md` in Broiler.VM lists the members each
   replaces.
@@ -71,8 +84,8 @@ The adapter does those, in the specification's order, and only then calls the li
 
 - Normalization and casing charge Broiler.VM's units (correspondence rows N7 and C13). Segmentation
   charges one unit per code point scanned (row G5).
-- The lookups and folding take no meter. Their work is a bounded binary search, and a name longer than
-  the longest the tables hold is refused before it is read.
+- The lookups and folding take no meter. Their work is a bounded binary search or one trie lookup, and a
+  name longer than the longest the tables hold is refused before it is read.
 - An engine with no budget passes `null`.
 - Every charge is at least one unit, and is made before the work it pays for.
 
