@@ -17,7 +17,7 @@ $mappings = @()
 # The consumer targets every framework a package ships. A package that ships fewer, such as the
 # net10.0-only packages of the shared JavaScript libraries' Unicode area, is referenced only from the
 # frameworks it has, so the restore checks each package where it can be consumed.
-$consumerFrameworks = @('net8.0', 'net10.0')
+$consumerFrameworks = @('net10.0')
 foreach ($archive in $archives) {
     $zip = [IO.Compression.ZipFile]::OpenRead($archive.FullName)
     try {
@@ -58,7 +58,7 @@ $($mappings -join "`n")
 @"
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
     <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
