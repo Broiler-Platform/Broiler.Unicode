@@ -7,7 +7,6 @@ using Broiler.Unicode.Algorithms;
 using Broiler.Unicode.Segmentation;
 using Broiler.Unicode.Tables;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Broiler.Unicode.Algorithms.Tests;
 

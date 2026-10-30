@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest]
     steps:
       - name: Check out
         uses: actions/checkout@v7
@@ -94,7 +94,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             rid: linux-x64
             executable: Broiler.Unicode.Probe
           - os: windows-latest
@@ -143,7 +143,7 @@ jobs:
   # annotation and the generated artefacts in src/ are current.
   assurance:
     name: Assurance check (SL8)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       # The assurance tool lives in Broiler.Code. The two are checked out side by side, the layout
       # src/assurance.config.json's regenerateCommand names.

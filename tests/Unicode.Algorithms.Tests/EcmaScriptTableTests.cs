@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Broiler.Unicode.Tables;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Broiler.Unicode.Algorithms.Tests;
 
